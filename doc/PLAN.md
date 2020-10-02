@@ -1,6 +1,10 @@
 # Simulation Design Plan
-### Team Number
+### Team Number 
+- 13
 ### Names
+- Yasser Elmzoudi (ye9)
+- Umika Paul ()
+- Fernanda Ruiz ()
 
 
 ## Design Overview
