@@ -204,6 +204,7 @@ public abstract class Cell implements NeighboringCells {
     public void update();
     public String getState();
     public void setState(String state);
+    public void createCell(Enum cellType);
 }
 ```
 
@@ -252,6 +253,13 @@ This class's purpose or value is to interact between the Model and the Display:
 public class Controller {
     public void showModel(Grid cells);
     public void showError (String message);
+}
+```
+
+This Enum's purpose is to represent the different types of Cells:
+```java
+public Enum cellType {
+    public Cell createCell(int row, int column);
 }
 ```
 
