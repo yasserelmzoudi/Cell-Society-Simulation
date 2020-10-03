@@ -239,9 +239,7 @@ public class FileReader {
 
 This class's purpose or value is to write the final state of a Grid to a file:
 ```java
-public class FileWriter {
-    public void writeFile(Grid cells);
-}
+c
 ```
 
 This class's purpose or value is to Display the Model to users:
@@ -262,7 +260,7 @@ public class Controller {
 
 This Enum's purpose is to represent the different types of Cells:
 ```java
-public Enum cellType {
+public enum cellType {
     public Cell createCell(int row, int column);
 }
 ```

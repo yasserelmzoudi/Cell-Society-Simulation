@@ -5,7 +5,6 @@ import java.util.List;
 import model.NeighboringCells;
 
 public abstract class Cell implements NeighboringCells {
-
   private final Rectangle rectangle;
 
   public Cell(Rectangle rectangle) {
