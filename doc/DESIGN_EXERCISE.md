@@ -100,8 +100,6 @@ public ActualPlayer(String myName) {
 
 ### Use Cases
 
-### Use Cases
-
  * A new game is started with five players, their scores are reset to 0.
  ```java
 public class Gamecontroller{
@@ -173,20 +171,6 @@ for Player eachplayer: allplayers) {
 
  ```
 
- * A new choice is added to an existing game and its relationship to all the other choices is updated.
- ```java
- Something thing = new Something();
- Value v = thing.getValue();
- v.update(13);
- ```
-
- * A new game is added to the system, with its own relationships for its all its "weapons".
- ```java
- Something thing = new Something();
- Value v = thing.getValue();
- v.update(13);
- ```
-
 
 ## Cell Society
 
@@ -200,24 +184,77 @@ for Player eachplayer: allplayers) {
     - Elements in a potential configuration file:
         - Size of Grid
         - Type of simulation 
-
-
+        
+- Potential Classes:
+    - `Cell` abstract class
+    - `Grid` class
+    - Enum to generate different types of Cells
+    - `FileReader` class
+    - `FileWriter` class
+    - `NeighboringCells` interface
+    - `Display` class
+    - `Controller` class
+    
+        
 ### CRC Card Classes
 
-This class's purpose or value is to manage something:
+This class's purpose or value is to define the different possible types of cells:
 ```java
-public class Something {
-    public int getTotal (Collection<Integer> data)
-    public Value getValue ()
+public abstract class Cell implements NeighboringCells {
+    public void update();
+    public String getState();
+    public void setState(String state);
 }
 ```
 
-This class's purpose or value is to be useful:
+This interface contains the necessary methods for retrieving and updating neighboring cells:
 ```java
-public class Value {
-    public void update (int data)
+public interface NeighboringCells {
+    public List<Cell> getNeighbors();
+    public void updateNeighbors();
+
 }
 ```
+
+This class's purpose or value is to define and populate the layout of Cells:
+```java
+public class Grid {
+    public void setUp(String fileName);
+    public List<Cell> getCells();
+    public void updateDisplay();
+}
+```
+
+This class's purpose or value is to read in the layout of the Grid:
+```java
+public class FileReader {
+    public void readFile(String fileName);
+}
+```
+
+This class's purpose or value is to write the final state of a Grid to a file:
+```java
+public class FileWriter {
+    public void writeFile(Grid cells);
+}
+```
+
+This class's purpose or value is to Display the Model to users:
+```java
+public class Display {
+    public Scene makeScene(int width, int height);
+    public void updateDisplay(Scene model);
+}
+```
+
+This class's purpose or value is to interact between the Model and the Display:
+```java
+public class Controller {
+    public void showModel(Grid cells);
+    public void showError (String message);
+}
+```
+
 
 ### Use Cases
 
