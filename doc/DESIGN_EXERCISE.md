@@ -205,6 +205,8 @@ public abstract class Cell implements NeighboringCells {
     public String getState();
     public void setState(String state);
     public void createCell(Enum cellType);
+    public int countOfNeighboringStates(List<Cells> neighboringCells, String state);
+    public String getNextState();
 }
 ```
 
@@ -213,7 +215,6 @@ This interface contains the necessary methods for retrieving and updating neighb
 public interface NeighboringCells {
     public List<Cell> getNeighbors();
     public void updateNeighbors();
-
 }
 ```
 
@@ -223,6 +224,9 @@ public class Grid {
     public void setUp(String fileName);
     public List<Cell> getCells();
     public void updateDisplay();
+    public void changeSimulation(String simulation); //Updates the simulation applied to all cells (changing their type) by reading new simulation states from file
+    public String getSimulation();
+    public void updateSimulation(String newSimulation) //called within changeSimulation
 }
 ```
 
@@ -268,21 +272,35 @@ public Enum cellType {
 
 * Apply the rules to a cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all of its neighbors)
 ```java
-Something thing = new Something();
-Value v = thing.getValue();
-v.update(13);
+for (Cell currentCell: grid.getCells()) {
+  if (currentCell.getState().equals("alive")) {
+    int count = countOfNeighboringStates(currentCell.getNeighbors, "alive")
+    if (count < UNDERPOPULATION) {
+      currentCell.setState("dead");
+        }
+    else if (count == 2 || count == 3) {
+      currentCell.setState("alive");
+    }
+    else if (count > OVERPOPULATION) {
+      currentCell.setState("dead");
+    }
+    else if (count == 3) {
+      currentCell.setState("alive")
+    }
+}
+}
 ```
 
 * Move to the next generation: update all cells in a simulation from their current state to their next state
 ```java
-Something thing = new Something();
-Value v = thing.getValue();
-v.update(13);
+for (Cell currentCell: grid.getCells()) {
+    currentCell.setState(currentCell.getNextState())
+}
 ```
 
 * Switch simulations: load a new simulation from a data file, replacing the current running simulation with the newly loaded one
 ```java
-Something thing = new Something();
-Value v = thing.getValue();
-v.update(13);
+FileWriter previousModel = new FileWriter();
+previousModel.writeFile(grid.getSimulation());
+grid.changeSimulation(newSimulation); //reads from File as well
 ```
