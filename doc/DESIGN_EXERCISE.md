@@ -29,7 +29,12 @@
 This class's purpose is to represent all possible `RockPaperScissorsObject`s:
 ```java
  public abstract class RockPaperScissorsObject {
-     public abstract boolean compare (RockPaperScissorsObject rps);
+    private String myType;
+    public RockPaperScissorsObject(String rpsType) {
+    myType = rpsType;
+}
+    public abstract Player topplayer(List<Players> allplayers);
+     public abstract boolean compare(RockPaperScissorsObject rps);
  }
 ```
 
@@ -42,26 +47,54 @@ This class's purpose is to represent the result for the given `Player`s:
 ```
 This class's purpose is to represent all possible `Player`s:
 ```java
- public abstract class Player {
-      public void resetScore();
-      public String getName();
-      public int getScore();
-      public abstract RockPaperScissorsObject selectRockPaperScissorsObject(String possibleRockPaperScissorsObjects);
-}
+public abstract class Player {
+    private String myType;
+    private String myName;
+    private String myScore = 0;
+    private RockPaperScissorsObject currentRDS;
+    public Player(String name, String type){
+    myName = name;
+    myType = type;
+    }
+    public RockPaperScissorsObject selectRockPaperScissorsObject(String selectedRockPaperScissorsObject);
+    public void resetScore(){
+    myScore = 0;
+    }
+    public void increaseScore() {
+    myScore++;
+    }
+    public String getName() {
+    return myName; }
+    public int getScore(){
+    return myScore; }
+    public RockPaperScissorsObject selectRockPaperScissorsObject(String rpstype){
+        currentRPS = new RockPaperScissorsObject(rdstype);
+        return currentRPS;
+    }
+    public RockPaperScissors currentRockPaperScissorsObject() {
+        return currentRPS;}  
+    }
 ```
 
 This class's purpose is to represent `SimulatedPlayer`s:
 ```java
  public abstract class SimulatedPlayer extends Player {
-      public RockPaperScissorsObject selectRockPaperScissorsObject(String selectedRockPaperScissorsObject);
-      public String getRandomRockPaperScissorsObject(List<String> possibleRockPaperScissorsObject);
+private static final String MYTYPE = "SIMULATED";
+    public SimulatedPlayer() {
+    super(getRandomName(), MYTYPE);
+}
+    public String getRandomName(){
+} 
 }
 ```
 
 This class's purpose is to represent `ActualPlayer`s:
 ```java
  public abstract class ActualPlayer extends Player {
-      public RockPaperScissorsObject selectRockPaperScissorsObject(String selectedRockPaperScissorsObject);
+private static final String MYTYPE = "REAL"
+public ActualPlayer(String myName) {
+    super(myName, MYTYPE);
+}
 }
 ```
 
@@ -71,25 +104,73 @@ This class's purpose is to represent `ActualPlayer`s:
 
  * A new game is started with five players, their scores are reset to 0.
  ```java
-List<Player> players = new ArrayList<>();
-for (int i = 0; i < NUM_PLAYERS; i++) {
-Player player = new ActualPlayer();
-players.add(player);
+public class Gamecontroller{
+    private List<Player> allplayers = new ArrayList<>();
+    List<Player> roundwineers = new ArrayList<>();
+    public GameController() {
+setupPlayers();
+checkRelationships();
+    }
+
+    public void setupPlayers() {
+        int numberactualplayers = 0;
+        int numbersimplayers = 0;
+        System.out.println("please enter the number of actual players");
+        String input = keyboard.nextLine();
+        if(isnumber(input)) {
+        numberactualplayers = converttoint(input);
+        }
+        System.out.println("please enter the number of simulated players");
+        input = keyboard.nextLine();
+        if(isnumber(input)) {
+        numbersimplayers = converttoint(input);
+        }
+        for (int i = 0; i < numberactualplayers; i++) {
+        System.out.println("please enter a player's name");
+        String playername = keyboard.nextLine();
+        Player player = new ActualPlayer(playername);
+        allplayers.add(player);
+        }
+        for (int i = 0; i < numbersimplayers; i++) {
+                Player player = new SimulatedPlayer();
+                allplayers.add(player);
+        }
+}
+
 }
  ```
 
  * A player chooses his RPS "weapon" with which he wants to play for this round.
  ```java
- Something thing = new Something();
- Value v = thing.getValue();
- v.update(13);
+for(Player eachplayer: allplayers) {
+if(playersturn(eachplayer)){
+if(eachplayer instanceof SimulatedPlayer) {
+eachplayer.selectRockPapersScissorsObject("")}
+}
+else {
+System.out.println("Enter a weapon: R for Rock, S for scissors, or P for Paper");
+String weapontype = keyboard.nextLine();
+eachplayer.selectRockPaperScissorsObject(weapontype);
+}
+}
+
  ```
 
  * Given three players' choices, one player wins the round, and their scores are updated.
  ```java
- Something thing = new Something();
- Value v = thing.getValue();
- v.update(13);
+
+private void checkRelationships() {
+roundwinners = new ArrayList<>();
+for Player eachplayer: allplayers) {
+    if(eachplayer.currentRockPaperScissorsObject.compare(allplayers) >= 0) {
+    eachplayer.increaseScore();
+    roundwinners.add(eachplayer);
+    }
+}}
+
+
+
+
  ```
 
  * A new choice is added to an existing game and its relationship to all the other choices is updated.
