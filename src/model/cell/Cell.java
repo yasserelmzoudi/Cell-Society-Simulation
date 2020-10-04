@@ -45,11 +45,11 @@ public class Cell {
         numAliveCells++;
       }
     }
-    if (this.isAlive && (numAliveCells > 3 || numAliveCells < 2)) {
-      this.isAlive = false;
+    if (isAlive && (numAliveCells > 3 || numAliveCells < 2)) {
+      isAlive = false;
     }
-     if (!this.isAlive && numAliveCells == 3) {
-       this.isAlive = true;
+     if (!isAlive && numAliveCells == 3) {
+       isAlive = true;
      }
     }
 
@@ -61,7 +61,7 @@ public class Cell {
    * @return Boolean stating if cell is alive.
    */
   public boolean isAlive() {
-      return this.isAlive;
+      return isAlive;
     }
 
 }
