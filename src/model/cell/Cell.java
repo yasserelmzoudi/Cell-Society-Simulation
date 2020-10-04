@@ -1,37 +1,67 @@
 package model.cell;
 
-import java.awt.Rectangle;
 import java.util.List;
-import model.NeighboringCells;
 
-public abstract class Cell implements NeighboringCells {
-  private final Rectangle rectangle;
+public class Cell {
 
-  public Cell(Rectangle rectangle) {
+  private final Integer row;
+  private final Integer column;
+  private boolean isAlive;
 
-    this.rectangle = rectangle;
+  /**
+   * Constructor for this class.
+   *
+   * @param row Row in the grid
+   * @param column Column in the grid
+   * @param alive Boolean specifying if cell is alive or dead.
+   */
+  public Cell(Integer row, Integer column, boolean alive) {
+    this.row = row;
+    this.column = column;
+    this.isAlive = alive;
   }
 
-  public void update() {
-    //TODO
+  /**
+   * Copy constructor that makes a copy of a <code>Cell</code>.
+   *
+   * @param copyCell A <code>Cell</code> that is copied.
+   */
+  public Cell(Cell copyCell) {
+    this.row = copyCell.row;
+    this.column = copyCell.column;
+    this.isAlive = copyCell.isAlive;
   }
 
-  public String getState() {
-    //TODO
-    return null;
-  }
+  /**
+   * Updates a <code>Cell</code> based on the neighboring cells. Follows the Game of Life rules.
+   * The rules can be found at: https://en.wikipedia.org/wiki/Conway's_Game_of_Life.
+   *
+   * @param neighbors List of neighboring cells
+   */
+  public void update(List<Cell> neighbors) {
+    Integer numAliveCells = 0;
+    for (Cell neighbor : neighbors) {
+      if (neighbor.isAlive) {
+        numAliveCells++;
+      }
+    }
+    if (this.isAlive && (numAliveCells > 3 || numAliveCells < 2)) {
+      this.isAlive = false;
+    }
+     if (!this.isAlive && numAliveCells == 3) {
+       this.isAlive = true;
+     }
+    }
 
-  public void setState(String state) {
-    //TODO
-  }
+  /**
+   * Returns the current state of a cell.
+   * If the cell is alive, it returns true.
+   * If the cell is dead, it returns false.
+   *
+   * @return Boolean stating if cell is alive.
+   */
+  public boolean isAlive() {
+      return this.isAlive;
+    }
 
-  public int countOfNeighboringStates(List<Cell> neighboringCells, String state) {
-    //TODO
-    return 0;
-  }
-
-  public String getNextState() {
-    //TODO
-    return null;
-  }
 }
