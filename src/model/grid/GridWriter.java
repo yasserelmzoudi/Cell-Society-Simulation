@@ -1,6 +1,6 @@
 package model.grid;
 
-public class FileWriter {
+public class GridWriter {
   public void writeFile(Grid cells) {
     //TODO
   }

@@ -17,7 +17,7 @@ import java.util.List;
  * can be in a csv file.
  */
 
-public class FileReader {
+public class GridReader {
 
   /**
    * Read all lines from a file to a list.

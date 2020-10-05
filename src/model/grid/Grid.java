@@ -23,7 +23,7 @@ public class Grid {
    * @param filename File from which to read the initial data.
    */
   public Grid(String filename) {
-    List<String> fileLines = FileReader.getAllLinesInFile(filename);
+    List<String> fileLines = GridReader.getAllLinesInFile(filename);
     String[] splitLine = fileLines.get(0).split(FILE_DELIMITER);
     this.gridWidth = Integer.parseInt(splitLine[0]);
     this.gridHeight = Integer.parseInt(splitLine[1]);
