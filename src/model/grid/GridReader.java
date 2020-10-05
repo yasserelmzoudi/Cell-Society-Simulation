@@ -16,8 +16,12 @@ import java.util.List;
  * Class that reads all the lines from a given file, and returns every line from that file. The file
  * can be in a csv file.
  */
-
 public class GridReader {
+  private InputStream data;
+
+  public GridReader(InputStream data) {
+    this.data = data;
+  }
 
   /**
    * Read all lines from a file to a list.
@@ -40,11 +44,10 @@ public class GridReader {
 
   /**
    * Code adopted from Professor Duvall to read CSV files
-   * @param data CSV file containing grid configuration to be read
-   * @return List<String[]> representing all of the lines read from the CSV file
+   * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll(InputStream data) {
+  public List<String[]> readAll() {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {

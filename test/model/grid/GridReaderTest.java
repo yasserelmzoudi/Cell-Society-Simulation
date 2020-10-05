@@ -10,13 +10,14 @@ import org.junit.jupiter.api.Test;
 public class GridReaderTest {
 
   @Test
-  public void testGridRead_simpleGrid() {
+  public void testReadAll_simpleGrid() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    GridReader gridReader = new GridReader();
+    GridReader gridReader = new GridReader(
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
 
-    List<String[]> expectedOutput = List.of(new String[]{"3","3"}, new String[]{"1","0","1"},
+    List<String[]> expectedOutput = List.of(new String[]{"3", "3"}, new String[]{"1", "0", "1"},
         new String[]{"0", "1", "1"}, new String[]{"1", "1", "1"});
-    List<String[]> actualOutput = gridReader.readAll(GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+    List<String[]> actualOutput = gridReader.readAll();
 
     for (int row = 0; row < expectedOutput.size(); row++) {
       assertArrayEquals(expectedOutput.get(row), actualOutput.get(row));
