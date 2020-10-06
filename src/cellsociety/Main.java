@@ -35,10 +35,24 @@ public class Main {
       if (key.equals("N")) {
         grid.performNextStep();
         view.displayGrid(grid);
-      }
-      if (key.equals("Q")) {
-        System.exit(0);
-      }
+        JPanel mySimulator = new GameSimulator(grid, 500, 500);
+        GUI userinterface = new GUI(grid, mySimulator);
+        while (true) {
+            if(userinterface.shouldcontinue()) {
+                grid.performNextStep();
+                mySimulator = new GameSimulator(grid, 500, 500);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(userinterface.wantnewFile()) {
+                //grid = new Grid(userinterface.chooseNewFile());
+                mySimulator = new GameSimulator(grid, 500, 500);
+                userinterface.resetGUI(grid, mySimulator);
+            }
+        }
     }
   }
 }
