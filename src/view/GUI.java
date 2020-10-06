@@ -2,6 +2,7 @@ package view;
 
 import javafx.stage.FileChooser;
 import model.grid.Grid;
+import model.grid.GridReader;
 
 import javax.swing.*;
 import java.awt.*;

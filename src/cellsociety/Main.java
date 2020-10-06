@@ -46,7 +46,7 @@ public class Main {
                 }
             }
             if(userinterface.wantnewFile()) {
-                grid = new Grid(userinterface.chooseNewFile());
+                //grid = new Grid(userinterface.chooseNewFile()); not working
                 mySimulator = new GameSimulator(grid, 500, 500);
                 userinterface.resetGUI(grid, mySimulator);
             }
