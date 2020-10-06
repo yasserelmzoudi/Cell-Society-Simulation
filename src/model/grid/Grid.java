@@ -83,7 +83,7 @@ public class Grid {
    *
    * @return copy of the grid
    */
-  private Cell[][] copyGrid() {
+  public Cell[][] copyGrid() {
     Cell[][] copyOfGrid = new Cell[gridWidth][gridHeight];
     for (int row = 0; row < gridWidth; row++) {
       for (int column = 0; column < gridHeight; column++) {
@@ -124,14 +124,14 @@ public class Grid {
    * @param column Column of cell.
    * @return list of neighbors
    */
-  private List<Cell> getNeighbors(Cell[][] grid, int row, int column) {
-    List<Cell> listOfCells = new ArrayList<Cell>();
+  public List<Cell> getNeighbors(Cell[][] grid, int row, int column) {
+    List<Cell> listOfCells = new ArrayList<>();
     int minRow = Math.max(0, row - 1);
-    int maxRow = Math.min(gridWidth - 1, row + 1);
+    int maxRow = Math.min(gridHeight - 1, row + 1);
     int minCol = Math.max(0, column - 1);
-    int maxCol = Math.max(gridHeight - 1, column + 1);
-    for (int rowIndex = minRow; rowIndex < maxRow; rowIndex++) {
-      for (int colIndex = minCol; colIndex < maxCol; colIndex++) {
+    int maxCol = Math.min(gridWidth - 1, column + 1);
+    for (int rowIndex = minRow; rowIndex <= maxRow; rowIndex++) {
+      for (int colIndex = minCol; colIndex <= maxCol; colIndex++) {
         if (!((rowIndex == row) && (colIndex == column))) {
           listOfCells.add(grid[rowIndex][colIndex]);
         }
