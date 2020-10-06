@@ -26,8 +26,8 @@ public class GameSimulator extends JPanel {
         gridColumns = cellArray[0].length;
         gridRows = cellArray.length;
         cellHeight = appheight / gridRows;
-        cellWidth = appwidth / gridColumns;
-        gridFrame.setSize(appwidth+15, appheight+30); //need to fix
+        cellWidth = appwidth / gridColumns ;
+        gridFrame.setSize(appwidth+cellWidth, appheight); //need to fix
         gridFrame.setDefaultCloseOperation(gridFrame.EXIT_ON_CLOSE);
         gridFrame.setVisible(true);
         gridFrame.add(this);
@@ -50,10 +50,4 @@ public class GameSimulator extends JPanel {
               }
         }
     }
-
-    public GameSimulator loadnewgrid(Grid grid) {
-        currentSimulator = new GameSimulator(grid, appHeight, appWidth);
-        return currentSimulator;
-    }
-
 }

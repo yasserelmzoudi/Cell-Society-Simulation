@@ -26,18 +26,32 @@ public class Main {
     /**
      * Start of the program.
      */
+
+    private int appheight = 600;
+    private int appwidth = 600;
+
     public static void main(String[] args) {
+        Main runsimulation = new Main();
         ResourceBundle resources = ResourceBundle.getBundle("resources.data");
         GridReader gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
         Grid grid = new Grid(gridReader);
         GridView view = new GridView();
         view.displayGrid(grid);
-        int appwidth = 500;
         int appheight = 600;
+        int appwidth = 600;
         JPanel mySimulator = new GameSimulator(grid, appheight, appwidth);
         GUI userinterface = new GUI(grid, mySimulator);
         while (true) {
-            if(userinterface.shouldcontinue()) {
+            boolean newfilechosen = userinterface.wantnewFile();
+            if(newfilechosen) {
+                String path = userinterface.chooseNewFile();
+                gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(path));
+                grid = new Grid(gridReader);
+                mySimulator = new GameSimulator(grid, appheight, appwidth);
+                userinterface.resetGUI(grid, mySimulator);
+            }
+            boolean resumesimulation = userinterface.shouldcontinue();
+            if(resumesimulation) {
                 grid.performNextStep();
                 mySimulator = new GameSimulator(grid, appheight, appwidth);
                 try {
@@ -45,12 +59,6 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            if(userinterface.wantnewFile()) {
-                gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(userinterface.chooseNewFile()));
-                grid = new Grid(gridReader);
-                mySimulator = new GameSimulator(grid, appheight, appwidth);
-                userinterface.resetGUI(grid, mySimulator);
             }
         }
     }

@@ -29,13 +29,13 @@ public class GUI extends JPanel implements ActionListener {
         mygamegrid = grid;
         mypanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
         mypanel.setLayout(new GridLayout(2, 3));
+        mypanel.add(resumebutton);
         mypanel.add(pausebutton);
         mypanel.add(nextbutton);
         mypanel.add(loadbutton);
         mypanel.add(quitbutton);
-        mypanel.add(resumebutton);
-        pausebutton.addActionListener(this);
         resumebutton.addActionListener(this);
+        pausebutton.addActionListener(this);
         nextbutton.addActionListener(this);
         loadbutton.addActionListener(this);
         quitbutton.addActionListener(this);
@@ -49,10 +49,9 @@ public class GUI extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == resumebutton) {
-            simshouldresume =true;
+        if (e.getSource() == resumebutton && !simshouldresume) {
+            simshouldresume = true;
         }
-
         if (e.getSource() == pausebutton) {
             simshouldresume =false;
         }
@@ -64,7 +63,7 @@ public class GUI extends JPanel implements ActionListener {
         if (e.getSource() == nextbutton) {
             simshouldresume =false;
             mygamegrid.performNextStep();
-            gameSimulation = ((GameSimulator) gameSimulation).loadnewgrid(mygamegrid);
+            gameSimulation = new GameSimulator(mygamegrid, 600, 600);
         }
 
         if (e.getSource() == loadbutton) {
@@ -85,26 +84,20 @@ public class GUI extends JPanel implements ActionListener {
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(parentWindow);
         java.awt.FileDialog fd = new java.awt.FileDialog(topFrame, "Select New File", java.awt.FileDialog.LOAD);
         fd.setVisible(true);
-        String directory = fd.getDirectory();
         String filename = fd.getFile();
-        return (new File(directory + filename)).getAbsolutePath();
+        return (new File(filename)).getPath();
     }
 
 
     public void resetGUI(Grid newgrid, JPanel newsimulation) {
-        gameSimulation = newsimulation;
+        simshouldresume =true;
+        wantnewfile = false;
         mygamegrid = newgrid;
+        gameSimulation = newsimulation;
         pausebutton.addActionListener(this);
         resumebutton.addActionListener(this);
         nextbutton.addActionListener(this);
         loadbutton.addActionListener(this);
         quitbutton.addActionListener(this);
-        myInterfaceFrame.add(mypanel, BorderLayout.CENTER);
-        myInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myInterfaceFrame.setTitle("User Options");
-        myInterfaceFrame.pack();
-        myInterfaceFrame.setVisible(true);
-        simshouldresume =true;
-        wantnewfile = false;
     }
 }
