@@ -1,15 +1,12 @@
 package view;
 
-import javafx.stage.FileChooser;
 import model.grid.Grid;
-import model.grid.GridReader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 public class GUI extends JPanel implements ActionListener {

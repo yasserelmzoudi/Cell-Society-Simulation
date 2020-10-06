@@ -28,17 +28,18 @@ public class Main {
      */
     public static void main(String[] args) {
         ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-        GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
-    Grid grid = new Grid(gridReader);
-    GridView view = new GridView();
-    view.displayGrid(grid);
-        JPanel mySimulator = new GameSimulator(grid, 500, 500);
+        GridReader gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        Grid grid = new Grid(gridReader);
+        GridView view = new GridView();
+        view.displayGrid(grid);
+        int appwidth = 500;
+        int appheight = 600;
+        JPanel mySimulator = new GameSimulator(grid, appheight, appwidth);
         GUI userinterface = new GUI(grid, mySimulator);
         while (true) {
             if(userinterface.shouldcontinue()) {
                 grid.performNextStep();
-                mySimulator = new GameSimulator(grid, 500, 500);
+                mySimulator = new GameSimulator(grid, appheight, appwidth);
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
@@ -46,8 +47,9 @@ public class Main {
                 }
             }
             if(userinterface.wantnewFile()) {
-                GridReader.class.getClassLoader().getResourceAsStream(userinterface.chooseNewFile());
-                mySimulator = new GameSimulator(grid, 500, 500);
+                gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(userinterface.chooseNewFile()));
+                grid = new Grid(gridReader);
+                mySimulator = new GameSimulator(grid, appheight, appwidth);
                 userinterface.resetGUI(grid, mySimulator);
             }
         }
