@@ -45,13 +45,26 @@ public class Cell {
         numAliveCells++;
       }
     }
-    if (isAlive && (numAliveCells > 3 || numAliveCells < 2)) {
+
+    if (isAlive) {
+      if (numAliveCells == 3 || numAliveCells == 2) {
+        return;
+      }
+      isAlive = false;
+      return;
+    }
+    else if (numAliveCells == 3) {
+      isAlive= true;
+    }
+
+    /*if (isAlive && (numAliveCells == 3 || numAliveCells == 2)) {
       isAlive = false;
     }
-     if (!isAlive && numAliveCells == 3) {
-       isAlive = true;
-     }
+    else if (!isAlive && numAliveCells == 3) {
+      isAlive = true;
     }
+    */
+  }
 
   /**
    * Returns the current state of a cell.
