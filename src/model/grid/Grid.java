@@ -33,7 +33,7 @@ public class Grid {
     gridWidth = Integer.valueOf(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.valueOf(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
     readLines.remove(0);
-    gridOfCells = new Cell[gridWidth][gridHeight];
+    gridOfCells = new Cell[gridHeight][gridWidth];
 
 
     int row = 0;
@@ -84,9 +84,9 @@ public class Grid {
    * @return copy of the grid
    */
   public Cell[][] copyGrid() {
-    Cell[][] copyOfGrid = new Cell[gridWidth][gridHeight];
-    for (int row = 0; row < gridWidth; row++) {
-      for (int column = 0; column < gridHeight; column++) {
+    Cell[][] copyOfGrid = new Cell[gridHeight][gridWidth];
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
         copyOfGrid[row][column] = new Cell(this.gridOfCells[row][column]);
       }
     }
@@ -107,8 +107,8 @@ public class Grid {
    */
   public void performNextStep() {
     Cell[][] grid = copyGrid();
-    for (int row = 0; row < gridWidth; row++) {
-      for (int column = 0; column < gridHeight; column++) {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = getNeighbors(grid, row, column);
         this.gridOfCells[row][column].update(neighbors);
       }
