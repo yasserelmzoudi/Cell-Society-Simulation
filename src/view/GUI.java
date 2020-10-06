@@ -9,9 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Enumeration;
+import java.util.ResourceBundle;
 
 public class GUI extends JPanel implements ActionListener {
-
+    public static final ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     public static JFrame myInterfaceFrame = new JFrame();
     private JButton resumebutton = new JButton("Resume");
     private JButton pausebutton = new JButton("Pause");
@@ -90,6 +92,7 @@ public class GUI extends JPanel implements ActionListener {
         String filename = fd.getFile();
         return (new File(directory + filename)).getAbsolutePath();
     }
+
 
     public void resetGUI(Grid newgrid, JPanel newsimulation) {
         gameSimulation = newsimulation;

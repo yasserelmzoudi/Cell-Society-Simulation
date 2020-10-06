@@ -28,7 +28,7 @@ public class Main {
      */
     public static void main(String[] args) {
         ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    GridReader gridReader = new GridReader(
+        GridReader gridReader = new GridReader(
         GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
     Grid grid = new Grid(gridReader);
     GridView view = new GridView();
@@ -46,11 +46,10 @@ public class Main {
                 }
             }
             if(userinterface.wantnewFile()) {
-                //grid = new Grid(userinterface.chooseNewFile()); not working
+                GridReader.class.getClassLoader().getResourceAsStream(userinterface.chooseNewFile());
                 mySimulator = new GameSimulator(grid, 500, 500);
                 userinterface.resetGUI(grid, mySimulator);
             }
         }
-
     }
   }
