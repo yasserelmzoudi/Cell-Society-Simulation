@@ -42,7 +42,7 @@ public class Main {
             if(newfilechosen) {
                 String path = userinterface.chooseNewFile();
                 gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(path));
-                grid = new Grid(gridReader); //do set size method in grid instead of gamepanel
+                grid = new Grid(gridReader);
                 myPanel = new GamePanel(grid, appdimensions);
                 mySimWindow.dispose();
                 mySimWindow = new GameWindow(appdimensions);
@@ -50,7 +50,7 @@ public class Main {
                 userinterface.resetGUI(grid, mySimWindow);
             }
             boolean resumesimulation = userinterface.shouldcontinue();
-           // System.out.println(resumesimulation); //not working
+            //System.out.println(resumesimulation); //Sometimes doesn't work without this line
             if(resumesimulation) {
                 grid.performNextStep();
                 myPanel.updategrid(grid);

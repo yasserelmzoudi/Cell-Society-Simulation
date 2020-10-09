@@ -1,8 +1,4 @@
 package view;
-
-import model.cell.Cell;
-import model.grid.Grid;
-
 import javax.swing.*;
 import java.awt.*;
 
