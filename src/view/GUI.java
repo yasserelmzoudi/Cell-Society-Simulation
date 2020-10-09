@@ -2,6 +2,7 @@ package view;
 
 import model.grid.Grid;
 
+import javax.swing.FocusManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -86,7 +87,7 @@ public class GUI extends JPanel implements ActionListener {
     public String chooseNewFile() {
         Window parentWindow = FocusManager.getCurrentManager().getActiveWindow();
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(parentWindow);
-        java.awt.FileDialog fd = new java.awt.FileDialog(topFrame, "Select New File", java.awt.FileDialog.LOAD);
+        FileDialog fd = new FileDialog(topFrame, "Select New File", FileDialog.LOAD);
         fd.setVisible(true);
         String filename = fd.getFile();
         return (new File(filename)).getPath();
