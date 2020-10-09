@@ -1,14 +1,15 @@
 package cellsociety;
 
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import model.grid.Grid;
 import view.GUI;
-import view.GameSimulator;
+import view.GamePanel;
+import view.GameWindow;
 import java.util.ResourceBundle;
 import model.grid.GridReader;
-import view.GridView;
 
 import javax.swing.*;
 
@@ -24,31 +25,41 @@ public class Main {
     /**
      * Start of the program.
      */
+
+
     public static void main(String[] args) {
         ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-        GridReader gridReader = new GridReader(
-                GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
         Grid grid = new Grid(gridReader);
-        GridView view = new GridView();
-        view.displayGrid(grid);
-        JPanel mySimulator = new GameSimulator(grid, 500, 500);
-        GUI userinterface = new GUI(grid, mySimulator);
+        Dimension appdimensions = new Dimension(600,600);
+        GamePanel myPanel = new GamePanel(grid, appdimensions);
+        JFrame mySimWindow = new GameWindow(appdimensions);
+        mySimWindow.add(myPanel);
+        GUI userinterface = new GUI(grid, mySimWindow, myPanel);
         while (true) {
-            if(userinterface.shouldcontinue()) {
+            boolean newfilechosen = userinterface.wantnewFile();
+            if(newfilechosen) {
+                String path = userinterface.chooseNewFile();
+                gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(path));
+                grid = new Grid(gridReader); //do set size method in grid instead of gamepanel
+                myPanel = new GamePanel(grid, appdimensions);
+                mySimWindow.dispose();
+                mySimWindow = new GameWindow(appdimensions);
+                mySimWindow.add(myPanel);
+                userinterface.resetGUI(grid, mySimWindow);
+            }
+            boolean resumesimulation = userinterface.shouldcontinue();
+           // System.out.println(resumesimulation); //not working
+            if(resumesimulation) {
                 grid.performNextStep();
-                mySimulator = new GameSimulator(grid, 500, 500);
+                myPanel.updategrid(grid);
+                mySimWindow.add(myPanel);
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if(userinterface.wantnewFile()) {
-                //grid = new Grid(userinterface.chooseNewFile()); not working
-                mySimulator = new GameSimulator(grid, 500, 500);
-                userinterface.resetGUI(grid, mySimulator);
-            }
         }
-
     }
 }
