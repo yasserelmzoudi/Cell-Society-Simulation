@@ -14,7 +14,7 @@ class GridTest {
   void getNeighbors_center() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
     Grid grid = new Grid(gridReader);
 
     Cell[][] matrix= grid.copyGrid();
@@ -33,7 +33,7 @@ class GridTest {
   void getNeighbors_topLeftCorner() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
     Grid grid = new Grid(gridReader);
 
     Cell[][] matrix= grid.copyGrid();
@@ -52,7 +52,7 @@ class GridTest {
   void getNeighbors_topRightCorner() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
     Grid grid = new Grid(gridReader);
 
     Cell[][] matrix= grid.copyGrid();
@@ -71,7 +71,7 @@ class GridTest {
   void getNeighbors_bottomLeftCorner() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
     Grid grid = new Grid(gridReader);
 
     Cell[][] matrix= grid.copyGrid();
@@ -90,7 +90,7 @@ class GridTest {
   void getNeighbors_bottomRightCorner() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
     Grid grid = new Grid(gridReader);
 
     Cell[][] matrix= grid.copyGrid();

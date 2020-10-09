@@ -13,7 +13,7 @@ public class GridReaderTest {
   public void testReadAll_simpleGrid() {
     ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     GridReader gridReader = new GridReader(
-        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
+        GridReader.class.getClassLoader().getResourceAsStream(resources.getString("TestSource")));
 
     List<String[]> expectedReading = List.of(new String[]{"3", "3"}, new String[]{"1", "0", "1"},
         new String[]{"0", "1", "1"}, new String[]{"1", "1", "1"});
