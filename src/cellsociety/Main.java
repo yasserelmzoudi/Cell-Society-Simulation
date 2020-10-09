@@ -9,7 +9,6 @@ import view.GUI;
 import view.GamePanel;
 import view.GameWindow;
 import java.util.ResourceBundle;
-
 import model.grid.GridReader;
 
 import javax.swing.*;
@@ -63,4 +62,4 @@ public class Main {
             }
         }
     }
-  }
+}
