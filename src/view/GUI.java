@@ -17,29 +17,31 @@ public class GUI extends JPanel implements ActionListener {
     private JButton nextbutton = new JButton("Next");
     private JButton loadbutton = new JButton("Load new File");
     private JButton quitbutton = new JButton("Quit Simulation");
-    private JPanel mypanel = new JPanel();
+    private JPanel mybuttonpanel = new JPanel();
     private boolean simshouldresume = true;
     private boolean wantnewfile = false;
-    private JPanel gameSimulation;
+    private GamePanel gamePanel;
+    private JFrame gameFrame;
     private Grid mygamegrid;
 
 
-    public GUI(Grid grid, JPanel simulation) {
-        gameSimulation = simulation;
+    public GUI(Grid grid, JFrame simulationwindow, GamePanel simulationpanel) {
+        gamePanel = simulationpanel;
+        gameFrame = simulationwindow;
         mygamegrid = grid;
-        mypanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        mypanel.setLayout(new GridLayout(2, 3));
-        mypanel.add(resumebutton);
-        mypanel.add(pausebutton);
-        mypanel.add(nextbutton);
-        mypanel.add(loadbutton);
-        mypanel.add(quitbutton);
+        mybuttonpanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+        mybuttonpanel.setLayout(new GridLayout(2, 3));
+        mybuttonpanel.add(resumebutton);
+        mybuttonpanel.add(pausebutton);
+        mybuttonpanel.add(nextbutton);
+        mybuttonpanel.add(loadbutton);
+        mybuttonpanel.add(quitbutton);
         resumebutton.addActionListener(this);
         pausebutton.addActionListener(this);
         nextbutton.addActionListener(this);
         loadbutton.addActionListener(this);
         quitbutton.addActionListener(this);
-        myInterfaceFrame.add(mypanel, BorderLayout.CENTER);
+        myInterfaceFrame.add(mybuttonpanel, BorderLayout.CENTER);
         myInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myInterfaceFrame.setTitle("User Options");
         myInterfaceFrame.pack();
@@ -63,7 +65,9 @@ public class GUI extends JPanel implements ActionListener {
         if (e.getSource() == nextbutton) {
             simshouldresume =false;
             mygamegrid.performNextStep();
-            gameSimulation = new GameSimulator(mygamegrid, 600, 600);
+            gamePanel.updategrid(mygamegrid);
+            gameFrame.add(gamePanel);
+
         }
 
         if (e.getSource() == loadbutton) {
@@ -89,11 +93,11 @@ public class GUI extends JPanel implements ActionListener {
     }
 
 
-    public void resetGUI(Grid newgrid, JPanel newsimulation) {
+    public void resetGUI(Grid newgrid, JFrame newsimulationwindow) { //change into interface so easier to create JWindow and GUI at same time
         simshouldresume =true;
         wantnewfile = false;
         mygamegrid = newgrid;
-        gameSimulation = newsimulation;
+        gameFrame = newsimulationwindow;
         pausebutton.addActionListener(this);
         resumebutton.addActionListener(this);
         nextbutton.addActionListener(this);

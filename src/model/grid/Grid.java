@@ -1,5 +1,6 @@
 package model.grid;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.cell.Cell;
@@ -140,5 +141,28 @@ public class Grid {
     return listOfCells;
   }
 
+  public double cellWidth(Dimension framesize) {
+    int gridColumns = gridOfCells[0].length;
+    double cellWidth = framesize.getWidth() / gridColumns ;
+    return cellWidth;
+  }
+
+  public double cellHeight(Dimension framesize) {
+    int gridRows = gridOfCells.length;
+    double cellHeight = framesize.getHeight() / gridRows;
+    return cellHeight;
+  }
+
+  public void gridlayout(Grid grid) {
+    Cell[][] newGrid = grid.getAllCells();
+    int numRows =  newGrid.length;
+    int numColumns = newGrid[0].length;
+    for (int row = 0; row < numRows; row++) {
+      for (int column = 0; column < numColumns; column++) {
+        System.out.print(newGrid[row][column].isAlive()+ " ");
+      }
+      System.out.println("");
+    }
+  }
 
 }
