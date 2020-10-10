@@ -52,14 +52,14 @@ public abstract class Cell {
   }
 
   public CellType getState() {
-    return state;
+    return this.state;
   }
 
   public void setRow(int row) {
     this.row = row;
   }
 
-  public void setColumn(int row) {
+  public void setColumn(int column) {
     this.column = column;
   }
 
@@ -67,10 +67,4 @@ public abstract class Cell {
     this.state = state;
   }
 
-  public Paint stringStatus() {
-    if (state.name().equalsIgnoreCase("ALIVE")) {
-      return Color.RED;
-    }
-    return Color.BLACK;
-  }
 }

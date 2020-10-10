@@ -1,6 +1,6 @@
-.alive{
-    -fx-background-color: red;
+#dead {
+    -fx-fill: black;
 }
-.dead{
-    -fx-background-color: black;
+#alive {
+    -fx-fill: red;
 }
