@@ -28,7 +28,6 @@ public abstract class Grid {
   protected final int gridHeight;
   private InputStream data;
 
-
   /**
    * Constructor for this class.
    *
@@ -36,7 +35,6 @@ public abstract class Grid {
    */
   public Grid (InputStream data) {
     this.data = data;
-
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
