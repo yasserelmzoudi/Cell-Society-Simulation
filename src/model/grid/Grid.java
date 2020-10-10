@@ -23,6 +23,7 @@ public class Grid {
   private GridReader gridReader;
 
 
+
   /**
    * Constructor for this class.
    *
@@ -141,15 +142,21 @@ public class Grid {
     return listOfCells;
   }
 
-  public double cellWidth(Dimension framesize) {
-    int gridColumns = gridOfCells[0].length;
-    double cellWidth = framesize.getWidth() / gridColumns ;
+  public int gridColumns() {
+    return gridOfCells[0].length;
+  }
+
+  public int gridRows() {
+    return gridOfCells.length;
+  }
+
+  public double cellWidth(int framewidth) {
+    double cellWidth = framewidth/ gridColumns() ;
     return cellWidth;
   }
 
-  public double cellHeight(Dimension framesize) {
-    int gridRows = gridOfCells.length;
-    double cellHeight = framesize.getHeight() / gridRows;
+  public double cellHeight(int frameheight) {
+    double cellHeight = frameheight / gridRows();
     return cellHeight;
   }
 
