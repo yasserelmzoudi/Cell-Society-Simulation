@@ -1,0 +1,6 @@
+.alive{
+    -fx-background-color: red;
+}
+.dead{
+    -fx-background-color: black;
+}

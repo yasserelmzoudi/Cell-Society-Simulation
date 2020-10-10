@@ -17,6 +17,14 @@ import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 public class GameSimulation extends Application {
+    private static final String RESOURCES = "resources/";
+    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
+    public static final String PANEL_STYLESHEET = "PanelStyles.css";
+    public static final String GUI_STYLESHEET = "GUI_Styles.css";
+    public static final String PANEL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + PANEL_STYLESHEET;
+    public static final String GUI_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + GUI_STYLESHEET;
+
+
     private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
     private Grid grid = new GameOfLifeGrid(data);
@@ -52,12 +60,14 @@ public class GameSimulation extends Application {
         primaryStage.close();
         primaryStage = new Stage();
         primaryStage.setScene(setupScene(newgrid));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource(PANEL_STYLESHEET_PATH).toExternalForm());
         userinterface.resetGUI(newgrid);
         primaryStage.show();
     }
 
     private void setupGUI() {
         Scene secondScene = new Scene(userinterface, 230, 200);
+        secondScene.getStylesheets().add(getClass().getResource(GUI_STYLESHEET_PATH).toExternalForm());
         Stage newWindow = new Stage();
         newWindow.setTitle("GUI Buttons");
         newWindow.setScene(secondScene);

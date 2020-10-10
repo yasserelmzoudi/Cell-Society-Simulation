@@ -12,10 +12,12 @@ import model.grid.Grid;
 
 
 public class GamePane extends GridPane {
-
     private Grid myGrid;
     private int windowHeight;
     private int windowWidth;
+
+
+
 
     public GamePane(Grid grid, int width, int height){
         windowHeight = width;
@@ -31,14 +33,15 @@ public class GamePane extends GridPane {
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
-                Paint status = myGrid.getCell(r, c).stringStatus();
+                String state = "ALIVE".toLowerCase();
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(windowWidth) , myGrid.cellHeight(windowHeight));
                 }
                 else{
                     this.getChildren().remove(myPixel);
                 }
-                myPixel.setFill(status); //change to based on status
+                myPixel.getStyleClass().add(state);
+                //myPixel.setFill(status); //change to based on status
                 this.setRowIndex(myPixel, r);
                 this.setColumnIndex(myPixel, c);
                 this.getChildren().add(myPixel);
