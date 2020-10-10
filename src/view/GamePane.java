@@ -5,6 +5,7 @@ import javafx.scene.Node;
 
 import javafx.scene.layout.GridPane;
 
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import model.grid.Grid;
@@ -30,7 +31,7 @@ public class GamePane extends GridPane {
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
-                Paint status= myGrid.getAllCells()[r][c].stringStatus();
+                Paint status = myGrid.getCell(r, c).stringStatus();
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(windowWidth) , myGrid.cellHeight(windowHeight));
                 }
