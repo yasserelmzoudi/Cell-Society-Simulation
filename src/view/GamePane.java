@@ -5,6 +5,7 @@ import javafx.scene.Node;
 
 import javafx.scene.layout.GridPane;
 
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import model.grid.Grid;

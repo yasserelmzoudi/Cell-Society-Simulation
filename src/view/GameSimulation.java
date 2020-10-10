@@ -1,5 +1,6 @@
 package view;
 
+import java.io.InputStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -8,10 +9,9 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
-import model.grid.GridReader;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -26,8 +26,8 @@ public class GameSimulation extends Application {
 
 
     private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    private GridReader gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(resources.getString("DataSource")));
-    private Grid grid = new Grid(gridReader);
+    private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
+    private Grid grid = new GameOfLifeGrid(data);
     private GamePane myVisual;
     private GUI userinterface;
     private Stage primaryStage;
@@ -90,8 +90,8 @@ public class GameSimulation extends Application {
         if(newfilechosen) {
             animation.pause();
             String path = chooseNewFile();
-            gridReader = new GridReader(GridReader.class.getClassLoader().getResourceAsStream(path));
-            grid = new Grid(gridReader);
+            InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
+            grid = new GameOfLifeGrid(newGridData);
             newScene(grid);
             animation.play();
         }
