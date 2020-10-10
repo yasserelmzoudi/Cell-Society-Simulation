@@ -5,23 +5,23 @@ import javafx.scene.paint.Paint;
 
 import java.util.List;
 
-public class Cell {
+public abstract class Cell {
 
-  private final Integer row;
-  private final Integer column;
-  private boolean isAlive;
+  private int row;
+  private int column;
+  private CellType state;
 
   /**
    * Constructor for this class.
    *
    * @param row Row in the grid
    * @param column Column in the grid
-   * @param alive Boolean specifying if cell is alive or dead.
+   * @param state int specifying state of Cell.
    */
-  public Cell(Integer row, Integer column, boolean alive) {
+  public Cell(int row, int column, int state) {
     this.row = row;
     this.column = column;
-    this.isAlive = alive;
+    this.state = CellType.values()[state];
   }
 
   /**
@@ -32,7 +32,7 @@ public class Cell {
   public Cell(Cell copyCell) {
     this.row = copyCell.row;
     this.column = copyCell.column;
-    this.isAlive = copyCell.isAlive;
+    this.state = copyCell.state;
   }
 
   /**
@@ -41,48 +41,36 @@ public class Cell {
    *
    * @param neighbors List of neighboring cells
    */
-  public void update(List<Cell> neighbors) {
-    Integer numAliveCells = 0;
-    for (Cell neighbor : neighbors) {
-      if (neighbor.isAlive) {
-        numAliveCells++;
-      }
-    }
+  public abstract void update(List<Cell> neighbors);
 
-    if (isAlive) {
-      if (numAliveCells == 3 || numAliveCells == 2) {
-        return;
-      }
-      isAlive = false;
-      return;
-    }
-    else if (numAliveCells == 3) {
-      isAlive= true;
-    }
-
-    /*if (isAlive && (numAliveCells == 3 || numAliveCells == 2)) {
-      isAlive = false;
-    }
-    else if (!isAlive && numAliveCells == 3) {
-      isAlive = true;
-    }
-    */
+  public int getRow() {
+    return row;
   }
 
-  /**
-   * Returns the current state of a cell.
-   * If the cell is alive, it returns true.
-   * If the cell is dead, it returns false.
-   *
-   * @return Boolean stating if cell is alive.
-   */
-  public boolean isAlive() {
-      return isAlive;
-    }
+  public int getColumn() {
+    return column;
+  }
 
-    public Paint stringStatus(){
-    if(isAlive()) return Color.RED;
+  public CellType getState() {
+    return state;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
+
+  public void setColumn(int row) {
+    this.column = column;
+  }
+
+  public void setCellType(CellType state) {
+    this.state = state;
+  }
+
+  public Paint stringStatus() {
+    if (state.name().equalsIgnoreCase("ALIVE")) {
+      return Color.RED;
+    }
     return Color.BLACK;
-    }
-
+  }
 }

@@ -4,6 +4,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.cell.Cell;
+import model.cell.CellType;
+import model.cell.GameOfLifeCell;
 
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
@@ -23,7 +25,6 @@ public class Grid {
   private GridReader gridReader;
 
 
-
   /**
    * Constructor for this class.
    *
@@ -39,44 +40,19 @@ public class Grid {
 
 
     int row = 0;
-    boolean isAlive = false;
+    CellType state;
     for (String[] cellsInRow : readLines) {
       for (int column = 0; column < gridWidth; column++) {
         int cellValue = Integer.parseInt(cellsInRow[column]);
         if (cellValue == 1) {
-          isAlive = true;
+          state = CellType.ALIVE;
         } else {
-          isAlive = false;
+          state = CellType.DEAD;
         }
-        gridOfCells[row][column] = new Cell(row, column, isAlive);
+        gridOfCells[row][column] = new GameOfLifeCell(row, column, state.ordinal());
       }
       row++;
     }
-
-
-    /*List<String> fileLines = GridReader.getAllLinesInFile(filename);
-    String[] splitLine = fileLines.get(0).split(FILE_DELIMITER);
-    this.gridWidth = Integer.parseInt(splitLine[0]);
-    this.gridHeight = Integer.parseInt(splitLine[1]);
-    fileLines.remove(0);
-
-    this.gridOfCells = new Cell[gridWidth][gridHeight];
-
-    int row = 0;
-    boolean isAlive = false;
-    for (String line : fileLines) {
-        String[] cellsInRow = line.split(FILE_DELIMITER);
-        for (int column = 0; column < gridWidth; column++) {
-          int cellValue = Integer.parseInt(cellsInRow[column]);
-          if (cellValue == 1) {
-            isAlive = true;
-          }
-          else {
-            isAlive = false;
-          }
-          this.gridOfCells[row][column] = new Cell(row, column, isAlive);
-      }
-      row++;*/
   }
 
   /**
@@ -89,7 +65,7 @@ public class Grid {
     Cell[][] copyOfGrid = new Cell[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        copyOfGrid[row][column] = new Cell(this.gridOfCells[row][column]);
+        copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
       }
     }
     return copyOfGrid;
@@ -160,7 +136,11 @@ public class Grid {
     return cellHeight;
   }
 
-  public void gridlayout(Grid grid) {
+  public Cell getCell(int row, int column) {
+    return gridOfCells[row][column];
+  }
+
+  /*public void gridlayout(Grid grid) {
     Cell[][] newGrid = grid.getAllCells();
     int numRows =  newGrid.length;
     int numColumns = newGrid[0].length;
@@ -170,6 +150,6 @@ public class Grid {
       }
       System.out.println("");
     }
-  }
+  }*/
 
 }

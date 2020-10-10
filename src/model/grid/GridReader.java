@@ -22,7 +22,7 @@ public class GridReader {
   public GridReader(InputStream data) {
     this.data = data;
   }
-
+/*
   /**
    * Read all lines from a file to a list.
    *
@@ -30,6 +30,7 @@ public class GridReader {
    * @return A list of strings.
    * @throws IOException Returns an empty list.
    */
+  /*
   public static List<String> getAllLinesInFile(String filePath) {
     Path path = Paths.get(filePath);
     List<String> allLines = new ArrayList<>();
@@ -40,7 +41,7 @@ public class GridReader {
       return new ArrayList<>();
     }
     return allLines;
-  }
+  }*/
 
   /**
    * Code adopted from Professor Duvall to read CSV files
