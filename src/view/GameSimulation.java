@@ -66,11 +66,9 @@ public class GameSimulation extends Application {
         primaryStage.close();
         primaryStage = new Stage();
         primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
             System.exit(0);
         });
         primaryStage.setScene(setupScene(newgrid));
-        //primaryStage.getScene().getStylesheets().add(getClass().getResource(PANEL_STYLESHEET_PATH).toExternalForm());
         userinterface.resetGUI(newgrid);
         primaryStage.show();
     }
@@ -78,14 +76,17 @@ public class GameSimulation extends Application {
     private void setupGUI() {
         Scene secondScene = new Scene(userinterface, 230, 200);
         secondScene.getStylesheets().add(getClass().getResource(GUI_STYLESHEET_PATH).toExternalForm());
-        Stage newWindow = new Stage();
-        newWindow.setTitle("GUI Buttons");
-        newWindow.setScene(secondScene);
+        Stage guiWindow = new Stage();
+        guiWindow.setOnCloseRequest(e -> {
+            System.exit(0);
+        });
+        guiWindow.setTitle("GUI Buttons");
+        guiWindow.setScene(secondScene);
 
-        newWindow.setX(primaryStage.getX() + 600);
-        newWindow.setY(primaryStage.getY() + 50);
+        guiWindow.setX(primaryStage.getX() + 600);
+        guiWindow.setY(primaryStage.getY() + 50);
 
-        newWindow.show();
+        guiWindow.show();
 
     }
 
@@ -95,11 +96,15 @@ public class GameSimulation extends Application {
     }
 
     private void checkNewFile() {
-
-        boolean newfilechosen = userinterface.wantnewFile();
-        if(newfilechosen) {
+        boolean chooseNewFile = userinterface.wantNewFile();
+        if(chooseNewFile) {
             animation.pause();
             String path = chooseNewFile();
+            if(path.isEmpty()) {
+                userinterface.resetGUI(grid);
+                animation.play();
+                return;
+            }
             InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
             grid = new GameOfLifeGrid(newGridData);
             newSimulationWindow(grid);
@@ -127,8 +132,10 @@ public class GameSimulation extends Application {
         Stage newWindow = new Stage();
         newWindow.setTitle("File Dialog");
         FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(newWindow);
-        return ((file).getName());
+        File file;
+        file = fileChooser.showOpenDialog(newWindow);
+        if(file!=null) return ((file).getName());
+        return "";
     }
 
 }

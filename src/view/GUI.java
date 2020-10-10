@@ -38,15 +38,16 @@ public class GUI extends GridPane{
     private List<Button> setUpButtons() {
 
         Button resumeButton = new Button(bundle.getString("ResumeButton"));
-        resumeButton.getStyleClass().add("resumeButton");
+        resumeButton.setId("resumeButton");
         Button loadButton = new Button(bundle.getString("LoadButton"));
-        loadButton.getStyleClass().add("loadButton");
+        loadButton.setId("loadButton");
         Button quitButton = new Button(bundle.getString("QuitButton"));
-        quitButton.getStyleClass().add("quitButton");
+        quitButton.setId("quitButton");
         Button nextButton = new Button(bundle.getString("NextButton"));
-        nextButton.getStyleClass().add("nextButton");
+        nextButton.setId("nextButton");
         Button pauseButton = new Button(bundle.getString("PauseButton"));
-        pauseButton.getStyleClass().add("pauseButton");
+        pauseButton.setId("pauseButton");
+        //pauseButton.getStyleClass().add("pauseButton");
 
 
         quitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -72,7 +73,6 @@ public class GUI extends GridPane{
         loadButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("load");
                 simShouldResume =false;
                 wantNewFile = true;
             }
@@ -96,7 +96,7 @@ public class GUI extends GridPane{
     public boolean shouldcontinue(){
         return simShouldResume;
     }
-    public boolean wantnewFile(){
+    public boolean wantNewFile(){
         return wantNewFile;
     }
 

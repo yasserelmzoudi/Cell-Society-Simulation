@@ -1,19 +1,19 @@
-.pauseButton{
+#pauseButton{
     -fx-background-color: pink;
 }
 
-.nextButton{
+#nextButton{
     -fx-background-color: lightblue;
 }
 
-.loadButton{
+#loadButton{
     -fx-background-color: lightgreen;
 }
 
-.quitButton{
+#quitButton{
     -fx-background-color: grey;
 }
 
-.resumeButton{
+#resumeButton{
     -fx-background-color: purple;
 }
