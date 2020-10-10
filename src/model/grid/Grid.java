@@ -1,7 +1,13 @@
 package model.grid;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import model.cell.Cell;
 import model.cell.CellType;
@@ -12,48 +18,35 @@ import model.cell.GameOfLifeCell;
  * file into a 2D grid, obtains the neighboring cells, and updates them with the Game of Life
  * rules.
  */
-public class Grid {
+public abstract class Grid {
 
-  private static final String FILE_DELIMITER = ",";
   private static final int HEADER_ROW = 0;
   private static final int NUM_ROWS_INDEX = 0;
   private static final int NUM_COLUMNS_INDEX = 1;
-  private final Cell[][] gridOfCells;
-  private final Integer gridWidth;
-  private final Integer gridHeight;
-
-  private GridReader gridReader;
+  protected final Cell[][] gridOfCells;
+  protected final int gridWidth;
+  protected final int gridHeight;
+  private InputStream data;
 
 
   /**
    * Constructor for this class.
    *
-   * @param gridReader GridReader that reads CSV file to initialize Grid
+   * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public Grid(GridReader gridReader) {
-    this.gridReader = gridReader;
-    List<String[]> readLines = gridReader.readAll();
-    gridWidth = Integer.valueOf(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
-    gridHeight = Integer.valueOf(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
+  public Grid (InputStream data) {
+    this.data = data;
+
+    List<String[]> readLines = readAll();
+    gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
+    gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
 
-
-    int row = 0;
-    CellType state;
-    for (String[] cellsInRow : readLines) {
-      for (int column = 0; column < gridWidth; column++) {
-        int cellValue = Integer.parseInt(cellsInRow[column]);
-        if (cellValue == 1) {
-          state = CellType.ALIVE;
-        } else {
-          state = CellType.DEAD;
-        }
-        gridOfCells[row][column] = new GameOfLifeCell(row, column, state.ordinal());
-      }
-      row++;
-    }
+    gridSetUp(readLines);
   }
+
+  public abstract void gridSetUp(List<String[]> readLines);
 
   /**
    * The grid is copied into another new grid so that when updating the cells, the original cell
@@ -138,6 +131,20 @@ public class Grid {
 
   public Cell getCell(int row, int column) {
     return gridOfCells[row][column];
+  }
+
+  /**
+   * Code adopted from Professor Duvall to read CSV files
+   * @return List<String[]> representing all of the lines read from data
+   * @author Robert C. Duvall
+   */
+  public List<String[]> readAll() {
+    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
+      return csvReader.readAll();
+    } catch (IOException | CsvException e) {
+      e.printStackTrace();
+      return Collections.emptyList();
+    }
   }
 
   /*public void gridlayout(Grid grid) {
