@@ -1,5 +1,8 @@
 package model.cell;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 import java.util.List;
 
 public class Cell {
@@ -75,6 +78,11 @@ public class Cell {
    */
   public boolean isAlive() {
       return isAlive;
+    }
+
+    public Paint stringStatus(){
+    if(isAlive()) return Color.RED;
+    return Color.BLACK;
     }
 
 }

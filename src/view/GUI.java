@@ -1,108 +1,98 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import model.grid.Grid;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.swing.FocusManager;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ResourceBundle;
-
-public class GUI extends JPanel implements ActionListener {
-    public static final ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    public static JFrame myInterfaceFrame = new JFrame();
-    private JButton resumebutton = new JButton("Resume");
-    private JButton pausebutton = new JButton("Pause");
-    private JButton nextbutton = new JButton("Next");
-    private JButton loadbutton = new JButton("Load new File");
-    private JButton quitbutton = new JButton("Quit Simulation");
-    private JPanel mybuttonpanel = new JPanel();
-    private boolean simshouldresume = true;
-    private boolean wantnewfile = false;
-    private GamePanel gamePanel;
-    private JFrame gameFrame;
-    private Grid mygamegrid;
+public class GUI extends GridPane{
+    private boolean simShouldResume = true;
+    private boolean wantNewFile = false;
+    private Grid myGameGrid;
+    private GamePane myGamePane;
 
 
-    public GUI(Grid grid, JFrame simulationwindow, GamePanel simulationpanel) {
-        gamePanel = simulationpanel;
-        gameFrame = simulationwindow;
-        mygamegrid = grid;
-        mybuttonpanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
-        mybuttonpanel.setLayout(new GridLayout(2, 3));
-        mybuttonpanel.add(resumebutton);
-        mybuttonpanel.add(pausebutton);
-        mybuttonpanel.add(nextbutton);
-        mybuttonpanel.add(loadbutton);
-        mybuttonpanel.add(quitbutton);
-        resumebutton.addActionListener(this);
-        pausebutton.addActionListener(this);
-        nextbutton.addActionListener(this);
-        loadbutton.addActionListener(this);
-        quitbutton.addActionListener(this);
-        myInterfaceFrame.add(mybuttonpanel, BorderLayout.CENTER);
-        myInterfaceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myInterfaceFrame.setTitle("User Options");
-        myInterfaceFrame.pack();
-        myInterfaceFrame.setVisible(true);
+
+    public GUI(GamePane myPane, Grid grid) {
+        myGamePane = myPane;
+        myGameGrid = grid;
+        for(int i =0 ; i < setUpButtons().size(); i++) {
+            Button eachbutton = setUpButtons().get(i);
+            this.setRowIndex(eachbutton, i);
+            this.getChildren().add(eachbutton);
+            System.out.println(i);
+        }
+
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == resumebutton && !simshouldresume) {
-            simshouldresume = true;
-        }
-        if (e.getSource() == pausebutton) {
-            simshouldresume =false;
-        }
+    private List<Button> setUpButtons() {
 
-        if (e.getSource() == quitbutton) {
-            System.exit(0);
-        }
+        Button resumebutton = new Button("Resume");
+        Button loadbutton = new Button("Load new File");
+        Button quitbutton = new Button("Quit Simulation");
+        Button nextbutton = new Button("Next");
+        Button pausebutton = new Button("Pause");
 
-        if (e.getSource() == nextbutton) {
-            simshouldresume =false;
-            mygamegrid.performNextStep();
-            gamePanel.updategrid(mygamegrid);
-            gameFrame.add(gamePanel);
+        quitbutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.exit(0);
+            }
+        });
 
-        }
+        resumebutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                simShouldResume = true;
+            }
+        });
+        pausebutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                simShouldResume =false;
+            }
+        });
 
-        if (e.getSource() == loadbutton) {
-            simshouldresume =false;
-            wantnewfile = true;
-        }
+        loadbutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("load");
+                simShouldResume =false;
+                wantNewFile = true;
+            }
+        });
+
+        nextbutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                simShouldResume =false;
+                myGameGrid.performNextStep();
+                myGamePane.setUpPane(myGameGrid);
+            }
+        });
+
+        List<Button> allButtons = Arrays.asList(pausebutton, resumebutton, nextbutton, loadbutton, quitbutton);
+        return  allButtons;
+
     }
+
 
     public boolean shouldcontinue(){
-        return simshouldresume;
+        return simShouldResume;
     }
     public boolean wantnewFile(){
-        return wantnewfile;
-    }
-
-    public String chooseNewFile() {
-        Window parentWindow = FocusManager.getCurrentManager().getActiveWindow();
-        JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(parentWindow);
-        FileDialog fd = new FileDialog(topFrame, "Select New File", FileDialog.LOAD);
-        fd.setVisible(true);
-        String filename = fd.getFile();
-        return (new File(filename)).getPath();
+        return wantNewFile;
     }
 
 
-    public void resetGUI(Grid newgrid, JFrame newsimulationwindow) { //change into interface so easier to create JWindow and GUI at same time
-        simshouldresume =true;
-        wantnewfile = false;
-        mygamegrid = newgrid;
-        gameFrame = newsimulationwindow;
-        pausebutton.addActionListener(this);
-        resumebutton.addActionListener(this);
-        nextbutton.addActionListener(this);
-        loadbutton.addActionListener(this);
-        quitbutton.addActionListener(this);
+    public void resetGUI(Grid newgrid) { //change into interface so easier to create JWindow and GUI at same time
+        simShouldResume =true;
+        wantNewFile = false;
+        myGameGrid = newgrid;
     }
+
 }
