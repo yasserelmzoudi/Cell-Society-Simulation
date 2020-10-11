@@ -15,8 +15,8 @@ public class GameOfLifeCell extends Cell {
   }
 
   @Override
-  public void update(List<Cell> neighbors) {
-    Integer numAliveCells = 0;
+  public void update(List<Cell> neighbors, List<Cell> newNeighbors, boolean[][] isUpdated) {
+    int numAliveCells = 0;
     for (Cell neighbor : neighbors) {
       if (neighbor.getState().name().equals("ALIVE")) {
         numAliveCells++;
