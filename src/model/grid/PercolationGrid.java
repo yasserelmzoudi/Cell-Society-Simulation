@@ -5,6 +5,7 @@ import java.util.List;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
 import model.cell.PercolationCell;
+
 /**
  * Class encapsulating logic for setting up Percolation Grid.
  */

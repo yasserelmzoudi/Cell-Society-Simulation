@@ -6,6 +6,9 @@ import model.cell.CellType;
 import model.cell.RockPaperScissorsCell;
 import model.cell.SpreadingOfFireCell;
 
+/**
+ * Class encapsulating logic for setting up Spreading of Fire Grid.
+ */
 public class SpreadingOfFireGrid extends Grid {
   /**
    * Constructor for this class.
@@ -16,12 +19,26 @@ public class SpreadingOfFireGrid extends Grid {
     super(data);
   }
 
-
+  /**
+   * Sets the type of grid.
+   *
+   * @return Type of grid.
+   */
   @Override
   public String setGridType() {
     return "SPREADING_OF_FIRE";
   }
 
+
+  /**
+   * Sets up grid.
+   *
+   * <p> 0 represents empty cell <code>EMPTY</code></p>
+   * <p> 1 represents a tree <code>TREE</code></p>
+   * <p> 2 represents a tree burning <code>BURNING</code></p>
+   *
+   * @param readLines List of lines
+   */
   @Override
   public void gridSetUp(List<String[]> readLines) {
     int row = 0;
