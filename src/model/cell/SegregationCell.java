@@ -90,8 +90,6 @@ public class SegregationCell extends Cell {
    */
   private void moveDissatisfiedAgents(double percentageX, double percentageO, boolean[][] isUpdated) {
 
-    //System.out.println(Arrays.asList(needsPlacement));
-
     //count is number of cells that have been added to needsPlacement list
     int count = 0;
     for (int row = 0; row < isUpdated.length; row++) {
@@ -102,29 +100,21 @@ public class SegregationCell extends Cell {
       }
     }
 
-    //System.out.println(Arrays.deepToString(isUpdated));
-    //System.out.println(count);
-
-    if ((getState().name().equals("X")) && (percentageX < THRESHOLD) /*&& (count < NUM_EMPTY_CELLS)*/) {
+    if ((getState().name().equals("X")) && (percentageX < THRESHOLD)) {
       isUpdated[getRow()][getColumn()] = true;
-      //needsPlacement.add("X");
       needsPlacement.add(this);
-      //setCellType(CellType.NO_RACE);
     }
-    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD) /*&& (count < NUM_EMPTY_CELLS)*/) {
+    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD)) {
       isUpdated[getRow()][getColumn()] = true;
-      //needsPlacement.add("O");
       needsPlacement.add(this);
-      //setCellType(CellType.NO_RACE);
     }
-    else if ((getState().name().equals("NO_RACE")) /*&& ((needsPlacement.size())!=0)*/) {
+    else if ((getState().name().equals("NO_RACE"))) {
       emptyCells.add(this);
       }
 
     if (this.getRow() == isUpdated.length-1 && this.getColumn() == isUpdated[0].length-1) {
       int numEmptyCells = emptyCells.size();
       int numReplacements = Math.min(numEmptyCells, needsPlacement.size());
-      System.out.println(numReplacements);
       for (int agent = 0; agent<numReplacements; agent++) {
         Cell agentType = needsPlacement.get(agent);
         int randomCell = getRandomIndex(emptyCells.size());
@@ -138,20 +128,6 @@ public class SegregationCell extends Cell {
         }
         emptyCells.remove(randomCell);
       }
-
-
-      /*
-      for (int agent = 0; agent < needsPlacement.size(); agent++) {
-        String agentType = needsPlacement.get(agent);
-        int randomCell = getRandomIndex(emptyCells.size());
-        if (agentType.equals("X")) {
-          emptyCells.get(randomCell).setCellType(CellType.X);
-        }
-        else if(agentType.equals("O")) {
-          emptyCells.get(randomCell).setCellType(CellType.O);
-        }
-        emptyCells.remove(randomCell);
-      }*/
       emptyCells.clear();
       needsPlacement.clear();
     }
