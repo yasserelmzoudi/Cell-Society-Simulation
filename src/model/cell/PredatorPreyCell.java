@@ -12,6 +12,9 @@ public class PredatorPreyCell extends PPCellFeatures {
   private int state;
   private int reproduce;
   private int energy;
+  private static final int REPRODUCTION_TIME = 5;
+  private static final int ENERGY_FROM_FISH = 3;
+  private static final int UNIT_ENERGY = 1;
 
   /**
    * Additional features of Predator Prey Cell.
@@ -95,8 +98,7 @@ public class PredatorPreyCell extends PPCellFeatures {
     newSharkCell.setCellType(CellType.SHARK);
     newSharkCell.setCellReproduction(this.getCellReproduction() + 1);
     newSharkCell.setCellEnergy(this.getCellEnergy() - 1);
-    //if (this.reproduce >= 5) {
-    if (newSharkCell.getCellReproduction() >= 5) {
+    if (newSharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
       newSharkCell.setCellReproduction(0);
@@ -121,8 +123,7 @@ public class PredatorPreyCell extends PPCellFeatures {
     newSharkCell.setCellType(CellType.SHARK);
     newSharkCell.setCellReproduction(this.getCellReproduction() + 1);
     newSharkCell.setCellEnergy(this.getCellEnergy() + 3 - 1);
-    //if (this.reproduce >= 5) {
-    if (newSharkCell.getCellReproduction() >= 5) {
+    if (newSharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
       this.setCellEnergy(2);
@@ -147,14 +148,11 @@ public class PredatorPreyCell extends PPCellFeatures {
     newFishCell.setCellType(CellType.FISH);
     newFishCell.setCellReproduction(this.getCellReproduction() + 1);
     this.setCellReproduction(0);
-    //if (this.reproduce >= 5) {
-    if (newFishCell.getCellReproduction() >= 5) {
+    if (newFishCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.FISH);
-      //this.setCellReproduction(0);
       newFishCell.setCellReproduction(0);
     } else {
       setCellType(CellType.WATER);
-      //  this.setCellReproduction(0);
     }
     isUpdated[newFishCell.getRow()][newFishCell.getColumn()] = true;
   }
@@ -171,7 +169,7 @@ public class PredatorPreyCell extends PPCellFeatures {
     setCellType(CellType.SHARK);
     setCellReproduction(sharkCell.getCellReproduction() + 1);
     setCellEnergy(sharkCell.getCellEnergy() + 3 - 1);
-    if (sharkCell.getCellReproduction() >= 5) {
+    if (sharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellReproduction(0);
       sharkCell.setCellReproduction(0);
       sharkCell.setCellType(CellType.SHARK);
