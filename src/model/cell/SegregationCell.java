@@ -70,7 +70,22 @@ public class SegregationCell extends Cell {
     double percentageX = (XCount / totalCount) * 100;
     double percentageO = (OCount / totalCount) * 100;
 
+    moveDissatisfiedAgents(percentageX, percentageO);
+  }
 
+  /**
+   * <p>If cell is X and the percentage of neighbors of race X are below the threshold, current
+   * cell is set to empty and will be moved.</p>
+   *
+   * <p>If cell is O and the percentage of neighbors of race O are below the threshold, current
+   * cell is set to empty and will be moved.</p>
+   *
+   * <p>If cell is NO_RACE, cells that need to be moved are moved.</p>
+   *
+   * @param percentageX Percentage of neighbors that are of X race.
+   * @param percentageO Percentage of neighbors that are of O race.
+   */
+  private void moveDissatisfiedAgents(double percentageX, double percentageO) {
     if ((getState().name().equals("X")) && (percentageX < THRESHOLD)) {
       this.needsPlacement.add("X");
       setCellType(CellType.NO_RACE);
@@ -89,6 +104,6 @@ public class SegregationCell extends Cell {
           setCellType(CellType.O);
         }
       }
-    }
-
   }
+
+}
