@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * Abstract class encapsulating logic for cell. A <code>Cell</code> has a row, column, and state,
  * which can be updated.
+ *
+ * @author Umika Paul, Yasser Elmzoudi
  */
 
 public abstract class Cell {

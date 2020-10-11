@@ -6,6 +6,8 @@ import java.util.List;
  * Checks to see how many neighbors are of a state that can beat the current state and if the
  * number is greater than <code>Threshold</code>, it changes the current cell type using an enum
  * state accordingly.
+ *
+ * @author Umika Paul
  */
 
 public class RockPaperScissorsCell extends Cell {

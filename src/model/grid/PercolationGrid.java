@@ -3,11 +3,12 @@ package model.grid;
 import java.io.InputStream;
 import java.util.List;
 import model.cell.CellType;
-import model.cell.GameOfLifeCell;
 import model.cell.PercolationCell;
 
 /**
  * Class encapsulating logic for setting up Percolation Grid.
+ *
+ * @author Umika Paul
  */
 public class PercolationGrid extends Grid{
 

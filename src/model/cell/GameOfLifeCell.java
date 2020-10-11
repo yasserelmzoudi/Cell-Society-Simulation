@@ -6,6 +6,8 @@ import java.util.List;
  * Subclass encapsulating logic to update cells in the Game of Life simulation.
  * Checks to see how many neighbors are alive with <code>numAliveCells</code> and changes the
  * current cell type using an enum state accordingly.
+ *
+ * @author Umika Paul
  */
 
 public class GameOfLifeCell extends Cell {

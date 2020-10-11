@@ -22,6 +22,8 @@ import model.cell.SpreadingOfFireCell;
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
  * file into a 2D grid, obtains the neighboring cells, and updates them with the Game of Life
  * rules.
+ *
+ * @author Umika Paul, Yasser Elmzoudi
  */
 public abstract class Grid {
 

@@ -12,6 +12,7 @@ import java.util.List;
  * <code>needsPlacement</code> is a List that keeps track of the agents that need to be replaced
  * since they were dissatisfied.
  *
+ *  @author Umika Paul
  */
 
 public class SegregationCell extends Cell {

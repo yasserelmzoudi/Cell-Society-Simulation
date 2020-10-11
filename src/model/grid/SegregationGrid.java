@@ -7,6 +7,8 @@ import model.cell.SegregationCell;
 
 /**
  * Class encapsulating logic for setting up Segregation Grid.
+ *
+ * @author Umika Paul
  */
 public class SegregationGrid extends Grid{
 

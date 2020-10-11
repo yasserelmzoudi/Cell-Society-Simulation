@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * Subclass encapsulating logic to update cells in the Predator Prey simulation.
+ *
+ * @author Umika Paul
  */
 
 public class PredatorPreyCell extends PPCellFeatures {
@@ -16,6 +18,7 @@ public class PredatorPreyCell extends PPCellFeatures {
   private static final int ENERGY_FROM_FISH = 3;
   private static final int UNIT_ENERGY = 1;
   private static final int UNIT_REPRODUCE = 1;
+  private static final int INITIAL_ENERGY = 2;
 
   /**
    * Additional features of Predator Prey Cell.
@@ -103,7 +106,7 @@ public class PredatorPreyCell extends PPCellFeatures {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
       newSharkCell.setCellReproduction(0);
-      this.setCellEnergy(2);
+      this.setCellEnergy(INITIAL_ENERGY);
     } else {
       setCellType(CellType.WATER);
       this.setCellReproduction(0);
@@ -127,7 +130,7 @@ public class PredatorPreyCell extends PPCellFeatures {
     if (newSharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
-      this.setCellEnergy(2);
+      this.setCellEnergy(INITIAL_ENERGY);
       newSharkCell.setCellReproduction(0);
     } else {
       setCellType(CellType.WATER);
@@ -174,7 +177,7 @@ public class PredatorPreyCell extends PPCellFeatures {
       setCellReproduction(0);
       sharkCell.setCellReproduction(0);
       sharkCell.setCellType(CellType.SHARK);
-      sharkCell.setCellEnergy(2);
+      sharkCell.setCellEnergy(INITIAL_ENERGY);
     } else {
       sharkCell.setCellType(CellType.WATER);
       sharkCell.setCellReproduction(0);

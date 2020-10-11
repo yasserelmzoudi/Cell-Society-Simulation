@@ -33,6 +33,8 @@ package model.cell;
  * <code>SHARK</code> Represents a shark.
  * <code>WATER</code> Represents empty space that fish or shark can move to.
  *
+ * @author Umika Paul, Yasser Elmzoudi
+ *
  */
 
 

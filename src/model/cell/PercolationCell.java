@@ -6,6 +6,8 @@ import java.util.List;
  * Checks to see if any neighboring cells are of the state <code>FULL_OPEN</code> and changes the
  * current cell type to <code>FULL_OPEN</code> if the current cell type is <code>EMPTY_OPEN</code>
  * using an enum state accordingly.
+ *
+ * @author Umika Paul
  */
 
 public class PercolationCell extends Cell {

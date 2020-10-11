@@ -11,6 +11,7 @@ import java.util.Random;
  *
  * If the state is <code>BURNING</code>, in the next cycle the cell will by <code>EMPTY</code>
  *
+ * @author Umika Paul
  */
 
 public class SpreadingOfFireCell extends Cell{

@@ -7,6 +7,8 @@ package model.cell;
  * being reset back to 0.</p>
  *
  * <p>Energy represents the units of energy a shark has left. Fish always have energy 0.</p>
+ *
+ * @author Umika Paul
  */
 
 public abstract class PPCellFeatures extends Cell {

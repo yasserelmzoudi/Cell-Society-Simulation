@@ -7,6 +7,8 @@ import model.cell.GameOfLifeCell;
 
 /**
  * Class encapsulating logic for setting up Game of Life Grid.
+ *
+ * @author Umika Paul
  */
 public class GameOfLifeGrid extends Grid {
 

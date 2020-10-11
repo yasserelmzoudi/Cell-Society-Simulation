@@ -3,11 +3,12 @@ package model.grid;
 import java.io.InputStream;
 import java.util.List;
 import model.cell.CellType;
-import model.cell.PercolationCell;
 import model.cell.RockPaperScissorsCell;
 
 /**
  * Class encapsulating logic for setting up Rock Paper Scissors Grid.
+ *
+ * @author Umika Paul
  */
 public class RockPaperScissorsGrid extends Grid{
 

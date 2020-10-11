@@ -3,11 +3,12 @@ package model.grid;
 import java.io.InputStream;
 import java.util.List;
 import model.cell.CellType;
-import model.cell.RockPaperScissorsCell;
 import model.cell.SpreadingOfFireCell;
 
 /**
  * Class encapsulating logic for setting up Spreading of Fire Grid.
+ *
+ * @author Umika Paul
  */
 public class SpreadingOfFireGrid extends Grid {
   /**
