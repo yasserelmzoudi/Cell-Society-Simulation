@@ -6,6 +6,9 @@ import model.cell.CellType;
 import model.cell.PercolationCell;
 import model.cell.RockPaperScissorsCell;
 
+/**
+ * Class encapsulating logic for setting up Rock Paper Scissors Grid.
+ */
 public class RockPaperScissorsGrid extends Grid{
 
   /**
@@ -17,11 +20,26 @@ public class RockPaperScissorsGrid extends Grid{
     super(data);
   }
 
+  /**
+   * Sets the type of grid.
+   *
+   * @return Type of grid.
+   */
   @Override
   public String setGridType() {
     return "ROCK_PAPER_SCISSORS";
   }
 
+  /**
+   * Sets up grid. Initial reproduction count is set to 0 for both fish and sharks, and energy is
+   * set to 0.
+   *
+   * <p> 0 represents <code>ROCK</code></p>
+   * <p> 1 represents <code>PAPER</code></p>
+   * <p> 2 represents <code>SCISSORS</code></p>
+   *
+   * @param readLines List of lines
+   */
   @Override
   public void gridSetUp(List<String[]> readLines) {
     int row = 0;

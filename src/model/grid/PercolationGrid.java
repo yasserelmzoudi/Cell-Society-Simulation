@@ -5,17 +5,39 @@ import java.util.List;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
 import model.cell.PercolationCell;
-
+/**
+ * Class encapsulating logic for setting up Percolation Grid.
+ */
 public class PercolationGrid extends Grid{
+
+  /**
+   * Constructor for this class.
+   *
+   * @param data Data to read.
+   */
   public PercolationGrid(InputStream data) {
     super(data);
   }
 
+  /**
+   * Sets the type of grid.
+   *
+   * @return Type of grid.
+   */
   @Override
   public String setGridType() {
     return "PERCOLATION";
   }
 
+  /**
+   * Sets up grid.
+   *
+   * <p> 0 represents <code>EMPTY_OPEN</code></p>
+   * <p> 1 represents <code>FULL_OPEN</code></p>
+   * <p> 2 represents <code>BLOCKED</code></p>
+   *
+   * @param readLines List of lines
+   */
   @Override
   public void gridSetUp(List<String[]> readLines) {
     int row = 0;

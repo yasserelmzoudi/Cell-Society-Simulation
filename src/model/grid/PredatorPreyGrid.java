@@ -6,16 +6,40 @@ import model.cell.CellType;
 import model.cell.PercolationCell;
 import model.cell.PredatorPreyCell;
 
+/**
+ * Class encapsulating logic for setting up Predator Prey Grid.
+ */
 public class PredatorPreyGrid extends Grid {
+
+  /**
+   * Constructor for this class.
+   *
+   * @param data Data to read.
+   */
   public PredatorPreyGrid(InputStream data) {
     super(data);
   }
 
+  /**
+   * Sets the type of grid.
+   *
+   * @return Type of grid.
+   */
   @Override
   public String setGridType() {
     return "PREDATOR_PREY";
   }
 
+  /**
+   * Sets up grid. Initial reproduction count is set to 0 for both fish and sharks, and energy is
+   * set to 0.
+   *
+   * <p> 0 represents <code>WATER</code></p>
+   * <p> 1 represents <code>FISH</code></p>
+   * <p> 2 represents <code>SHARK</code></p>
+   *
+   * @param readLines List of lines
+   */
   @Override
   public void gridSetUp(List<String[]> readLines) {
     int row = 0;
