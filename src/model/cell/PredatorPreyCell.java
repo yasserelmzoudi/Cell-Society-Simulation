@@ -15,6 +15,7 @@ public class PredatorPreyCell extends PPCellFeatures {
   private static final int REPRODUCTION_TIME = 5;
   private static final int ENERGY_FROM_FISH = 3;
   private static final int UNIT_ENERGY = 1;
+  private static final int UNIT_REPRODUCE = 1;
 
   /**
    * Additional features of Predator Prey Cell.
@@ -67,7 +68,7 @@ public class PredatorPreyCell extends PPCellFeatures {
         manageFishMoving(isUpdated, localWater);
       } else {
         setCellType(CellType.FISH);
-        this.setCellReproduction(this.getCellReproduction() + 1);
+        this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
       }
     } else if ((getState().name().equals("SHARK"))) {
 
@@ -79,8 +80,8 @@ public class PredatorPreyCell extends PPCellFeatures {
       } else if (!localWater.isEmpty()) {
         manageSharkMoving(isUpdated, localWater);
       } else {
-        this.setCellReproduction(this.getCellReproduction() + 1);
-        this.setCellEnergy(this.getCellEnergy() - 1);
+        this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
+        this.setCellEnergy(this.getCellEnergy() - UNIT_ENERGY);
         this.setCellType(CellType.SHARK);
       }
     }
@@ -96,8 +97,8 @@ public class PredatorPreyCell extends PPCellFeatures {
     int randomWaterIndex = getRandomIndex(localWater.size());
     PPCellFeatures newSharkCell = localWater.get(randomWaterIndex);
     newSharkCell.setCellType(CellType.SHARK);
-    newSharkCell.setCellReproduction(this.getCellReproduction() + 1);
-    newSharkCell.setCellEnergy(this.getCellEnergy() - 1);
+    newSharkCell.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
+    newSharkCell.setCellEnergy(this.getCellEnergy() - UNIT_ENERGY);
     if (newSharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
@@ -121,8 +122,8 @@ public class PredatorPreyCell extends PPCellFeatures {
     int randomFishIndex = getRandomIndex(localFish.size());
     PPCellFeatures newSharkCell = localFish.get(randomFishIndex);
     newSharkCell.setCellType(CellType.SHARK);
-    newSharkCell.setCellReproduction(this.getCellReproduction() + 1);
-    newSharkCell.setCellEnergy(this.getCellEnergy() + 3 - 1);
+    newSharkCell.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
+    newSharkCell.setCellEnergy(this.getCellEnergy() + ENERGY_FROM_FISH - UNIT_ENERGY);
     if (newSharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.SHARK);
       this.setCellReproduction(0);
@@ -146,7 +147,7 @@ public class PredatorPreyCell extends PPCellFeatures {
     int randomWaterIndex = getRandomIndex(localWater.size());
     PPCellFeatures newFishCell = localWater.get(randomWaterIndex);
     newFishCell.setCellType(CellType.FISH);
-    newFishCell.setCellReproduction(this.getCellReproduction() + 1);
+    newFishCell.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
     this.setCellReproduction(0);
     if (newFishCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellType(CellType.FISH);
@@ -167,8 +168,8 @@ public class PredatorPreyCell extends PPCellFeatures {
     int randomSharkIndex = getRandomIndex(localSharks.size());
     PPCellFeatures sharkCell = localSharks.get(randomSharkIndex);
     setCellType(CellType.SHARK);
-    setCellReproduction(sharkCell.getCellReproduction() + 1);
-    setCellEnergy(sharkCell.getCellEnergy() + 3 - 1);
+    setCellReproduction(sharkCell.getCellReproduction() + UNIT_REPRODUCE);
+    setCellEnergy(sharkCell.getCellEnergy() + ENERGY_FROM_FISH - UNIT_ENERGY);
     if (sharkCell.getCellReproduction() >= REPRODUCTION_TIME) {
       setCellReproduction(0);
       sharkCell.setCellReproduction(0);
