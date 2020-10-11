@@ -5,6 +5,11 @@ import javafx.scene.paint.Paint;
 
 import java.util.List;
 
+/**
+ * Abstract class encapsulating logic for cell. A <code>Cell</code> has a row, column, and state,
+ * which can be updated.
+ */
+
 public abstract class Cell {
 
   private int row;
