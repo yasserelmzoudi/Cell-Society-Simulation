@@ -25,7 +25,7 @@ public class GameSimulation extends Application {
     private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
     private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
     //private Grid grid = new GameOfLifeGrid(data);
-    private Grid grid = new SpreadingOfFireGrid(data);
+    private Grid grid = new PredatorPreyGrid(data);
     private GamePane myVisual;
     private GUI userinterface;
     private Stage primaryStage;
