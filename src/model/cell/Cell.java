@@ -105,7 +105,7 @@ public abstract class Cell {
       return Color.BLUE;
     }
     else if (state.name().equalsIgnoreCase("NO_RACE")){
-      return Color.GREEN;
+      return Color.WHITE;
     }
     else if (state.name().equalsIgnoreCase("TREE")) {
       return Color.GREEN;

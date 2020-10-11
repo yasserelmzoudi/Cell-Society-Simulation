@@ -18,8 +18,11 @@ import java.util.List;
 public class SegregationCell extends Cell {
 
   private int state;
-  private List<String> needsPlacement;
-  private static final int THRESHOLD = 30;
+  private static List<String> needsPlacement = new ArrayList<String>();
+  private static List<Cell> emptyCells = new ArrayList<Cell>();
+  private static final int THRESHOLD = 50;
+  private static final int NUM_EMPTY_CELLS = 9;
+  //private static int count = 1;
 
   /**
    * Constructor for this class.
@@ -31,7 +34,8 @@ public class SegregationCell extends Cell {
   public SegregationCell(int row, int column, int state) {
     super(row, column, state);
     this.state = state;
-    this.needsPlacement = new ArrayList<String>();
+    //this.needsPlacement = new ArrayList<String>();
+    //this.count = 0;
   }
 
   /**
@@ -71,7 +75,7 @@ public class SegregationCell extends Cell {
     double percentageX = (XCount / totalCount) * 100;
     double percentageO = (OCount / totalCount) * 100;
 
-    moveDissatisfiedAgents(percentageX, percentageO);
+    moveDissatisfiedAgents(percentageX, percentageO, isUpdated);
   }
 
   /**
@@ -86,25 +90,67 @@ public class SegregationCell extends Cell {
    * @param percentageX Percentage of neighbors that are of X race.
    * @param percentageO Percentage of neighbors that are of O race.
    */
-  private void moveDissatisfiedAgents(double percentageX, double percentageO) {
-    if ((getState().name().equals("X")) && (percentageX < THRESHOLD)) {
-      this.needsPlacement.add("X");
+  private void moveDissatisfiedAgents(double percentageX, double percentageO, boolean[][] isUpdated) {
+
+    System.out.println(Arrays.asList(needsPlacement));
+
+    //count is number of cells that have been added to needsPlacement list
+    int count = 0;
+    for (int row = 0; row < isUpdated.length; row++) {
+      for (int column = 0; column < isUpdated[0].length; column++) {
+        if (isUpdated[row][column]) {
+          count++;
+        }
+      }
+    }
+
+    //System.out.println(Arrays.deepToString(isUpdated));
+    System.out.println(count);
+
+    if ((getState().name().equals("X")) && (percentageX < THRESHOLD) && (count < NUM_EMPTY_CELLS)) {
+      isUpdated[getRow()][getColumn()] = true;
+      needsPlacement.add("X");
       setCellType(CellType.NO_RACE);
     }
-    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD)) {
+    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD) && (count < NUM_EMPTY_CELLS)) {
+      isUpdated[getRow()][getColumn()] = true;
       needsPlacement.add("O");
       setCellType(CellType.NO_RACE);
     }
-    else if ((getState().name().equals("NO_RACE")) && ((needsPlacement.size())!=0)) {
-      String agentType = needsPlacement.get(0);
-        needsPlacement.remove(0);
+    else if ((getState().name().equals("NO_RACE")) /*&& ((needsPlacement.size())!=0)*/) {
+      emptyCells.add(this);
+      //System.out.println(emptyCells.size());
+      //System.out.println(getState().name());
+      //String agentType = needsPlacement.get(0);
+      //  needsPlacement.remove(0);
+      //  if (agentType.equals("X")) {
+      //    setCellType(CellType.X);
+      //  }
+      //  else if(agentType.equals("O")) {
+      //    setCellType(CellType.O);
+       // }
+      }
+
+    if (this.getRow() == isUpdated.length-1 && this.getColumn() == isUpdated[0].length-1) {
+      for (int agent = 0; agent < needsPlacement.size(); agent++) {
+        String agentType = needsPlacement.get(agent);
+        int randomCell = getRandomIndex(emptyCells.size());
         if (agentType.equals("X")) {
-          setCellType(CellType.X);
+          emptyCells.get(randomCell).setCellType(CellType.X);
         }
         else if(agentType.equals("O")) {
-          setCellType(CellType.O);
+          emptyCells.get(randomCell).setCellType(CellType.O);
         }
+        emptyCells.remove(randomCell);
       }
+      emptyCells.clear();
+      needsPlacement.clear();
+    }
   }
+
+  private int getRandomIndex(int rangeSize) {
+    return (int) (Math.random() * rangeSize);
+  }
+
 
 }
