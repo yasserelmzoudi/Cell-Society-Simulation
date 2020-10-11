@@ -5,17 +5,38 @@ import java.util.List;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
 
+/**
+ * Class encapsulating logic for setting up Game of Life Grid.
+ */
 public class GameOfLifeGrid extends Grid {
 
+  /**
+   * Constructor for this class.
+   *
+   * @param data Data to read.
+   */
   public GameOfLifeGrid(InputStream data) {
     super(data);
   }
 
+  /**
+   * Sets the type of grid.
+   *
+   * @return Type of grid.
+   */
   @Override
   public String setGridType() {
     return "GAME_OF_LIFE";
   }
 
+  /**
+   * Sets up grid.
+   *
+   * <p>0 represents <code>DEAD</code></p>
+   * <p>1 represents <code>ALIVE</code></p>
+   *
+   * @param readLines List of lines
+   */
   @Override
   public void gridSetUp(List<String[]> readLines) {
     int row = 0;
