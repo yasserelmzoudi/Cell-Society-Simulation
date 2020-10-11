@@ -16,6 +16,7 @@ public class SpreadingOfFireGrid extends Grid {
     super(data);
   }
 
+
   @Override
   public String setGridType() {
     return "SPREADING_OF_FIRE";

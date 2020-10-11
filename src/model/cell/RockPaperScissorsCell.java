@@ -54,7 +54,6 @@ public class RockPaperScissorsCell extends Cell {
         case "SCISSORS" -> scissors++;
       }
     }
-
     changeCellType(rock, paper, scissors);
 
   }

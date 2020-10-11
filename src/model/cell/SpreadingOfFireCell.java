@@ -3,6 +3,7 @@ package model.cell;
 import java.util.List;
 import java.util.Random;
 
+
 public class SpreadingOfFireCell extends Cell{
   private int state;
   private static final double PROB_CATCH = 0.55;
