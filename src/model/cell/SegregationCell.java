@@ -18,11 +18,11 @@ import java.util.List;
 public class SegregationCell extends Cell {
 
   private int state;
-  private static List<String> needsPlacement = new ArrayList<String>();
+  //private static List<String> needsPlacement = new ArrayList<String>();
+  private static List<Cell> needsPlacement = new ArrayList<Cell>();
   private static List<Cell> emptyCells = new ArrayList<Cell>();
   private static final int THRESHOLD = 50;
   private static final int NUM_EMPTY_CELLS = 9;
-  //private static int count = 1;
 
   /**
    * Constructor for this class.
@@ -34,8 +34,6 @@ public class SegregationCell extends Cell {
   public SegregationCell(int row, int column, int state) {
     super(row, column, state);
     this.state = state;
-    //this.needsPlacement = new ArrayList<String>();
-    //this.count = 0;
   }
 
   /**
@@ -92,7 +90,7 @@ public class SegregationCell extends Cell {
    */
   private void moveDissatisfiedAgents(double percentageX, double percentageO, boolean[][] isUpdated) {
 
-    System.out.println(Arrays.asList(needsPlacement));
+    //System.out.println(Arrays.asList(needsPlacement));
 
     //count is number of cells that have been added to needsPlacement list
     int count = 0;
@@ -105,33 +103,44 @@ public class SegregationCell extends Cell {
     }
 
     //System.out.println(Arrays.deepToString(isUpdated));
-    System.out.println(count);
+    //System.out.println(count);
 
-    if ((getState().name().equals("X")) && (percentageX < THRESHOLD) && (count < NUM_EMPTY_CELLS)) {
+    if ((getState().name().equals("X")) && (percentageX < THRESHOLD) /*&& (count < NUM_EMPTY_CELLS)*/) {
       isUpdated[getRow()][getColumn()] = true;
-      needsPlacement.add("X");
-      setCellType(CellType.NO_RACE);
+      //needsPlacement.add("X");
+      needsPlacement.add(this);
+      //setCellType(CellType.NO_RACE);
     }
-    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD) && (count < NUM_EMPTY_CELLS)) {
+    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD) /*&& (count < NUM_EMPTY_CELLS)*/) {
       isUpdated[getRow()][getColumn()] = true;
-      needsPlacement.add("O");
-      setCellType(CellType.NO_RACE);
+      //needsPlacement.add("O");
+      needsPlacement.add(this);
+      //setCellType(CellType.NO_RACE);
     }
     else if ((getState().name().equals("NO_RACE")) /*&& ((needsPlacement.size())!=0)*/) {
       emptyCells.add(this);
-      //System.out.println(emptyCells.size());
-      //System.out.println(getState().name());
-      //String agentType = needsPlacement.get(0);
-      //  needsPlacement.remove(0);
-      //  if (agentType.equals("X")) {
-      //    setCellType(CellType.X);
-      //  }
-      //  else if(agentType.equals("O")) {
-      //    setCellType(CellType.O);
-       // }
       }
 
     if (this.getRow() == isUpdated.length-1 && this.getColumn() == isUpdated[0].length-1) {
+      int numEmptyCells = emptyCells.size();
+      int numReplacements = Math.min(numEmptyCells, needsPlacement.size());
+      System.out.println(numReplacements);
+      for (int agent = 0; agent<numReplacements; agent++) {
+        Cell agentType = needsPlacement.get(agent);
+        int randomCell = getRandomIndex(emptyCells.size());
+        if (agentType.getState().name().equals("X")) {
+          agentType.setCellType(CellType.NO_RACE);
+          emptyCells.get(randomCell).setCellType(CellType.X);
+        }
+        else if(agentType.getState().name().equals("O")) {
+          agentType.setCellType(CellType.NO_RACE);
+          emptyCells.get(randomCell).setCellType(CellType.O);
+        }
+        emptyCells.remove(randomCell);
+      }
+
+
+      /*
       for (int agent = 0; agent < needsPlacement.size(); agent++) {
         String agentType = needsPlacement.get(agent);
         int randomCell = getRandomIndex(emptyCells.size());
@@ -142,7 +151,7 @@ public class SegregationCell extends Cell {
           emptyCells.get(randomCell).setCellType(CellType.O);
         }
         emptyCells.remove(randomCell);
-      }
+      }*/
       emptyCells.clear();
       needsPlacement.clear();
     }
