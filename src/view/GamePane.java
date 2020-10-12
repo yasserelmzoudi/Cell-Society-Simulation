@@ -5,7 +5,6 @@ import javafx.scene.Node;
 
 import javafx.scene.layout.GridPane;
 
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import model.grid.Grid;
 
@@ -15,18 +14,17 @@ public class GamePane extends GridPane {
     private int windowHeight;
     private int windowWidth;
 
-
-
-
     public GamePane(Grid grid, int width, int height){
-        windowHeight = width;
-        windowWidth=height;
+
+        windowHeight = height;
+        windowWidth=width;
         myGrid = grid;
         this.setId("panel");
     }
 
 
     public void setUpPane(Grid grid) {
+
         //System.out.format("Cell Height: %d, Frame Height: %d, Number of Columns: %d \n", cellHeight, (int) framesize.getHeight(), gridRows);
         //System.out.format("Cell Width: %d, Frame Width: %d, Number of Rows: %d \n", cellWidth, (int) framesize.getWidth(), gridColumns);
         myGrid = grid;

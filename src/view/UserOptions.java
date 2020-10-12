@@ -10,15 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class GUI extends GridPane{
+public class UserOptions extends GridPane{
 
-    private boolean simShouldResume = true;
+    private boolean simShouldResume = false;
     private boolean wantNewFile = false;
     private Grid myGameGrid;
     private GamePane myGamePane;
     private ResourceBundle bundle = ResourceBundle.getBundle("resources.ButtonText");
 
-    public GUI(GamePane myPane, Grid grid) {
+    public UserOptions(GamePane myPane, Grid grid) {
         myGamePane = myPane;
         myGameGrid = grid;
         setUpButtons();
@@ -28,7 +28,7 @@ public class GUI extends GridPane{
     private void addButtonsToGui() {
         for(int i =0 ; i < setUpButtons().size(); i++) {
             Button eachbutton = setUpButtons().get(i);
-            this.setRowIndex(eachbutton, i);
+            this.setColumnIndex(eachbutton, i);
             this.getChildren().add(eachbutton);
             System.out.println(i);
         }
@@ -38,15 +38,16 @@ public class GUI extends GridPane{
     private List<Button> setUpButtons() {
 
         Button resumeButton = new Button(bundle.getString("ResumeButton"));
-        resumeButton.setId("resumeButton");
+        //resumeButton.setId("resumeButton");
         Button loadButton = new Button(bundle.getString("LoadButton"));
-        loadButton.setId("loadButton");
+        //loadButton.setId("loadButton");
         Button quitButton = new Button(bundle.getString("QuitButton"));
-        quitButton.setId("quitButton");
+        //quitButton.setId("quitButton");
         Button nextButton = new Button(bundle.getString("NextButton"));
-        nextButton.setId("nextButton");
+       // nextButton.setId("nextButton");
         Button pauseButton = new Button(bundle.getString("PauseButton"));
-        pauseButton.setId("pauseButton");
+        Button saveButton = new Button (bundle.getString("SaveButton"));
+        //pauseButton.setId("pauseButton");
         //pauseButton.getStyleClass().add("pauseButton");
 
 
@@ -66,6 +67,7 @@ public class GUI extends GridPane{
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                System.out.println("PAUSE");
                 simShouldResume =false;
             }
         });
@@ -87,7 +89,15 @@ public class GUI extends GridPane{
             }
         });
 
-        List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton, quitButton);
+        saveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                simShouldResume =false;
+                // TODO : add code to save a new file and pop up a dialog that asks for author name
+            }
+        });
+
+        List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton, quitButton, saveButton);
         return  allButtons;
 
     }
