@@ -12,11 +12,18 @@ import java.util.List;
 import model.cell.Cell;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
+import model.cell.PercolationCell;
+import model.cell.PredatorPreyCell;
+import model.cell.RockPaperScissorsCell;
+import model.cell.SegregationCell;
+import model.cell.SpreadingOfFireCell;
 
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
  * file into a 2D grid, obtains the neighboring cells, and updates them with the Game of Life
  * rules.
+ *
+ * @author Umika Paul, Yasser Elmzoudi
  */
 public abstract class Grid {
 
@@ -27,6 +34,7 @@ public abstract class Grid {
   protected final int gridWidth;
   protected final int gridHeight;
   private InputStream data;
+  private String myType = "";
 
   /**
    * Constructor for this class.
@@ -44,6 +52,11 @@ public abstract class Grid {
     gridSetUp(readLines);
   }
 
+  /**
+   * Abstract method to set up grid for each type of simulation
+   *
+   * @param readLines List of lines
+   */
   public abstract void gridSetUp(List<String[]> readLines);
 
   /**
@@ -56,10 +69,31 @@ public abstract class Grid {
     Cell[][] copyOfGrid = new Cell[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
+        if (setGridType().equals("GAME_OF_LIFE")) {
+          copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("PERCOLATION")) {
+          copyOfGrid[row][column] = new PercolationCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("ROCK_PAPER_SCISSORS")) {
+          copyOfGrid[row][column] = new RockPaperScissorsCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("SEGREGATION")) {
+          copyOfGrid[row][column] = new SegregationCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("SPREADING_OF_FIRE")) {
+          copyOfGrid[row][column] = new SpreadingOfFireCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("PREDATOR_PREY")) {
+          copyOfGrid[row][column] = new PredatorPreyCell(this.gridOfCells[row][column]);
+        }
       }
     }
     return copyOfGrid;
+  }
+
+  public String setGridType() {
+    return myType;
   }
 
   /**
@@ -76,10 +110,14 @@ public abstract class Grid {
    */
   public void performNextStep() {
     Cell[][] grid = copyGrid();
+    boolean[][] isUpdated = new boolean[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = getNeighbors(grid, row, column);
-        this.gridOfCells[row][column].update(neighbors);
+        List<Cell> newNeighbors = getNeighbors(this.gridOfCells, row, column);
+        if (!isUpdated[row][column]) {
+          this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
+        }
       }
     }
   }
