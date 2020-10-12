@@ -20,8 +20,25 @@ public class GridReader {
     } catch (Exception e) {
       throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
     }
-
-
   }
 
+  public String getSimulationType() {
+    return prop.getProperty("SimulationType");
+  }
+
+  public String getSimulationTitle() {
+    return prop.getProperty("Title");
+  }
+
+  public String getSimulationAuthor() {
+    return prop.getProperty("Author");
+  }
+
+  public String getSimulationDescription() {
+    return prop.getProperty("Description");
+  }
+
+  public String getSimulationDataSourceCSV() {
+    return prop.getProperty("DataSourceCSV");
+  }
 }
