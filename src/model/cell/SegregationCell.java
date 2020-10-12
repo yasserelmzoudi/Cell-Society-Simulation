@@ -1,7 +1,6 @@
 package model.cell;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,11 +17,9 @@ import java.util.List;
 public class SegregationCell extends Cell {
 
   private int state;
-  //private static List<String> needsPlacement = new ArrayList<String>();
-  private static List<Cell> needsPlacement = new ArrayList<Cell>();
-  private static List<Cell> emptyCells = new ArrayList<Cell>();
+  private static List<Cell> needsPlacement = new ArrayList<>();
+  private static List<Cell> emptyCells = new ArrayList<>();
   private static final int THRESHOLD = 50;
-  private static final int NUM_EMPTY_CELLS = 9;
 
   /**
    * Constructor for this class.
@@ -87,30 +84,11 @@ public class SegregationCell extends Cell {
    *
    * @param percentageX Percentage of neighbors that are of X race.
    * @param percentageO Percentage of neighbors that are of O race.
+   * @param isUpdated Grid that checks if cell has been updated or not.
    */
   private void moveDissatisfiedAgents(double percentageX, double percentageO, boolean[][] isUpdated) {
 
-    //count is number of cells that have been added to needsPlacement list
-    int count = 0;
-    for (int row = 0; row < isUpdated.length; row++) {
-      for (int column = 0; column < isUpdated[0].length; column++) {
-        if (isUpdated[row][column]) {
-          count++;
-        }
-      }
-    }
-
-    if ((getState().name().equals("X")) && (percentageX < THRESHOLD)) {
-      isUpdated[getRow()][getColumn()] = true;
-      needsPlacement.add(this);
-    }
-    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD)) {
-      isUpdated[getRow()][getColumn()] = true;
-      needsPlacement.add(this);
-    }
-    else if ((getState().name().equals("NO_RACE"))) {
-      emptyCells.add(this);
-      }
+    checkIfCellMustMove(percentageX, percentageO);
 
     if (this.getRow() == isUpdated.length-1 && this.getColumn() == isUpdated[0].length-1) {
       int numEmptyCells = emptyCells.size();
@@ -118,14 +96,17 @@ public class SegregationCell extends Cell {
       for (int agent = 0; agent<numReplacements; agent++) {
         Cell agentType = needsPlacement.get(agent);
         int randomCell = getRandomIndex(emptyCells.size());
+
         if (agentType.getState().name().equals("X")) {
           agentType.setCellType(CellType.NO_RACE);
           emptyCells.get(randomCell).setCellType(CellType.X);
         }
+
         else if(agentType.getState().name().equals("O")) {
           agentType.setCellType(CellType.NO_RACE);
           emptyCells.get(randomCell).setCellType(CellType.O);
         }
+
         emptyCells.remove(randomCell);
       }
       emptyCells.clear();
@@ -133,9 +114,20 @@ public class SegregationCell extends Cell {
     }
   }
 
+  private void checkIfCellMustMove(double percentageX, double percentageO) {
+    if ((getState().name().equals("X")) && (percentageX < THRESHOLD)) {
+      needsPlacement.add(this);
+    }
+    else if ((getState().name().equals("O")) && (percentageO < THRESHOLD)) {
+      needsPlacement.add(this);
+    }
+    else if ((getState().name().equals("NO_RACE"))) {
+      emptyCells.add(this);
+      }
+  }
+
   private int getRandomIndex(int rangeSize) {
     return (int) (Math.random() * rangeSize);
   }
-
 
 }
