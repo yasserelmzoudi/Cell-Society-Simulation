@@ -59,14 +59,14 @@ public abstract class Cell {
   }
 
   public CellType getState() {
-    return state;
+    return this.state;
   }
 
   public void setRow(int row) {
     this.row = row;
   }
 
-  public void setColumn(int row) {
+  public void setColumn(int column) {
     this.column = column;
   }
 

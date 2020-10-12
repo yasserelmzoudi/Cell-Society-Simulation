@@ -5,68 +5,80 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import model.grid.Grid;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class GUI extends GridPane{
+
     private boolean simShouldResume = true;
     private boolean wantNewFile = false;
     private Grid myGameGrid;
     private GamePane myGamePane;
-
-
+    private ResourceBundle bundle = ResourceBundle.getBundle("resources.ButtonText");
 
     public GUI(GamePane myPane, Grid grid) {
         myGamePane = myPane;
         myGameGrid = grid;
+        setUpButtons();
+        addButtonsToGui();
+    }
+
+    private void addButtonsToGui() {
         for(int i =0 ; i < setUpButtons().size(); i++) {
             Button eachbutton = setUpButtons().get(i);
             this.setRowIndex(eachbutton, i);
             this.getChildren().add(eachbutton);
             System.out.println(i);
         }
-
     }
 
 
     private List<Button> setUpButtons() {
 
-        Button resumebutton = new Button("Resume");
-        Button loadbutton = new Button("Load new File");
-        Button quitbutton = new Button("Quit Simulation");
-        Button nextbutton = new Button("Next");
-        Button pausebutton = new Button("Pause");
+        Button resumeButton = new Button(bundle.getString("ResumeButton"));
+        resumeButton.setId("resumeButton");
+        Button loadButton = new Button(bundle.getString("LoadButton"));
+        loadButton.setId("loadButton");
+        Button quitButton = new Button(bundle.getString("QuitButton"));
+        quitButton.setId("quitButton");
+        Button nextButton = new Button(bundle.getString("NextButton"));
+        nextButton.setId("nextButton");
+        Button pauseButton = new Button(bundle.getString("PauseButton"));
+        pauseButton.setId("pauseButton");
+        //pauseButton.getStyleClass().add("pauseButton");
 
-        quitbutton.setOnAction(new EventHandler<ActionEvent>() {
+
+        quitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.exit(0);
             }
         });
 
-        resumebutton.setOnAction(new EventHandler<ActionEvent>() {
+        resumeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 simShouldResume = true;
             }
         });
-        pausebutton.setOnAction(new EventHandler<ActionEvent>() {
+        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 simShouldResume =false;
             }
         });
 
-        loadbutton.setOnAction(new EventHandler<ActionEvent>() {
+        loadButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("load");
                 simShouldResume =false;
                 wantNewFile = true;
             }
         });
 
-        nextbutton.setOnAction(new EventHandler<ActionEvent>() {
+        nextButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 simShouldResume =false;
@@ -75,7 +87,7 @@ public class GUI extends GridPane{
             }
         });
 
-        List<Button> allButtons = Arrays.asList(pausebutton, resumebutton, nextbutton, loadbutton, quitbutton);
+        List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton, quitButton);
         return  allButtons;
 
     }
@@ -84,7 +96,7 @@ public class GUI extends GridPane{
     public boolean shouldcontinue(){
         return simShouldResume;
     }
-    public boolean wantnewFile(){
+    public boolean wantNewFile(){
         return wantNewFile;
     }
 

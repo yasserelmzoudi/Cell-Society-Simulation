@@ -1,0 +1,6 @@
+#dead {
+    -fx-fill: black;
+}
+#alive {
+    -fx-fill: red;
+}

@@ -5,22 +5,24 @@ import javafx.scene.Node;
 
 import javafx.scene.layout.GridPane;
 
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import model.grid.Grid;
 
 
 public class GamePane extends GridPane {
-
     private Grid myGrid;
     private int windowHeight;
     private int windowWidth;
+
+
+
 
     public GamePane(Grid grid, int width, int height){
         windowHeight = width;
         windowWidth=height;
         myGrid = grid;
+        this.setId("panel");
     }
 
 
@@ -31,14 +33,14 @@ public class GamePane extends GridPane {
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
-                Paint status = myGrid.getCell(r, c).stringStatus();
+                String state = myGrid.getCell(r, c).getState().toString().toLowerCase();
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(windowWidth) , myGrid.cellHeight(windowHeight));
                 }
                 else{
                     this.getChildren().remove(myPixel);
                 }
-                myPixel.setFill(status); //change to based on status
+                myPixel.setId(state);
                 this.setRowIndex(myPixel, r);
                 this.setColumnIndex(myPixel, c);
                 this.getChildren().add(myPixel);
