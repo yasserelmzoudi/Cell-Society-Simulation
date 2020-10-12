@@ -33,7 +33,7 @@ public class GamePane extends GridPane {
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
-                String state = myGrid.getCell(r, c).getState().toString().toLowerCase();
+                String state = myGrid.getCell(r, c).getState().toString().toUpperCase();
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(windowWidth) , myGrid.cellHeight(windowHeight));
                 }
