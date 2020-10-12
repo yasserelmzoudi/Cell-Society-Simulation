@@ -2,13 +2,11 @@
     -fx-font-size: 15pt;
     -fx-font-family: "Times New Roman";
     -fx-background: #cce0ff;
-    -fx-padding: 10px;
-    -fx-spacing: 50px;
+    -fx-padding: 5px;
 }
 
 #gameDisplay{
     -fx-alignment: center;
-    -fx-spacing: 50px;
 }
 
 #slider{

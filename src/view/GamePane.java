@@ -19,7 +19,7 @@ public class GamePane extends GridPane {
         windowHeight = height;
         windowWidth=width;
         myGrid = grid;
-        this.setId("panel");
+        //this.setId("gamePanel");
     }
 
 

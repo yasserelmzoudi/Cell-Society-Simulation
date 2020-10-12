@@ -4,3 +4,6 @@
 #alive {
     -fx-fill: red;
 }
+#gamePanel {
+    -fx-alignment: center;
+}

@@ -8,14 +8,3 @@
     -fx-background-color: #a6a6a6;
     -fx-background-radius: 5px;
 }
-
-#controlPanel{
-    -fx-pref-height: 120px;
-    -fx-padding: 10px;
-    -fx-border-width: 2px;
-    -fx-border-color: #737373;
-    -fx-background-color: #b3b3b3;
-    -fx-alignment: center;
-    -fx-vgap: 10px;
-    -fx-hgap: 10px;
-}

@@ -40,15 +40,15 @@ public class ScreenVisuals extends BorderPane {
         gameDisplayID = name;
         gameTitle =titleresource.getString(name);
         currentSimulation = thisSimulation; //prop not going to work
-        this.setId(bundle.getString("GameDisplay"));
+       // this.setId(bundle.getString("GameDisplay"));
         setupUserInterface();
         //TODO load simulation text to display from resources
     }
 
     private void setupUserInterface() {
         myGamePane = new GamePane(myGrid, visualWidth-100, visualHeight- 200);
-        myGamePane.setUpPane(myGrid);
         myGamePane.setId("gameDisplay");
+        myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
         this.setTop(makeTitleDisplay());
         this.setCenter(myGamePane);
