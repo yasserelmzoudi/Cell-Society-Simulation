@@ -1,5 +1,6 @@
 package view;
 
+import java.io.IOException;
 import java.io.InputStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -47,7 +48,7 @@ public class StartSimulation extends Application {
     private int windowHeight =600;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException {
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
         simulationSettingsReader = new SimulationSettingsReader();
         simulationData = Grid.class.getClassLoader()
@@ -70,7 +71,13 @@ public class StartSimulation extends Application {
             System.exit(0);
         });
         stage.show();
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
+            try {
+                step();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -78,7 +85,7 @@ public class StartSimulation extends Application {
     }
 
 
-    private void newSimulationWindow(Grid newgrid) { //TODO: delete current and change back to uncommented
+    private void newSimulationWindow(Grid newgrid) throws IOException { //TODO: delete current and change back to uncommented
         primaryStage.close();
         //Stage newstage = new Stage();
         primaryStage = new Stage();
@@ -90,7 +97,7 @@ public class StartSimulation extends Application {
     }
 
 
-    public Scene setUpVisualScene(Grid newgrid, int width, int height) {
+    public Scene setUpVisualScene(Grid newgrid, int width, int height) throws IOException {
         root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
         System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
@@ -104,7 +111,7 @@ public class StartSimulation extends Application {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() {
+    public void step() throws IOException {
         checkNewFile();
         root.checkUserChanges();
         startSimulation();
@@ -114,7 +121,7 @@ public class StartSimulation extends Application {
         animation.setRate(speed);
     }
 
-    private void checkNewFile() {
+    private void checkNewFile() throws IOException {
         boolean chooseNewFile = root.getMyButtonDisplay().wantNewFile();
         if(chooseNewFile) {
             animation.pause();
@@ -132,7 +139,7 @@ public class StartSimulation extends Application {
 
     }
 
-    public void startSimulation(){
+    public void startSimulation() throws IOException {
         boolean shouldresume = root.getMyButtonDisplay().shouldcontinue();
         if (shouldresume) {
             grid.performNextStep();

@@ -3,7 +3,7 @@ package view;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Cell;
+import javafx.scene.image.Image;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -105,9 +105,6 @@ public class ScreenVisuals extends BorderPane {
         return eachcell;
     }
 
-    public List<ComboBox> getCellChange() {
-        return cellChange;
-    }
 
 
     private Node makeSlider() {
