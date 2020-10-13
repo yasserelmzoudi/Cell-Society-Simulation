@@ -1,12 +1,16 @@
 package view;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Cell;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import model.cell.CellType;
 import model.grid.Grid;
 
 import java.util.Arrays;
@@ -16,12 +20,14 @@ import java.util.ResourceBundle;
 public class ScreenVisuals extends BorderPane {
     private static final String RESOURCES = "resources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
-    private ResourceBundle bundle = ResourceBundle.getBundle("resources.ButtonText");
+    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
     private ResourceBundle titleresource = ResourceBundle.getBundle("resources.title");
 
     private static final int MIN_SLIDER_SPEED =0;
-    private static final int MAX_SLIDER_SPEED =10;
-    //private static final double DEFAULT_SLIDER_VALUE =1;
+    private static final int MAX_SLIDER_SPEED =8;
+    private static final int GRID_PADDING_LR =100;
+    private static final int GRID_PADDING_TB =200;
+
     private int visualWidth;
     private int visualHeight;
     private String gameDisplayID;
@@ -39,15 +45,15 @@ public class ScreenVisuals extends BorderPane {
         visualHeight = height;
         gameDisplayID = name;
         gameTitle =titleresource.getString(name);
-        currentSimulation = thisSimulation; //prop not going to work
-       // this.setId(bundle.getString("GameDisplay"));
+        currentSimulation = thisSimulation;
         setupUserInterface();
+        addGridEvent();
         //TODO load simulation text to display from resources
     }
 
     private void setupUserInterface() {
-        myGamePane = new GamePane(myGrid, visualWidth-100, visualHeight- 200);
-        myGamePane.setId("gameDisplay");
+        myGamePane = new GamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
+        myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
         this.setTop(makeTitleDisplay());
@@ -63,24 +69,27 @@ public class ScreenVisuals extends BorderPane {
 
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
-        optionDisplay.setId("bottomPanel"); //TODO change to get text from resource
+        optionDisplay.setId(objectIdBundle.getString("BottomPanel")); //TODO change to get text from resource
         myButtonDisplay = new UserOptions(myGamePane, myGrid);
-        myButtonDisplay.setId("buttonPanel");
-        TilePane allcells = new TilePane();
-        List<String> myCells = Arrays.asList("cell 1: ","cell 1: ","cell 1: " );
-        for (String cell: myCells) {
-            HBox column = new HBox();
-            column.getChildren().add(new Label(cell));
-            column.getChildren().add(makeDropDownOptions());
-            allcells.getChildren().add(column);
-        }
-        allcells.setId("tilePane");
-        optionDisplay.setBottom(allcells);
+        myButtonDisplay.setId(objectIdBundle.getString("ButtonPanel"));
+        HBox cellChanger = new HBox();
+        List<String> myCells = Arrays.asList("cell 1: ","cell 2: ","cell 3: " ); //TODO: get cell names based on configuration file
+        addDropDowns(myCells, cellChanger);
+        cellChanger.setId("tilePane");
+        optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
         optionDisplay.setTop(makeSlider());
         return optionDisplay;
     }
 
+    private void addDropDowns(List<String> cellNames, HBox cellChanger) {
+        for (String cell: cellNames) {
+            HBox column = new HBox();
+            column.getChildren().add(new Label(cell));
+            column.getChildren().add(makeDropDownOptions());
+            cellChanger.getChildren().add(column);
+        }
+    }
 
     private Node makeTitleDisplay() {
         HBox titleDisplay = new HBox(); //Name top Vbox center slider bottom
@@ -91,7 +100,7 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private Node makeDropDownOptions() {
-        ComboBox eachcell = new ComboBox();
+        ComboBox eachcell = new ComboBox(); //TODO: get all options from somewhere else
         eachcell.getItems().addAll(
                 "Pink",
                 "Blue",
@@ -108,18 +117,44 @@ public class ScreenVisuals extends BorderPane {
         Slider slider = new Slider();
 
         slider.setMin(MIN_SLIDER_SPEED);
-        slider.setMax(8);
+        slider.setMax(MAX_SLIDER_SPEED);
         slider.setValue(MIN_SLIDER_SPEED);
         slider.setMajorTickUnit(1);
         slider.setShowTickLabels(true);
         //slider.setShowTickMarks(true);
         slider.valueProperty().addListener(
                 (ov, old_val, new_val) -> currentSimulation.setAnimationSpeed((Double) new_val));
-        slider.setId(bundle.getString("Slider"));
+        slider.setId(objectIdBundle.getString("Slider"));
         mySliderDisplay.getChildren().add(slider);
         mySliderDisplay.setId("sliderBox");
         return mySliderDisplay;
     }
+
+    private void addGridEvent() {
+        myGamePane.getChildren().forEach(item -> {
+            item.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    System.out.println("clicked");
+                    Node source = (Node)event.getSource() ;
+                    Integer colIndex = GridPane.getColumnIndex(source);
+                    Integer rowIndex = GridPane.getRowIndex(source);
+                    changeCellStatus(colIndex.intValue(), rowIndex.intValue());
+
+                }
+            });
+
+        });
+    }
+
+
+    public void changeCellStatus(int rowIndex, int colIndex) {
+        System.out.println(rowIndex + " "+ colIndex);
+        myGrid.getCell(rowIndex, colIndex).setCellType(CellType.DEAD);
+        myGamePane.setUpPane(myGrid);
+
+    }
+
 
 
     //TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors

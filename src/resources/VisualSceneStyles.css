@@ -46,7 +46,7 @@
 
 .h-box {
     -fx-pref-columns: 3;
-    -fx-spacing: 500;
+    -fx-spacing: 30;
 }
 #tilePane {
     -fx-alignment: center;
@@ -65,5 +65,6 @@
     -fx-alignment: center;
     -fx-padding: 10px;
 }
+
 
 

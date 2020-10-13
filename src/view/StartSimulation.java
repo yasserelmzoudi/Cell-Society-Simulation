@@ -15,7 +15,6 @@ import model.grid.Grid;
 
 import java.io.File;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 public class StartSimulation extends Application {
     private static final String RESOURCES = "resources/";
@@ -27,6 +26,7 @@ public class StartSimulation extends Application {
     private static final File DATA_DIRECTORY = new File("./data/");
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
+
 
     private ResourceBundle dataresource = ResourceBundle.getBundle("resources.data");
     private InputStream data = Grid.class.getClassLoader().getResourceAsStream(dataresource.getString("DataSource"));
@@ -57,7 +57,7 @@ public class StartSimulation extends Application {
     }
 
 
-    private void newSimulationWindow(Grid newgrid) {
+    private void newSimulationWindow(Grid newgrid) { //TODO: delete current and change back to uncommented
         //primaryStage.close();
         Stage newstage = new Stage();
         //primaryStage = new Stage();

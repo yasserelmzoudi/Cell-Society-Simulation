@@ -7,3 +7,6 @@
 #gamePanel {
     -fx-alignment: center;
 }
+#pink {
+    -fx-fill: pink;
+}
