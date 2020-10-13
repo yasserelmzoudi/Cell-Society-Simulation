@@ -3,21 +3,21 @@ package model.grid;
 import java.io.InputStream;
 import java.util.List;
 import model.cell.CellType;
-import model.cell.GameOfLifeCell;
+import model.cell.PercolationCell;
 
 /**
- * Class encapsulating logic for setting up Game of Life Grid.
+ * Class encapsulating logic for setting up Percolation Grid.
  *
  * @author Umika Paul
  */
-public class GameOfLifeGrid extends Grid {
+public class PercolationGrid extends Grid{
 
   /**
    * Constructor for this class.
    *
    * @param data Data to read.
    */
-  public GameOfLifeGrid(InputStream data) {
+  public PercolationGrid(InputStream data) {
     super(data);
   }
 
@@ -28,14 +28,15 @@ public class GameOfLifeGrid extends Grid {
    */
   @Override
   public String setGridType() {
-    return "GAME_OF_LIFE";
+    return "PERCOLATION";
   }
 
   /**
    * Sets up grid.
    *
-   * <p>0 represents <code>DEAD</code></p>
-   * <p>1 represents <code>ALIVE</code></p>
+   * <p> 0 represents <code>EMPTY_OPEN</code></p>
+   * <p> 1 represents <code>FULL_OPEN</code></p>
+   * <p> 2 represents <code>BLOCKED</code></p>
    *
    * @param readLines List of lines
    */
@@ -46,12 +47,16 @@ public class GameOfLifeGrid extends Grid {
     for (String[] cellsInRow : readLines) {
       for (int column = 0; column < gridWidth; column++) {
         int cellValue = Integer.parseInt(cellsInRow[column]);
-        if (cellValue == 1) {
-          state = CellType.ALIVE;
-        } else {
-          state = CellType.DEAD;
+        if (cellValue == 0) {
+          state = CellType.EMPTY_OPEN;
         }
-        gridOfCells[row][column] = new GameOfLifeCell(row, column, state.ordinal());
+        else if (cellValue == 1) {
+          state = CellType.FULL_OPEN;
+        }
+        else {
+          state = CellType.BLOCKED;
+        }
+        gridOfCells[row][column] = new PercolationCell(row, column, state.ordinal());
       }
       row++;
     }

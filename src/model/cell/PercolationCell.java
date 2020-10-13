@@ -1,16 +1,16 @@
 package model.cell;
 
 import java.util.List;
-
 /**
- * Subclass encapsulating logic to update cells in the Game of Life simulation.
- * Checks to see how many neighbors are alive with <code>numAliveCells</code> and changes the
- * current cell type using an enum state accordingly.
+ * Subclass encapsulating logic to update cells in the Percolation simulation.
+ * Checks to see if any neighboring cells are of the state <code>FULL_OPEN</code> and changes the
+ * current cell type to <code>FULL_OPEN</code> if the current cell type is <code>EMPTY_OPEN</code>
+ * using an enum state accordingly.
  *
  * @author Umika Paul
  */
 
-public class GameOfLifeCell extends Cell {
+public class PercolationCell extends Cell {
   private int state;
 
   /**
@@ -20,7 +20,7 @@ public class GameOfLifeCell extends Cell {
    * @param column Column of cell.
    * @param state State cell is in.
    */
-  public GameOfLifeCell(int row, int column, int state) {
+  public PercolationCell(int row, int column, int state) {
     super(row, column, state);
     this.state = state;
   }
@@ -30,7 +30,7 @@ public class GameOfLifeCell extends Cell {
    *
    * @param copyCell Makes a copy of the cell to preserve original values.
    */
-  public GameOfLifeCell(Cell copyCell) {
+  public PercolationCell(Cell copyCell) {
     super(copyCell);
   }
 
@@ -44,21 +44,15 @@ public class GameOfLifeCell extends Cell {
    */
   @Override
   public void update(List<Cell> neighbors, List<Cell> newNeighbors, boolean[][] isUpdated) {
-    int numAliveCells = 0;
+    boolean changeState = false;
     for (Cell neighbor : neighbors) {
-      if (neighbor.getState().name().equals("ALIVE")) {
-        numAliveCells++;
+      if (neighbor.getState().name().equals("FULL_OPEN")) {
+        changeState = true;
       }
     }
-    if (getState().name().equals("ALIVE")) {
-      if (numAliveCells == 3 || numAliveCells == 2) {
-        return;
-      }
-      setCellType(CellType.DEAD);
-      return;
-    }
-    else if (numAliveCells == 3) {
-      setCellType(CellType.ALIVE);
+
+    if ((getState().name().equals("EMPTY_OPEN")) && changeState) {
+      setCellType(CellType.FULL_OPEN);
     }
   }
 }

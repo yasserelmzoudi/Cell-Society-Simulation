@@ -1,12 +1,58 @@
-#dead {
+#DEAD {
     -fx-fill: black;
 }
-#alive {
+#ALIVE {
     -fx-fill: red;
+}
+
+#EMPTY_OPEN {
+    -fx-fill: white;
+}
+#FULL_OPEN {
+    -fx-fill: blue;
+}
+#BLOCKED {
+    -fx-fill: black;
+}
+#FISH {
+    -fx-fill: turquoise;
+}
+#SHARK {
+    -fx-fill: blue;
+}
+#WATER {
+    -fx-fill: black;
+}
+#ROCK {
+    -fx-fill: red;
+}
+#PAPER {
+    -fx-fill: green;
+}
+#SCISSORS {
+    -fx-fill: blue;
+}
+#EMPTY {
+    -fx-fill: yellow;
+}
+#TREE {
+    -fx-fill: green;
+}
+#BURNING {
+    -fx-fill: red;
+}
+#X {
+    -fx-fill: blue;
+}
+#O {
+    -fx-fill: red;
+}
+#NO_RACE {
+    -fx-fill: white;
 }
 #gamePanel {
     -fx-alignment: center;
 }
-#pink {
+#PINK {
     -fx-fill: pink;
 }
