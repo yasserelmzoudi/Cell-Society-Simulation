@@ -15,10 +15,24 @@ import model.cell.CellType;
 import model.cell.GameOfLifeCell;
 import org.apache.commons.collections.ArrayStack;
 
+import java.util.ResourceBundle;
+import model.cell.Cell;
+import model.cell.CellType;
+import model.cell.GameOfLifeCell;
+import model.cell.PercolationCell;
+import model.cell.PredatorPreyCell;
+import model.cell.RockPaperScissorsCell;
+import model.cell.SegregationCell;
+import model.cell.SpreadingOfFireCell;
+import model.exceptions.InvalidCSVFileException;
+
+
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
  * file into a 2D grid, obtains the neighboring cells, and updates them with the Game of Life
  * rules.
+ *
+ * @author Umika Paul, Yasser Elmzoudi
  */
 public abstract class Grid {
 
@@ -29,6 +43,9 @@ public abstract class Grid {
   protected final int gridWidth;
   protected final int gridHeight;
   private InputStream data;
+  private String myType = "";
+  private ResourceBundle errorMessageSource;
+  private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
   /**
    * Constructor for this class.
@@ -36,16 +53,21 @@ public abstract class Grid {
    * @param data InputStream whose CSV file is read to initialize Grid
    */
   public Grid (InputStream data) {
+    errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
     this.data = data;
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
-
     gridSetUp(readLines);
   }
 
+  /**
+   * Abstract method to set up grid for each type of simulation
+   *
+   * @param readLines List of lines
+   */
   public abstract void gridSetUp(List<String[]> readLines);
 
   /**
@@ -58,10 +80,31 @@ public abstract class Grid {
     Cell[][] copyOfGrid = new Cell[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
+        if (setGridType().equals("GAME_OF_LIFE")) {
+          copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("PERCOLATION")) {
+          copyOfGrid[row][column] = new PercolationCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("ROCK_PAPER_SCISSORS")) {
+          copyOfGrid[row][column] = new RockPaperScissorsCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("SEGREGATION")) {
+          copyOfGrid[row][column] = new SegregationCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("SPREADING_OF_FIRE")) {
+          copyOfGrid[row][column] = new SpreadingOfFireCell(this.gridOfCells[row][column]);
+        }
+        if (setGridType().equals("PREDATOR_PREY")) {
+          copyOfGrid[row][column] = new PredatorPreyCell(this.gridOfCells[row][column]);
+        }
       }
     }
     return copyOfGrid;
+  }
+
+  public String setGridType() {
+    return myType;
   }
 
   /**
@@ -78,10 +121,14 @@ public abstract class Grid {
    */
   public void performNextStep() {
     Cell[][] grid = copyGrid();
+    boolean[][] isUpdated = new boolean[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = getNeighbors(grid, row, column);
-        this.gridOfCells[row][column].update(neighbors);
+        List<Cell> newNeighbors = getNeighbors(this.gridOfCells, row, column);
+        if (!isUpdated[row][column]) {
+          this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
+        }
       }
     }
   }
@@ -138,12 +185,11 @@ public abstract class Grid {
    * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll() {
+  public List<String[]> readAll() throws InvalidCSVFileException {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {
-      e.printStackTrace();
-      return Collections.emptyList();
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
   }
 

@@ -5,6 +5,13 @@ import javafx.scene.paint.Paint;
 
 import java.util.List;
 
+/**
+ * Abstract class encapsulating logic for cell. A <code>Cell</code> has a row, column, and state,
+ * which can be updated.
+ *
+ * @author Umika Paul, Yasser Elmzoudi
+ */
+
 public abstract class Cell {
 
   private int row;
@@ -41,7 +48,7 @@ public abstract class Cell {
    *
    * @param neighbors List of neighboring cells
    */
-  public abstract void update(List<Cell> neighbors);
+  public abstract void update(List<Cell> neighbors, List<Cell> newNeighbors, boolean[][] isUpdated);
 
   public int getRow() {
     return row;
@@ -67,4 +74,57 @@ public abstract class Cell {
     this.state = state;
   }
 
+
+
+  public Paint stringStatus() {
+    if (state.name().equalsIgnoreCase("ALIVE")) {
+      return Color.RED;
+    }
+    else if (state.name().equalsIgnoreCase("DEAD")) {
+      return Color.BLACK;
+    }
+    else if (state.name().equalsIgnoreCase("EMPTY_OPEN")) {
+      return Color.WHITE;
+    }
+    else if (state.name().equalsIgnoreCase("FULL_OPEN")) {
+      return Color.BLUE;
+    }
+    else if (state.name().equalsIgnoreCase("CLOSED")) {
+      return Color.BLACK;
+    }
+    else if (state.name().equalsIgnoreCase("ROCK")) {
+      return Color.RED;
+    }
+    else if (state.name().equalsIgnoreCase("PAPER")) {
+      return Color.GREEN;
+    }
+    else if (state.name().equalsIgnoreCase("O")){
+      return Color.RED;
+    }
+    else if (state.name().equalsIgnoreCase("X")){
+      return Color.BLUE;
+    }
+    else if (state.name().equalsIgnoreCase("NO_RACE")){
+      return Color.WHITE;
+    }
+    else if (state.name().equalsIgnoreCase("TREE")) {
+      return Color.GREEN;
+    }
+    else if (state.name().equalsIgnoreCase("EMPTY")) {
+      return Color.YELLOW;
+    }
+    else if (state.name().equalsIgnoreCase("BURNING")) {
+      return Color.RED;
+    }
+    else if(state.name().equalsIgnoreCase("WATER")) {
+      return Color.BLACK;
+    }
+    else if(state.name().equalsIgnoreCase("FISH")) {
+      return Color.TURQUOISE;
+    }
+    else if(state.name().equalsIgnoreCase("SHARK")) {
+      return Color.BLUE;
+    }
+    return Color.BLACK;
+  }
 }
