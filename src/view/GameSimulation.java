@@ -26,10 +26,7 @@ public class GameSimulation extends Application {
   public static final String PANEL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + PANEL_STYLESHEET;
   public static final String GUI_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + GUI_STYLESHEET;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-  /*private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-  private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
-  private Grid grid = new SpreadingOfFireGrid(data);*/
-  //private Grid grid = new SegregationGrid(data);
+
   private GamePane myVisual;
   private GUI userinterface;
   private Stage primaryStage;
