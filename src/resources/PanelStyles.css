@@ -4,6 +4,13 @@
 #ALIVE {
     -fx-fill: red;
 }
+
+#gamePanel {
+    -fx-alignment: center;
+}
+#pink {
+    -fx-fill: pink;
+
 #EMPTY_OPEN {
     -fx-fill: white;
 }
@@ -48,4 +55,5 @@
 }
 #NO_RACE {
     -fx-fill: white;
+
 }
