@@ -6,8 +6,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.ResourceBundle;
 import model.cell.Cell;
@@ -19,6 +18,12 @@ import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
+
+import com.sun.source.tree.Tree;
+import model.cell.Cell;
+import model.cell.CellType;
+import model.cell.GameOfLifeCell;
+import org.apache.commons.collections.ArrayStack;
 
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
@@ -197,5 +202,12 @@ public abstract class Grid {
       System.out.println("");
     }
   }*/
+
+  public List<String> getAllTypes() {
+    List<String> myTypes = new ArrayList<>();
+    myTypes.add(CellType.DEAD.toString());
+    myTypes.add(CellType.ALIVE.toString());
+    return myTypes;
+  }
 
 }
