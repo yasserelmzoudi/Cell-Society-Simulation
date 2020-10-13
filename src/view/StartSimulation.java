@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 
+import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -88,6 +89,7 @@ public class StartSimulation extends Application {
         primaryStage.show();
     }
 
+
     public Scene setUpVisualScene(Grid newgrid, int width, int height) {
         root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
         System.out.println(simulationSettingsReader.getSimulationTitle());
@@ -104,6 +106,7 @@ public class StartSimulation extends Application {
 
     public void step() {
         checkNewFile();
+        root.checkUserChanges();
         startSimulation();
     }
 

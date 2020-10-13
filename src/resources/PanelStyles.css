@@ -50,3 +50,9 @@
 #NO_RACE {
     -fx-fill: white;
 }
+#BLUE {
+    -fx-fill: blue;
+}
+#PINK {
+    -fx-fill: pink;
+}
