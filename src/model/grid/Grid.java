@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 import model.cell.Cell;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
@@ -48,7 +49,6 @@ public abstract class Grid {
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
-
     gridSetUp(readLines);
   }
 
@@ -178,7 +178,7 @@ public abstract class Grid {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {
-      e.printStackTrace();
+      throw new InvalidCSVFileException()
       return Collections.emptyList();
     }
   }
