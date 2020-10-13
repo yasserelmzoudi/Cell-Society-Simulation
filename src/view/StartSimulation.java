@@ -32,8 +32,6 @@ public class StartSimulation extends Application {
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
 
-    private ResourceBundle dataresource = ResourceBundle.getBundle("resources.data");
-    private InputStream data = Grid.class.getClassLoader().getResourceAsStream(dataresource.getString("DataSource"));
     private SimulationSettingsReader simulationSettingsReader;
     private InputStream simulationData;
     private Class<?> gridType;
@@ -42,10 +40,6 @@ public class StartSimulation extends Application {
     private Stage primaryStage;
     private Timeline animation;
     private ScreenVisuals root;
-    private SimulationSettingsReader simulationSettingsReader;
-    private InputStream simulationData;
-    private Class<?> gridType;
-    private ResourceBundle errorMessageSource;
 
     private int  i =0;
     private int windowWidth =600;

@@ -207,8 +207,9 @@ public abstract class Grid {
 
   public List<String> getAllTypes() {
     List<String> myTypes = new ArrayList<>();
-    myTypes.add(CellType.DEAD.toString());
-    myTypes.add(CellType.ALIVE.toString());
+    myTypes.add(CellType.SHARK.toString());
+    myTypes.add(CellType.FISH.toString());
+    myTypes.add(CellType.WATER.toString());
     return myTypes;
   }
 
