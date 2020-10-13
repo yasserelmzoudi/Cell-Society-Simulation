@@ -13,15 +13,12 @@ import javafx.scene.text.Text;
 import model.cell.CellType;
 import model.grid.Grid;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ScreenVisuals extends BorderPane {
-    private static final String RESOURCES = "resources/";
-    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
     private ResourceBundle titleresource = ResourceBundle.getBundle("resources.title");
+    private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image");
 
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
@@ -30,13 +27,14 @@ public class ScreenVisuals extends BorderPane {
 
     private int visualWidth;
     private int visualHeight;
-    private String gameDisplayID;
     private Grid myGrid;
     private GamePane myGamePane;
     private StartSimulation currentSimulation;
     private UserOptions myButtonDisplay;
     private HBox mySliderDisplay;
     private String gameTitle;
+    private List<ComboBox> cellChange = new ArrayList<>();
+    private List<String> cellTypes = new ArrayList<>();
 
 
     public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
@@ -47,7 +45,6 @@ public class ScreenVisuals extends BorderPane {
         currentSimulation = thisSimulation;
         setupUserInterface();
         addGridEvent();
-        //TODO load simulation text to display from resources
     }
 
     private void setupUserInterface() {
@@ -68,23 +65,26 @@ public class ScreenVisuals extends BorderPane {
 
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
-        optionDisplay.setId(objectIdBundle.getString("BottomPanel")); //TODO change to get text from resource
+        optionDisplay.setId(objectIdBundle.getString("BottomPanel"));
         myButtonDisplay = new UserOptions(myGamePane, myGrid);
         myButtonDisplay.setId(objectIdBundle.getString("ButtonPanel"));
         HBox cellChanger = new HBox();
-        List<String> myCells = Arrays.asList("cell 1: ","cell 2: ","cell 3: " ); //TODO: get cell names based on configuration file
-        addDropDowns(myCells, cellChanger);
-        cellChanger.setId("tilePane");
+        cellTypes = myGrid.getAllTypes();
+        addDropDowns(cellTypes, cellChanger);
+        cellChanger.setId(objectIdBundle.getString("TilePane"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
         optionDisplay.setTop(makeSlider());
         return optionDisplay;
     }
 
+
+
     private void addDropDowns(List<String> cellNames, HBox cellChanger) {
         for (String cell: cellNames) {
             HBox column = new HBox();
-            column.getChildren().add(new Label(cell));
+            Label cellTypeLabel = new Label(cell);
+            column.getChildren().add(cellTypeLabel);
             column.getChildren().add(makeDropDownOptions());
             cellChanger.getChildren().add(column);
         }
@@ -99,15 +99,14 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private Node makeDropDownOptions() {
-        ComboBox eachcell = new ComboBox(); //TODO: get all options from somewhere else
-        eachcell.getItems().addAll(
-                "Pink",
-                "Blue",
-                "Cat Image",
-                "Dog Image",
-                "Shark Image"
-        );
+        ComboBox eachcell = new ComboBox();
+        eachcell.getItems().addAll(userChangeOptions);
+        cellChange.add(eachcell);
         return eachcell;
+    }
+
+    public List<ComboBox> getCellChange() {
+        return cellChange;
     }
 
 
@@ -125,7 +124,7 @@ public class ScreenVisuals extends BorderPane {
                 (ov, old_val, new_val) -> currentSimulation.setAnimationSpeed((Double) new_val));
         slider.setId(objectIdBundle.getString("Slider"));
         mySliderDisplay.getChildren().add(slider);
-        mySliderDisplay.setId("sliderBox");
+        mySliderDisplay.setId(objectIdBundle.getString("SliderBox"));
         return mySliderDisplay;
     }
 
@@ -134,11 +133,10 @@ public class ScreenVisuals extends BorderPane {
             item.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    System.out.println("clicked");
                     Node source = (Node)event.getSource() ;
                     Integer colIndex = GridPane.getColumnIndex(source);
                     Integer rowIndex = GridPane.getRowIndex(source);
-                    changeCellStatus(colIndex.intValue(), rowIndex.intValue());
+                    changeCellStatus(rowIndex.intValue(), colIndex.intValue());
 
                 }
             });
@@ -147,11 +145,28 @@ public class ScreenVisuals extends BorderPane {
     }
 
 
-    public void changeCellStatus(int rowIndex, int colIndex) {
-        System.out.println(rowIndex + " "+ colIndex);
-        myGrid.getCell(rowIndex, colIndex).setCellType(CellType.DEAD);
-        myGamePane.setUpPane(myGrid);
 
+
+    public void changeCellStatus(int rowIndex, int colIndex) {
+        Random rand = new Random();
+        List<String> cellChoices = myGrid.getAllTypes();
+        String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
+        CellType newCellType = CellType.valueOf(newChoice);
+        myGrid.getCell(rowIndex, colIndex).setCellType(newCellType);
+        myGamePane.setUpPane(myGrid);
+    }
+
+    public void checkUserChanges() {
+        if(!cellChange.isEmpty()) {
+            for(int i=0; i< cellTypes.size(); i++) {
+                Object checkObject = cellChange.get(i).getSelectionModel().getSelectedItem();
+                if(checkObject !=null ) {
+                    String newCellAppearance = cellChange.get(i).getSelectionModel().getSelectedItem().toString();
+                    myGamePane.setNewColor(cellTypes.get(i), objectIdBundle.getString(newCellAppearance));
+                    myGamePane.setUpPane(myGrid);
+                }
+            }
+        }
     }
 
 

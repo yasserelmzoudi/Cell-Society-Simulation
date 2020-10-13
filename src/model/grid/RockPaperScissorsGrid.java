@@ -62,4 +62,15 @@ public class RockPaperScissorsGrid extends Grid{
       row++;
     }
   }
+
+
+  @Override
+  public List<String> getAllTypes() {
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.ROCK.toString());
+    myTypes.add(CellType.PAPER.toString());
+    myTypes.add(CellType.SCISSORS.toString());
+    return myTypes;
+  }
+
 }
