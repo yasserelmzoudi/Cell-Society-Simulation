@@ -38,7 +38,7 @@ public abstract class Grid {
   private InputStream data;
   private String myType = "";
   private ResourceBundle errorMessageSource;
-  private static final String EXCEPTION_RESOURCE = "exceptionMessages";
+  private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
   /**
    * Constructor for this class.

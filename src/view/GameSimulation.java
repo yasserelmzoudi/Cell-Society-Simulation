@@ -25,7 +25,7 @@ public class GameSimulation extends Application {
   public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
   public static final String PANEL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + PANEL_STYLESHEET;
   public static final String GUI_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + GUI_STYLESHEET;
-  private static final String EXCEPTION_RESOURCE = "exceptionMessages";
+  private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
   /*private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
   private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
   private Grid grid = new SpreadingOfFireGrid(data);*/
@@ -47,13 +47,17 @@ public class GameSimulation extends Application {
     simulationSettingsReader = new SimulationSettingsReader();
     simulationData = Grid.class.getClassLoader()
         .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
+    System.out.println(simulationSettingsReader.getSimulationType());
     try {
-      gridType = Class.forName(simulationSettingsReader.getSimulationType()+"Grid");
+      gridType = Class.forName("model.grid." + simulationSettingsReader.getSimulationType() + "Grid");
+      Object gridInstance = gridType.getDeclaredConstructor(InputStream.class).newInstance(simulationData);
+      grid = (Grid) gridInstance;
     } catch (Exception e) {
       throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
+
     }
     Scene myScene = setupScene(grid);
-    stage.setTitle("Simulation");
+    stage.setTitle(simulationSettingsReader.getSimulationTitle());
     stage.setScene(myScene);
     primaryStage = stage;
     primaryStage.setOnCloseRequest(e -> {
