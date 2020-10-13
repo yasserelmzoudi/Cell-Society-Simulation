@@ -39,12 +39,11 @@ public class ScreenVisuals extends BorderPane {
     private String gameTitle;
 
 
-    public ScreenVisuals(StartSimulation thisSimulation, String name, Grid grid, int width, int height) {
+    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
         myGrid = grid;
         visualWidth = width;
         visualHeight = height;
-        gameDisplayID = name;
-        gameTitle =titleresource.getString(name);
+        gameTitle =title;
         currentSimulation = thisSimulation;
         setupUserInterface();
         addGridEvent();

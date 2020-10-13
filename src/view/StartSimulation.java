@@ -16,6 +16,7 @@ import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class StartSimulation extends Application {
@@ -30,7 +31,14 @@ public class StartSimulation extends Application {
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
-   private Grid grid;
+
+    private ResourceBundle dataresource = ResourceBundle.getBundle("resources.data");
+    private InputStream data = Grid.class.getClassLoader().getResourceAsStream(dataresource.getString("DataSource"));
+    private SimulationSettingsReader simulationSettingsReader;
+    private InputStream simulationData;
+    private Class<?> gridType;
+    private ResourceBundle errorMessageSource;
+    private Grid grid;
     private Stage primaryStage;
     private Timeline animation;
     private ScreenVisuals root;
@@ -42,6 +50,7 @@ public class StartSimulation extends Application {
     private int  i =0;
     private int windowWidth =600;
     private int windowHeight =600;
+
     @Override
     public void start(Stage stage) {
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
@@ -58,37 +67,36 @@ public class StartSimulation extends Application {
 
         }
         Scene myScene = setUpVisualScene(grid, windowWidth,windowHeight);
-        stage.setTitle("Simulation");
+        //stage.setTitle(simulationSettingsReader.getSimulationTitle());
         stage.setScene(myScene);
-        //root.getMyGamePane().setUpPane(grid);
         primaryStage = stage;
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
+        stage.show();
         KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> step());
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
-        stage.show();
     }
 
 
     private void newSimulationWindow(Grid newgrid) { //TODO: delete current and change back to uncommented
-        //primaryStage.close();
-        Stage newstage = new Stage();
-        //primaryStage = new Stage();
-
-        newstage.setOnCloseRequest(e -> {
+        primaryStage.close();
+        //Stage newstage = new Stage();
+        primaryStage = new Stage();
+        primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
-        newstage.setScene(setUpVisualScene(newgrid, windowWidth,windowHeight));
-        newstage.show();
+        primaryStage.setScene(setUpVisualScene(newgrid, windowWidth,windowHeight));
+        primaryStage.show();
     }
 
     public Scene setUpVisualScene(Grid newgrid, int width, int height) {
-        root = new ScreenVisuals(this, "GAME_OF_LIFE", newgrid, width, height);
+        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
+        System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
         assignStyleSheet(myscene, PANEL_STYLESHEET_PATH);
         assignStyleSheet(myscene, VISUAL_STYLESHEET_PATH);

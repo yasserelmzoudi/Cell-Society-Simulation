@@ -29,7 +29,7 @@ public class GameSimulation extends Application {
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
   private GamePane myVisual;
-  private GUI userinterface;
+  //private GUI userinterface;
   private Stage primaryStage;
   private Timeline animation;
   private SimulationSettingsReader simulationSettingsReader;
@@ -159,3 +159,5 @@ public class GameSimulation extends Application {
 
 }
 */
+
+

@@ -8,6 +8,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.List;
+
+import com.sun.source.tree.Tree;
+import model.cell.Cell;
+import model.cell.CellType;
+import model.cell.GameOfLifeCell;
+import org.apache.commons.collections.ArrayStack;
+
 import java.util.ResourceBundle;
 import model.cell.Cell;
 import model.cell.CellType;
@@ -19,11 +26,6 @@ import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
 
-import com.sun.source.tree.Tree;
-import model.cell.Cell;
-import model.cell.CellType;
-import model.cell.GameOfLifeCell;
-import org.apache.commons.collections.ArrayStack;
 
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data

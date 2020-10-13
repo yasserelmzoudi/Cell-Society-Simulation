@@ -50,9 +50,3 @@
 #NO_RACE {
     -fx-fill: white;
 }
-#gamePanel {
-    -fx-alignment: center;
-}
-#PINK {
-    -fx-fill: pink;
-}

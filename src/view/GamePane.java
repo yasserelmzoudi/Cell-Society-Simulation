@@ -30,7 +30,7 @@ public class GamePane extends GridPane {
         List<String> myTypes = grid.getAllTypes();
 
         for (int i =0; i< myTypes.size(); i++) {
-          gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i).toLowerCase());
+          gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i));
           System.out.println(myTypes.get(i));
         }
 
@@ -45,7 +45,9 @@ public class GamePane extends GridPane {
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
-                String state = myGrid.getCell(r, c).getState().toString().toUpperCase();
+
+                String state = getColorId(myGrid.getCell(r, c).getState().toString());//myGrid.getCell(r, c).getState().toString().toLowerCase();
+               // System.out.println(state);
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(gridWidth) , myGrid.cellHeight(gridHeight));
                 }
