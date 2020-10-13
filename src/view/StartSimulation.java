@@ -42,6 +42,11 @@ public class StartSimulation extends Application {
     private Stage primaryStage;
     private Timeline animation;
     private ScreenVisuals root;
+    private SimulationSettingsReader simulationSettingsReader;
+    private InputStream simulationData;
+    private Class<?> gridType;
+    private ResourceBundle errorMessageSource;
+
     private int  i =0;
     private int windowWidth =600;
     private int windowHeight =600;
@@ -104,12 +109,6 @@ public class StartSimulation extends Application {
     }
 
     public void step() {
-        System.out.println("called"  + i);
-        i++;
-        System.out.println("H : " + grid.cellHeight(windowHeight));
-        System.out.println("W : " +grid.cellWidth(windowWidth));
-        System.out.println("R : " + grid.gridRows());
-        System.out.println("C : " +grid.gridColumns());
         checkNewFile();
         startSimulation();
     }

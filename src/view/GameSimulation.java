@@ -19,44 +19,6 @@ import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
 
 public class GameSimulation extends Application {
-<<<<<<< HEAD
-    private static final String RESOURCES = "resources/";
-    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
-    public static final String PANEL_STYLESHEET = "PanelStyles.css";
-    public static final String GUI_STYLESHEET = "GUI_Styles.css";
-    public static final String PANEL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + PANEL_STYLESHEET;
-    public static final String GUI_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + GUI_STYLESHEET;
-
-
-    private ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    private InputStream data = Grid.class.getClassLoader().getResourceAsStream(resources.getString("DataSource"));
-    //private Grid grid = new GameOfLifeGrid(data);
-    private Grid grid = new SegregationGrid(data);
-    private GamePane myVisual;
-    private GUI userinterface;
-    private Stage primaryStage;
-    private Timeline animation;
-    @Override
-    public void start(Stage stage) {
-        Scene myScene = setupScene(grid);
-        stage.setTitle("Simulation");
-        stage.setScene(myScene);
-        primaryStage = stage;
-        primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-        stage.show();
-        userinterface = new GUI(myVisual, grid);
-        setupGUI();
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> step());
-        animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-    }
-=======
->>>>>>> b5f6e9cc24bdd8ea3a8f459acadef01c4ad42b45
 
   public static final String PANEL_STYLESHEET = "PanelStyles.css";
   public static final String GUI_STYLESHEET = "GUI_Styles.css";
@@ -195,4 +157,7 @@ public class GameSimulation extends Application {
     return "";
   }
 
-}*/
+}
+*/
+
+

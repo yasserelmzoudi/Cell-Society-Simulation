@@ -5,13 +5,6 @@
     -fx-fill: red;
 }
 
-#gamePanel {
-    -fx-alignment: center;
-}
-#PINK {
-    -fx-fill: pink;
-}
-
 #EMPTY_OPEN {
     -fx-fill: white;
 }
