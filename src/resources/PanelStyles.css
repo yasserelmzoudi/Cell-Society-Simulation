@@ -8,8 +8,9 @@
 #gamePanel {
     -fx-alignment: center;
 }
-#pink {
+#PINK {
     -fx-fill: pink;
+}
 
 #EMPTY_OPEN {
     -fx-fill: white;
