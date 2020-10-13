@@ -18,6 +18,7 @@ import model.cell.PredatorPreyCell;
 import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
+import model.exceptions.InvalidCSVFileException;
 
 /**
  * Class encapsulating logic for initializing a Grid from a given data file. It converts the data
@@ -36,6 +37,8 @@ public abstract class Grid {
   protected final int gridHeight;
   private InputStream data;
   private String myType = "";
+  private ResourceBundle errorMessageSource;
+  private static final String EXCEPTION_RESOURCE = "exceptionMessages";
 
   /**
    * Constructor for this class.
@@ -43,6 +46,7 @@ public abstract class Grid {
    * @param data InputStream whose CSV file is read to initialize Grid
    */
   public Grid (InputStream data) {
+    errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
     this.data = data;
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
@@ -174,12 +178,11 @@ public abstract class Grid {
    * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll() {
+  public List<String[]> readAll() throws InvalidCSVFileException {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {
-      throw new InvalidCSVFileException()
-      return Collections.emptyList();
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
   }
 
