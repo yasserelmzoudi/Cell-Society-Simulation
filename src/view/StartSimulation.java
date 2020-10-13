@@ -10,8 +10,10 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.exceptions.InvalidSimulationTypeException;
 import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
+import model.grid.SimulationSettingsReader;
 
 import java.io.File;
 import java.util.ResourceBundle;
@@ -26,19 +28,35 @@ public class StartSimulation extends Application {
     private static final File DATA_DIRECTORY = new File("./data/");
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
+    private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
-
-    private ResourceBundle dataresource = ResourceBundle.getBundle("resources.data");
-    private InputStream data = Grid.class.getClassLoader().getResourceAsStream(dataresource.getString("DataSource"));
-    private Grid grid = new GameOfLifeGrid(data);
+   private Grid grid;
     private Stage primaryStage;
     private Timeline animation;
     private ScreenVisuals root;
+    private SimulationSettingsReader simulationSettingsReader;
+    private InputStream simulationData;
+    private Class<?> gridType;
+    private ResourceBundle errorMessageSource;
+
     private int  i =0;
     private int windowWidth =600;
     private int windowHeight =600;
     @Override
     public void start(Stage stage) {
+        errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+        simulationSettingsReader = new SimulationSettingsReader();
+        simulationData = Grid.class.getClassLoader()
+                .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
+        System.out.println(simulationSettingsReader.getSimulationType());
+        try {
+            gridType = Class.forName("model.grid." + simulationSettingsReader.getSimulationType() + "Grid");
+            Object gridInstance = gridType.getDeclaredConstructor(InputStream.class).newInstance(simulationData);
+            grid = (Grid) gridInstance;
+        } catch (Exception e) {
+            throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
+
+        }
         Scene myScene = setUpVisualScene(grid, windowWidth,windowHeight);
         stage.setTitle("Simulation");
         stage.setScene(myScene);
@@ -83,12 +101,6 @@ public class StartSimulation extends Application {
     }
 
     public void step() {
-        System.out.println("called"  + i);
-        i++;
-        System.out.println("H : " + grid.cellHeight(windowHeight));
-        System.out.println("W : " +grid.cellWidth(windowWidth));
-        System.out.println("R : " + grid.gridRows());
-        System.out.println("C : " +grid.gridColumns());
         checkNewFile();
         startSimulation();
     }

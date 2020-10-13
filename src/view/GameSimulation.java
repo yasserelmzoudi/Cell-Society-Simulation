@@ -1,3 +1,4 @@
+/*
 package view;
 
 import java.io.File;
@@ -157,3 +158,4 @@ public class GameSimulation extends Application {
   }
 
 }
+*/
