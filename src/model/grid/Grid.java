@@ -210,6 +210,4 @@ public abstract class Grid {
     return myTypes;
   }
 
-  public void writeToCSV()
-
 }
