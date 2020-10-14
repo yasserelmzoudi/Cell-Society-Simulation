@@ -48,7 +48,7 @@ public class StartSimulation extends Application {
     private int windowHeight =600;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage){
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
         simulationSettingsReader = new SimulationSettingsReader();
         simulationData = Grid.class.getClassLoader()
@@ -71,12 +71,7 @@ public class StartSimulation extends Application {
             System.exit(0);
         });
         stage.show();
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
-            try {
-                step();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {step();
         });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -85,7 +80,7 @@ public class StartSimulation extends Application {
     }
 
 
-    private void newSimulationWindow(Grid newgrid) throws IOException { //TODO: delete current and change back to uncommented
+    private void newSimulationWindow(Grid newgrid) { //TODO: delete current and change back to uncommented
         primaryStage.close();
         //Stage newstage = new Stage();
         primaryStage = new Stage();
@@ -97,7 +92,7 @@ public class StartSimulation extends Application {
     }
 
 
-    public Scene setUpVisualScene(Grid newgrid, int width, int height) throws IOException {
+    public Scene setUpVisualScene(Grid newgrid, int width, int height) {
         root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
         System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
@@ -111,17 +106,18 @@ public class StartSimulation extends Application {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() throws IOException {
+    public void step()  {
         checkNewFile();
         root.checkUserChanges();
         startSimulation();
+
     }
 
     public void setAnimationSpeed(double speed) {
         animation.setRate(speed);
     }
 
-    private void checkNewFile() throws IOException {
+    private void checkNewFile() {
         boolean chooseNewFile = root.getMyButtonDisplay().wantNewFile();
         if(chooseNewFile) {
             animation.pause();
@@ -139,7 +135,7 @@ public class StartSimulation extends Application {
 
     }
 
-    public void startSimulation() throws IOException {
+    public void startSimulation() {
         boolean shouldresume = root.getMyButtonDisplay().shouldcontinue();
         if (shouldresume) {
             grid.performNextStep();
