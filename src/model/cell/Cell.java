@@ -62,6 +62,10 @@ public abstract class Cell {
     return this.state;
   }
 
+  public int getNumericState() {
+    return state.ordinal();
+  }
+
   public void setRow(int row) {
     this.row = row;
   }
