@@ -59,16 +59,16 @@ public class GamePane extends Pane {
         myGrid = grid;
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                //Hexagon myPixel = getNodeFromGridPane(r,c);
+                Hexagon mynewPixel = new Hexagon(r, c, determinePolyLength());
+                getNodeFromGridPane(mynewPixel);
 
                 String state = getColorId(myGrid.getCell(r, c).getState().toString());
                 //System.out.println(state);
 
-                Hexagon myPixel = new Hexagon(r, c, determinePolyLength());
-                    //myPixel = new Polygon(r, c, r+myGrid.cellWidth(gridWidth),c +myGrid.cellHeight(gridHeight));
-                setImage(myPixel, state);
-                myPixel.setId(state);
-                this.getChildren().add(myPixel);
+
+                setImage(mynewPixel, state);
+                mynewPixel.setId(state);
+                this.getChildren().add(mynewPixel);
             }
         }
     }
@@ -84,15 +84,18 @@ public class GamePane extends Pane {
     }
 
 
-    private Hexagon getNodeFromGridPane(int row, int col) {
+    private void getNodeFromGridPane(Hexagon newPixel) {
         for (Node node : this.getChildren()) {
             if (node instanceof Hexagon ) {
                 Hexagon currentHexagon = (Hexagon) node;
-                if(currentHexagon.rowIndex() == row || currentHexagon.columIndex() == col)
-                    return currentHexagon;
+               System.out.println(currentHexagon.getPointArray());
+                System.out.println(newPixel.getPointArray());
+                if(currentHexagon.getPointArray().equals(newPixel.getPointArray())){
+                    System.out.println("true");
+                    this.getChildren().remove(currentHexagon);
+                }
             }
         }
-        return null;
     }
 
     private double determinePolyLength() {
