@@ -1,5 +1,10 @@
 package view;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import model.exceptions.UnableToSaveFileException;
 import model.grid.Grid;
 
 import java.util.Arrays;
@@ -21,6 +27,7 @@ public class UserOptions extends GridPane{
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     public static final String CONTROL_STYLESHEET = "Control_Styles.css";
     public static final String CONTROL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + CONTROL_STYLESHEET;
+    private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
     private boolean simShouldResume = true;
     private boolean wantNewFile = false;
@@ -31,12 +38,15 @@ public class UserOptions extends GridPane{
     private TextArea descriptionField;
     private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
     private ResourceBundle titlesBundle = ResourceBundle.getBundle("resources.title");
+    private ResourceBundle errorMessageSource;
 
     public UserOptions(GamePane myPane, Grid grid) {
         myGamePane = myPane;
         myGameGrid = grid;
         setUpButtons();
         addButtonsToGui();
+        errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+
     }
 
     private void addButtonsToGui() {
@@ -176,7 +186,7 @@ public class UserOptions extends GridPane{
     }
 
 
-    private void writeToFile() {
+    private void writeToFile() throws UnableToSaveFileException {
         String myAuthor = authorField.getText();
         String myTitle = titleField.getText();
         String myDescription = descriptionField.getText();
@@ -189,7 +199,15 @@ public class UserOptions extends GridPane{
         if(myDescription.isEmpty()) {
             myDescription = "No description needed";
         }
-        System.out.println(myAuthor + " " + " " + myTitle+ " " +myDescription); //TODO save all this in new file
+        try (OutputStream saveFile = new FileOutputStream("resources/" + myTitle + ".properties")) {
+            Properties prop = new Properties();
+            prop.setProperty("Title", myTitle);
+            prop.setProperty("Author", myAuthor);
+            prop.setProperty("Description", myDescription);
+            prop.store(saveFile, null);
+        } catch (IOException e) {
+            throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
+        }
     }
 
 
