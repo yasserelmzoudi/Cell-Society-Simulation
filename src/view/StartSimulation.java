@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-public class StartSimulation extends Application {
+public class StartSimulation  {
     private static final String RESOURCES = "resources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     public static final String PANEL_STYLESHEET = "PanelStyles.css";
@@ -43,11 +43,16 @@ public class StartSimulation extends Application {
     private Timeline animation;
     private ScreenVisuals root;
 
-    private int  i =0;
-    private int windowWidth =600;
-    private int windowHeight =600;
+    private int windowWidth =0;
+    private int windowHeight =0;
 
-    @Override
+    public StartSimulation(Stage stage, int winWidth, int winHeight) {
+        windowWidth = winWidth;
+        windowHeight = winHeight;
+        start(stage);
+
+    }
+
     public void start(Stage stage){
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
         simulationSettingsReader = new SimulationSettingsReader();

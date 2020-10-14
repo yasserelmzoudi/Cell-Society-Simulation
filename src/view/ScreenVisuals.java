@@ -20,6 +20,10 @@ public class ScreenVisuals extends BorderPane {
     private ResourceBundle titleresource = ResourceBundle.getBundle("resources.title");
     private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image", "Burning Tree Image", "Tree Image", "Water Image", "Green Color", "Grass Image");
 //TODO change userChangeOptions to be according to a grid, probably in a configuration file
+//TODO change main directory for loading file to fit with Yasser's properties file directory
+// TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
+// TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
+
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
     private static final int GRID_PADDING_LR =100;
@@ -140,18 +144,13 @@ public class ScreenVisuals extends BorderPane {
         });
     }
 
-
-
-
     public void changeCellStatus(int rowIndex, int colIndex) {
         Random rand = new Random();
         List<String> cellChoices = myGrid.getAllTypes();
         System.out.println(cellChoices);
         String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
         CellType newCellType = CellType.valueOf(newChoice);
-        System.out.println("The old state is: " + myGrid.getCell(rowIndex, colIndex).getState());
         myGrid.getCell(rowIndex, colIndex).setCellType(newCellType);
-        System.out.println("The new state is: " + myGrid.getCell(rowIndex, colIndex).getState());
         myGamePane.setUpPane(myGrid);
     }
 
@@ -167,9 +166,5 @@ public class ScreenVisuals extends BorderPane {
             }
         }
     }
-
-    //TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
-    // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
-
 
 }

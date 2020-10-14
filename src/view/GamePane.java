@@ -31,7 +31,6 @@ public class GamePane extends GridPane {
         gridHeight = height;
         gridWidth =width;
         myGrid = grid;
-        this.setId("GameDisplay");
 
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
@@ -39,7 +38,6 @@ public class GamePane extends GridPane {
         for (int i =0; i< myTypes.size(); i++) {
           gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i));
         }
-
     }
 
 
