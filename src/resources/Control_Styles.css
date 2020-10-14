@@ -5,7 +5,7 @@
     -fx-border-radius: 5px;
     -fx-text-fill: #000000;
     -fx-background-color: #a6a6a6;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 6px;
 }
 #dataPanel {
     -fx-border-color: #a6a6a6;
@@ -26,4 +26,7 @@
 }
 .label {
     -fx-pref-width: 80;
+}
+#GameDisplay {
+    -fx-grid-lines-visible: true;
 }

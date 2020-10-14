@@ -13,7 +13,6 @@ import javafx.scene.shape.Rectangle;
 import model.grid.Grid;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,28 +26,26 @@ public class GamePane extends GridPane {
     private int gridWidth;
     private TreeMap<String, String> gridCellTypesWithColor;
 
-    //TODO make grid give differnt types of cells in a list
-
     public GamePane(Grid grid, int width, int height){
 
         gridHeight = height;
         gridWidth =width;
         myGrid = grid;
-        //this.setId("gamePanel");
 
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
 
         for (int i =0; i< myTypes.size(); i++) {
           gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i));
-          System.out.println(myTypes.get(i));
         }
-
     }
 
 
-    public void setUpPane(Grid grid) {
+    private boolean isImage(String stringToCheck) {
+        return stringToCheck.contains(".png") || stringToCheck.contains(".jpg");
+    }
 
+    public void setUpPane(Grid grid) {
         //System.out.format("Cell Height: %d, Frame Height: %d, Number of Columns: %d \n", cellHeight, (int) framesize.getHeight(), gridRows);
         //System.out.format("Cell Width: %d, Frame Width: %d, Number of Rows: %d \n", cellWidth, (int) framesize.getWidth(), gridColumns);
         myGrid = grid;
@@ -56,18 +53,16 @@ public class GamePane extends GridPane {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
                 Rectangle myPixel = getNodeFromGridPane(r,c);
 
-                String state = getColorId(myGrid.getCell(r, c).getState().toString());//myGrid.getCell(r, c).getState().toString().toLowerCase();
+                String state = getColorId(myGrid.getCell(r, c).getState().toString());
+                //System.out.println(state);
                 if(myPixel==null) {
                     myPixel = new Rectangle(myGrid.cellWidth(gridWidth) , myGrid.cellHeight(gridHeight));
                 }
-                else{
+                else if(this.getChildren().contains(myPixel)) {
                     this.getChildren().remove(myPixel);
                 }
-                if(state.equals("Images/Shark.png") || state.equals("Images/Fish.png")) {
-                    setImageIcon(myPixel, state);
-
-                }
-                else myPixel.setId(state);
+                setImage(myPixel, state);
+                myPixel.setId(state);
                 this.setRowIndex(myPixel, r);
                 this.setColumnIndex(myPixel, c);
                 this.getChildren().add(myPixel);
@@ -81,7 +76,8 @@ public class GamePane extends GridPane {
 
     public void setNewColor(String cellType, String newColor) {
         gridCellTypesWithColor.remove(cellType);
-        gridCellTypesWithColor.put(cellType, newColor);
+        gridCellTypesWithColor.putIfAbsent(cellType, newColor);
+
     }
 
 
@@ -103,13 +99,14 @@ public class GamePane extends GridPane {
         return gridWidth;
     }
 
-    public void setImageIcon(Rectangle cell, String imageDirectory) {
+    public void setImage(Rectangle cell, String imageDirectory) {
+        if(imageDirectory ==null || !isImage(imageDirectory)) return;
         File file = new File(imageDirectory);
-        System.out.println(imageDirectory);
         try {
             BufferedImage temp = ImageIO.read(file);
             Image image = SwingFXUtils.toFXImage(temp, null);
             cell.setFill(new ImagePattern(image));
+            return;
         } catch (IOException e) {
             cell.setFill(Color.RED);
         }

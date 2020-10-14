@@ -20,7 +20,9 @@ public class Start extends Application {
      * Starts a new Simulation Window
      */
     public void start(Stage stage) {
-        new StartSimulation();
+        new StartSimulation(stage, 600,600);
+        Stage newStage = new Stage();
+        new StartSimulation(newStage, 600,600);
     }
 
     /**

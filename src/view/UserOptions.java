@@ -108,9 +108,8 @@ public class UserOptions extends GridPane{
             }
         });
 
-        List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton, quitButton, saveButton);
+        List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton,saveButton, quitButton);
         return  allButtons;
-
     }
 
 
