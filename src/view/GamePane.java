@@ -4,12 +4,17 @@ package view;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import javafx.scene.shape.TriangleMesh;
 import model.grid.Grid;
 
 import javax.imageio.ImageIO;
@@ -20,7 +25,8 @@ import java.util.*;
 import java.util.List;
 
 
-public class GamePane extends GridPane {
+
+public class GamePane extends Pane {
     private Grid myGrid;
     private int gridHeight;
     private int gridWidth;
@@ -31,7 +37,7 @@ public class GamePane extends GridPane {
         gridHeight = height;
         gridWidth =width;
         myGrid = grid;
-
+        this.setId("GameGrid");
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
 
@@ -45,26 +51,23 @@ public class GamePane extends GridPane {
         return stringToCheck.contains(".png") || stringToCheck.contains(".jpg");
     }
 
+
+
     public void setUpPane(Grid grid) {
         //System.out.format("Cell Height: %d, Frame Height: %d, Number of Columns: %d \n", cellHeight, (int) framesize.getHeight(), gridRows);
         //System.out.format("Cell Width: %d, Frame Width: %d, Number of Rows: %d \n", cellWidth, (int) framesize.getWidth(), gridColumns);
         myGrid = grid;
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Rectangle myPixel = getNodeFromGridPane(r,c);
+                //Hexagon myPixel = getNodeFromGridPane(r,c);
 
                 String state = getColorId(myGrid.getCell(r, c).getState().toString());
                 //System.out.println(state);
-                if(myPixel==null) {
-                    myPixel = new Rectangle(myGrid.cellWidth(gridWidth) , myGrid.cellHeight(gridHeight));
-                }
-                else if(this.getChildren().contains(myPixel)) {
-                    this.getChildren().remove(myPixel);
-                }
+
+                Hexagon myPixel = new Hexagon(r, c, determinePolyLength());
+                    //myPixel = new Polygon(r, c, r+myGrid.cellWidth(gridWidth),c +myGrid.cellHeight(gridHeight));
                 setImage(myPixel, state);
                 myPixel.setId(state);
-                this.setRowIndex(myPixel, r);
-                this.setColumnIndex(myPixel, c);
                 this.getChildren().add(myPixel);
             }
         }
@@ -81,15 +84,23 @@ public class GamePane extends GridPane {
     }
 
 
-    private Rectangle getNodeFromGridPane(int row, int col) {
+    private Hexagon getNodeFromGridPane(int row, int col) {
         for (Node node : this.getChildren()) {
-            if (node instanceof Rectangle && GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return (Rectangle) node;
+            if (node instanceof Hexagon ) {
+                Hexagon currentHexagon = (Hexagon) node;
+                if(currentHexagon.rowIndex() == row || currentHexagon.columIndex() == col)
+                    return currentHexagon;
             }
         }
         return null;
     }
 
+    private double determinePolyLength() {
+        double maxWidth = gridWidth / (myGrid.gridColumns()/2);
+        double maxHeight = gridHeight / myGrid.gridRows();
+
+        return Math.min(maxHeight, maxWidth)/1.5;
+    }
 
     public int getGridHeight() {
         return gridHeight;
@@ -99,7 +110,7 @@ public class GamePane extends GridPane {
         return gridWidth;
     }
 
-    public void setImage(Rectangle cell, String imageDirectory) {
+    public void setImage(Hexagon cell, String imageDirectory) {
         if(imageDirectory ==null || !isImage(imageDirectory)) return;
         File file = new File(imageDirectory);
         try {
@@ -111,5 +122,7 @@ public class GamePane extends GridPane {
             cell.setFill(Color.RED);
         }
     }
+
+
 
 }

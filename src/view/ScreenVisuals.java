@@ -23,7 +23,9 @@ public class ScreenVisuals extends BorderPane {
 //TODO change main directory for loading file to fit with Yasser's properties file directory
 // TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
 // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
+//TODO For complete: before starting simulation, run a dialog that has the language, the style- dark, unc, etc. (this will load in a style sheet based onthe value in the combo box)
 
+    //Pop up a dialog before that sheos
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
     private static final int GRID_PADDING_LR =100;
