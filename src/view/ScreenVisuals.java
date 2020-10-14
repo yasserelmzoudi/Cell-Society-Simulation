@@ -1,9 +1,9 @@
 package view;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -18,8 +18,8 @@ import java.util.*;
 public class ScreenVisuals extends BorderPane {
     private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
     private ResourceBundle titleresource = ResourceBundle.getBundle("resources.title");
-    private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image");
-
+    private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image", "Burning Tree Image", "Tree Image", "Water Image", "Green Color", "Grass Image");
+//TODO change userChangeOptions to be according to a grid, probably in a configuration file
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
     private static final int GRID_PADDING_LR =100;
@@ -71,7 +71,7 @@ public class ScreenVisuals extends BorderPane {
         HBox cellChanger = new HBox();
         cellTypes = myGrid.getAllTypes();
         addDropDowns(cellTypes, cellChanger);
-        cellChanger.setId(objectIdBundle.getString("TilePane"));
+        cellChanger.setId(objectIdBundle.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
         optionDisplay.setTop(makeSlider());
@@ -83,7 +83,7 @@ public class ScreenVisuals extends BorderPane {
     private void addDropDowns(List<String> cellNames, HBox cellChanger) {
         for (String cell: cellNames) {
             HBox column = new HBox();
-            Label cellTypeLabel = new Label(cell);
+            Label cellTypeLabel = new Label(cell.toLowerCase()+": ");
             column.getChildren().add(cellTypeLabel);
             column.getChildren().add(makeDropDownOptions());
             cellChanger.getChildren().add(column);
@@ -104,7 +104,6 @@ public class ScreenVisuals extends BorderPane {
         cellChange.add(eachcell);
         return eachcell;
     }
-
 
 
     private Node makeSlider() {
@@ -147,9 +146,12 @@ public class ScreenVisuals extends BorderPane {
     public void changeCellStatus(int rowIndex, int colIndex) {
         Random rand = new Random();
         List<String> cellChoices = myGrid.getAllTypes();
+        System.out.println(cellChoices);
         String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
         CellType newCellType = CellType.valueOf(newChoice);
+        System.out.println("The old state is: " + myGrid.getCell(rowIndex, colIndex).getState());
         myGrid.getCell(rowIndex, colIndex).setCellType(newCellType);
+        System.out.println("The new state is: " + myGrid.getCell(rowIndex, colIndex).getState());
         myGamePane.setUpPane(myGrid);
     }
 
@@ -166,11 +168,8 @@ public class ScreenVisuals extends BorderPane {
         }
     }
 
-
-
     //TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
     // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
-    //TODO or write to css file so that you won't have to change the layout of game panel
 
 
 }

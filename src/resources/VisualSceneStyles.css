@@ -36,26 +36,27 @@
 .combo-box {
     -fx-pref-width: 100;
     -fx-font-size: 9pt;
-    -fx-spacing: 50;
-    -fx-label-padding: 15;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+    -fx-padding: 0,0,0,0;
+}
+.label {
+    -fx-alignment: center-right;
+    -fx-font-size: 12pt;
+    -fx-padding: 0,0,0,0;
+    -fx-font-family: "Times New Roman";
 }
 .combo-box-popup > .list-view {
     -fx-pref-width: 100;
     -fx-font-size: 9pt;
 }
 
-.h-box {
-    -fx-pref-columns: 3;
-    -fx-spacing: 30;
-}
-#tilePane {
-    -fx-alignment: center;
-    -fx-spacing: 15;
-    -fx-padding: 15;
-}
 #bottomPanel {
-
-    -fx-spacing: 50px;
+    -fx-spacing: 70px;
+    -fx-alignment: center;
+    -fx-padding: 10;
+    -fx-background-color: #7bafd8;
+    -fx-background-radius: 3;
 }
 #title {
     -fx-alignment: center;
@@ -64,6 +65,11 @@
 #buttonPanel {
     -fx-alignment: center;
     -fx-padding: 10px;
+}
+
+#hBox {
+    -fx-alignment: center;
+    -fx-padding: 10;
 }
 
 
