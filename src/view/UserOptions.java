@@ -21,6 +21,7 @@ import model.grid.Grid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import model.grid.GridCSVWriter;
 
 public class UserOptions extends GridPane{
     private static final String RESOURCES = "resources/";
@@ -208,6 +209,8 @@ public class UserOptions extends GridPane{
         } catch (IOException e) {
             throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
         }
+        GridCSVWriter csvFile = new GridCSVWriter(myGameGrid, myTitle);
+        csvFile.saveFile();
     }
 
 
