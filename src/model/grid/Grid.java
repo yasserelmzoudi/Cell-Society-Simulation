@@ -180,6 +180,10 @@ public abstract class Grid {
     return gridOfCells[row][column];
   }
 
+  public int getCellTypeState(int row, int column) {
+    return getCell(row, column).getNumericState();
+  }
+
   /**
    * Code adopted from Professor Duvall to read CSV files
    * @return List<String[]> representing all of the lines read from data
@@ -210,4 +214,11 @@ public abstract class Grid {
     return myTypes;
   }
 
+  public int getGridHeight() {
+    return gridHeight;
+  }
+
+  public int getGridWidth() {
+    return gridWidth;
+  }
 }
