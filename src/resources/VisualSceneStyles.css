@@ -9,6 +9,9 @@
     -fx-alignment: center;
 }
 
+#GameGrid {
+    -fx-alignment: center;
+}
 #slider{
     -fx-font-size: 9pt;
     -fx-padding: 10px;

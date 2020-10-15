@@ -47,5 +47,4 @@ public class Hexagon extends Polygon{
     public int columIndex() {
         return myColumn;
     }
-    public String getPointArray() {return pointArray.toString();}
 }

@@ -11,10 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.TriangleMesh;
 import model.grid.Grid;
 
 import javax.imageio.ImageIO;
@@ -31,16 +27,17 @@ public class GamePane extends Pane {
     private int gridHeight;
     private int gridWidth;
     private TreeMap<String, String> gridCellTypesWithColor;
+    private Hexagon[][] allHex;
 
     public GamePane(Grid grid, int width, int height){
-
         gridHeight = height;
         gridWidth =width;
         myGrid = grid;
+        allHex = new Hexagon[myGrid.gridRows()][myGrid.gridColumns()];
         this.setId("GameGrid");
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
-
+        makeHex();
         for (int i =0; i< myTypes.size(); i++) {
           gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i));
         }
@@ -59,13 +56,9 @@ public class GamePane extends Pane {
         myGrid = grid;
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Hexagon mynewPixel = new Hexagon(r, c, determinePolyLength());
-                getNodeFromGridPane(mynewPixel);
-
+                Hexagon mynewPixel = allHex[r][c];
+                checkForRemoval(mynewPixel);
                 String state = getColorId(myGrid.getCell(r, c).getState().toString());
-                //System.out.println(state);
-
-
                 setImage(mynewPixel, state);
                 mynewPixel.setId(state);
                 this.getChildren().add(mynewPixel);
@@ -80,29 +73,19 @@ public class GamePane extends Pane {
     public void setNewColor(String cellType, String newColor) {
         gridCellTypesWithColor.remove(cellType);
         gridCellTypesWithColor.putIfAbsent(cellType, newColor);
-
     }
 
 
-    private void getNodeFromGridPane(Hexagon newPixel) {
-        for (Node node : this.getChildren()) {
-            if (node instanceof Hexagon ) {
-                Hexagon currentHexagon = (Hexagon) node;
-               System.out.println(currentHexagon.getPointArray());
-                System.out.println(newPixel.getPointArray());
-                if(currentHexagon.getPointArray().equals(newPixel.getPointArray())){
-                    System.out.println("true");
-                    this.getChildren().remove(currentHexagon);
-                }
-            }
+    private void checkForRemoval(Hexagon newPixel) {
+        if(this.getChildren().contains(newPixel)) {
+            this.getChildren().remove(newPixel);
         }
     }
 
     private double determinePolyLength() {
-        double maxWidth = gridWidth / (myGrid.gridColumns()/2);
-        double maxHeight = gridHeight / myGrid.gridRows();
+        double maxHeight = gridHeight / (myGrid.gridRows()*1.7);
 
-        return Math.min(maxHeight, maxWidth)/1.5;
+        return maxHeight;
     }
 
     public int getGridHeight() {
@@ -123,6 +106,15 @@ public class GamePane extends Pane {
             return;
         } catch (IOException e) {
             cell.setFill(Color.RED);
+        }
+    }
+
+    public void makeHex() {
+        for (int r = 0; r < myGrid.gridRows(); r++) {
+            for (int c = 0; c < myGrid.gridColumns(); c++) {
+                Hexagon mynewPixel = new Hexagon(r, c, determinePolyLength());
+                allHex[r][c] = mynewPixel;
+            }
         }
     }
 

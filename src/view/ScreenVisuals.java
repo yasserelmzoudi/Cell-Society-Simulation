@@ -131,20 +131,9 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void addGridEvent() {
-        myGamePane.getChildren().forEach(item -> {
-            item.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Node source = (Node)event.getSource() ;
-                    Integer colIndex = GridPane.getColumnIndex(source);
-                    Integer rowIndex = GridPane.getRowIndex(source);
-                    changeCellStatus(rowIndex.intValue(), colIndex.intValue());
-
-                }
-            });
-
-        });
+    myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
     }
+
 
     public void changeCellStatus(int rowIndex, int colIndex) {
         Random rand = new Random();
