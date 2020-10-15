@@ -199,7 +199,7 @@ public class UserOptions extends GridPane{
         if(myDescription.isEmpty()) {
             myDescription = "No description needed";
         }
-        try (OutputStream saveFile = new FileOutputStream("resources/" + myTitle + ".properties")) {
+        try (OutputStream saveFile = new FileOutputStream("src/resources/" + myTitle + ".properties")) {
             Properties prop = new Properties();
             prop.setProperty("Title", myTitle);
             prop.setProperty("Author", myAuthor);
