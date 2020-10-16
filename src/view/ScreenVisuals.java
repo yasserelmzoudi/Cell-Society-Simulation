@@ -54,7 +54,7 @@ public class ScreenVisuals extends BorderPane {
     private void setupUserInterface() {
         int gridHeight = Math.max(0, visualHeight-GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
-        myGamePane = new TriangleGamePane(myGrid, gridWidth, gridHeight);
+        myGamePane = new HexagonGamePane(myGrid, gridWidth, gridHeight);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
@@ -139,6 +139,7 @@ public class ScreenVisuals extends BorderPane {
 
 
     public void changeCellStatus(double x, double y) {
+       // System.out.println("X: " + x+ "Y: "+y);
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -149,7 +150,6 @@ public class ScreenVisuals extends BorderPane {
                     CellType newCellType = CellType.valueOf(newChoice);
                     myGrid.getCell(i,j).setCellType(newCellType);
                     myGamePane.setUpPane(myGrid);
-                    //swww
                 }
             }
         }
