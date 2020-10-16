@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -32,6 +33,8 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
+    private static final String PATH = "/resources/randomizedSimulation.properties";
+
 
 
     private SimulationSettingsReader simulationSettingsReader;
@@ -55,7 +58,7 @@ public class StartSimulation  {
 
     public void start(Stage stage){
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-        simulationSettingsReader = new SimulationSettingsReader();
+        simulationSettingsReader = new SimulationSettingsReader(PATH);
         simulationData = Grid.class.getClassLoader()
                 .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
         System.out.println(simulationSettingsReader.getSimulationType());
@@ -65,8 +68,15 @@ public class StartSimulation  {
             grid = (Grid) gridInstance;
         } catch (Exception e) {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
-
         }
+
+        try {
+            Method randomizeType = Grid.class.getMethod(simulationSettingsReader.getSimulationRandomization());
+            randomizeType.invoke(grid);
+        } catch(Exception e) {
+            throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
+        }
+
         Scene myScene = setUpVisualScene(grid, windowWidth,windowHeight);
         //stage.setTitle(simulationSettingsReader.getSimulationTitle());
         stage.setScene(myScene);
@@ -127,6 +137,7 @@ public class StartSimulation  {
         if(chooseNewFile) {
             animation.pause();
             String path = chooseNewFile();
+            System.out.println(path);
             if(path.isEmpty()) {
                 root.getMyButtonDisplay().resetGUI(grid);
                 animation.play();
