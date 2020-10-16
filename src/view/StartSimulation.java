@@ -32,6 +32,8 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
+    private static final String PATH = "/resources/initialSimulationSettings.properties";
+
 
 
     private SimulationSettingsReader simulationSettingsReader;
@@ -55,7 +57,7 @@ public class StartSimulation  {
 
     public void start(Stage stage){
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-        simulationSettingsReader = new SimulationSettingsReader();
+        simulationSettingsReader = new SimulationSettingsReader(PATH);
         simulationData = Grid.class.getClassLoader()
                 .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
         System.out.println(simulationSettingsReader.getSimulationType());
@@ -127,6 +129,7 @@ public class StartSimulation  {
         if(chooseNewFile) {
             animation.pause();
             String path = chooseNewFile();
+            System.out.println(path);
             if(path.isEmpty()) {
                 root.getMyButtonDisplay().resetGUI(grid);
                 animation.play();
