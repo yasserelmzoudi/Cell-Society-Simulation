@@ -10,12 +10,14 @@ public class SimulationSettingsReader {
   private InputStream initialSimulationSettings;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
   private ResourceBundle errorMessageSource;
+  private String path;
 
-  public SimulationSettingsReader() {
+
+  public SimulationSettingsReader(String path) {
     try {
       errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
       prop = new Properties();
-      initialSimulationSettings = SimulationSettingsReader.class.getResourceAsStream("/resources/initialSimulationSettings.properties");
+      initialSimulationSettings = SimulationSettingsReader.class.getResourceAsStream(path);
       prop.load(initialSimulationSettings);
     } catch (Exception e) {
       throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
@@ -40,6 +42,10 @@ public class SimulationSettingsReader {
 
   public String getSimulationDescription() {
     return prop.getProperty("Description");
+  }
+
+  public String getSimulationRandomization() {
+    return prop.getProperty("Random");
   }
 
   public String getSimulationDataSourceCSV() {
