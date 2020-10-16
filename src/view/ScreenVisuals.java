@@ -149,6 +149,7 @@ public class ScreenVisuals extends BorderPane {
                     CellType newCellType = CellType.valueOf(newChoice);
                     myGrid.getCell(i,j).setCellType(newCellType);
                     myGamePane.setUpPane(myGrid);
+                    //swww
                 }
             }
         }
