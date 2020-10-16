@@ -44,6 +44,10 @@ public class SimulationSettingsReader {
     return prop.getProperty("Description");
   }
 
+  public String getSimulationRandomization() {
+    return prop.getProperty("Random");
+  }
+
   public String getSimulationDataSourceCSV() {
     return prop.getProperty("DataSourceCSV");
   }

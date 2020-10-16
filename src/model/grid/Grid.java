@@ -46,7 +46,7 @@ public abstract class Grid {
   private String myType = "";
   private ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-
+  private List<CellType> gridTypes;
   /**
    * Constructor for this class.
    *
@@ -61,6 +61,16 @@ public abstract class Grid {
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
     gridSetUp(readLines);
+    gridTypes = new ArrayList<>();
+    setUpGridTypes();
+  }
+
+  public void setUpGridTypes() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridTypes.add(gridOfCells[row][column].getState());
+      }
+    }
   }
 
   /**
@@ -220,5 +230,32 @@ public abstract class Grid {
 
   public int getGridWidth() {
     return gridWidth;
+  }
+
+  private CellType getRandomCellType() {
+    return CellType.valueOf(getAllTypes().get(getRandomIndex(getAllTypes().size())));
+  }
+
+  private int getRandomIndex(int range){
+    return (int) (Math.random() * range);
+  }
+
+  public void completeRandomizeGrid() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(getRandomCellType());
+      }
+    }
+  }
+
+  public void swapRandomizeGrid() {
+    Collections.shuffle(gridTypes);
+    int gridTypesCount = 0;
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(gridTypes.get(gridTypesCount));
+        gridTypesCount++;
+      }
+    }
   }
 }

@@ -79,5 +79,7 @@ public abstract class Cell {
   }
 
 
+  public void randomize() {
 
+  }
 }
