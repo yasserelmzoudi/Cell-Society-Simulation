@@ -22,7 +22,7 @@ public class UserOptions extends GridPane{
     public static final String CONTROL_STYLESHEET = "Control_Styles.css";
     public static final String CONTROL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + CONTROL_STYLESHEET;
 
-    private boolean simShouldResume = false;
+    private boolean simShouldResume = true;
     private boolean wantNewFile = false;
     private Grid myGameGrid;
     private GamePane myGamePane;

@@ -17,8 +17,8 @@ public class RockPaperScissorsGrid extends Grid{
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public RockPaperScissorsGrid(InputStream data) {
-    super(data);
+  public RockPaperScissorsGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**

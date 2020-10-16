@@ -17,8 +17,8 @@ public class PredatorPreyGrid extends Grid {
    *
    * @param data Data to read.
    */
-  public PredatorPreyGrid(InputStream data) {
-    super(data);
+  public PredatorPreyGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**

@@ -16,8 +16,8 @@ public class SpreadingOfFireGrid extends Grid {
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public SpreadingOfFireGrid(InputStream data) {
-    super(data);
+  public SpreadingOfFireGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**

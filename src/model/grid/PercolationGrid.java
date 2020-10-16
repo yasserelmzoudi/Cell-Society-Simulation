@@ -17,8 +17,8 @@ public class PercolationGrid extends Grid{
    *
    * @param data Data to read.
    */
-  public PercolationGrid(InputStream data) {
-    super(data);
+  public PercolationGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**

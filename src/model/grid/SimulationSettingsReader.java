@@ -45,4 +45,12 @@ public class SimulationSettingsReader {
   public String getSimulationDataSourceCSV() {
     return prop.getProperty("DataSourceCSV");
   }
+
+  public String getSimulationEdgePolicy() {
+    return prop.getProperty("EdgePolicy");
+  }
+
+  public String getSimulationNeighborhoodPolicy() {
+    return prop.getProperty("NeighborhoodPolicy");
+  }
 }

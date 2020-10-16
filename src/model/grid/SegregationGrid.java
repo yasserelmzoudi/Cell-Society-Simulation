@@ -17,8 +17,8 @@ public class SegregationGrid extends Grid{
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public SegregationGrid(InputStream data) {
-    super(data);
+  public SegregationGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**

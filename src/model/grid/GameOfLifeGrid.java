@@ -17,8 +17,8 @@ public class GameOfLifeGrid extends Grid {
    *
    * @param data Data to read.
    */
-  public GameOfLifeGrid(InputStream data) {
-    super(data);
+  public GameOfLifeGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
+    super(data, edgePolicy, neighborhoodPolicy);
   }
 
   /**
