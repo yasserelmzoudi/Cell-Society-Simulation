@@ -36,7 +36,6 @@ public abstract class GamePane extends Pane {
         myGrid = grid;
         makeArray(grid);
         allShapes = getInitialArray();
-        this.setId("GameGrid");
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
         for (int i =0; i< myTypes.size(); i++) {
@@ -91,6 +90,8 @@ public abstract class GamePane extends Pane {
         return gridWidth;
     }
 
+
+
     public void setImage(Shape cell, String imageDirectory) {
         if(imageDirectory ==null || !isImage(imageDirectory)) return;
         File file = new File(imageDirectory);
@@ -103,6 +104,21 @@ public abstract class GamePane extends Pane {
             cell.setFill(Color.RED);
         }
     }
+
+    public Grid getMyGrid() {
+        return myGrid;
+    }
+
+    public double cellWidth() {
+        double cellWidth =  (double) getGridWidth() / (double) getMyGrid().gridColumns();
+        return cellWidth;
+    }
+
+    public double cellHeight() {
+        double cellHeight = (double) getGridHeight() / (double) getMyGrid().gridRows();
+        return cellHeight;
+    }
+
 
     public abstract void makeArray(Grid grid);
     public abstract Shape[][] getInitialArray();

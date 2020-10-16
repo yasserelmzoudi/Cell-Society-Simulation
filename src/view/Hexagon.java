@@ -8,18 +8,14 @@ public class Hexagon extends Polygon{
     private int myRow;
     private int myColumn;
     private Double[] pointArray;
-    private int upperLeftX;
-    private int upperLeftY;
-    public Hexagon (int row, int column, double hexLength, int upperX, int upperY) {
+    public Hexagon (int row, int column, double hexWidth, double hexLength) {
         myRow = row;
         myColumn =column;
-        upperLeftX = upperX;
-        upperLeftY = upperY;
-        makeInitialShape(myRow, myColumn, hexLength);
+        makeInitialShape(myRow, myColumn, hexWidth, hexLength);
 
     }
 
-    public void makeInitialShape(double row, double col, double sideLength) {
+    public void makeInitialShape(double row, double col, double hexWidth, double hexLength) {
         if (row % 2 == 1) {
             col = col + 0.5;
             row = row + row / 2;
@@ -28,23 +24,16 @@ public class Hexagon extends Polygon{
         }
         row = row + 0.5;
         pointArray = new Double[]{
-                getUpperLeftX() + col * sideLength, getUpperLeftY() + row * sideLength,
-                getUpperLeftX() + (col + 0.5) * sideLength, getUpperLeftY() + (row - 0.5) * sideLength,
-                getUpperLeftX() + (col + 1) * sideLength, getUpperLeftY() + row * sideLength,
-                getUpperLeftX() + (col + 1) * sideLength, getUpperLeftY() + (row + 1) * sideLength,
-                getUpperLeftX() + (col + 0.5) * sideLength, getUpperLeftY() + (row + 1.5) * sideLength,
-                getUpperLeftX() + col * sideLength, getUpperLeftY() + (row + 1) * sideLength
+                 col * hexWidth, row * hexLength,
+                (col + 0.5) * hexWidth, (row - 0.5) * hexLength,
+                (col + 1) * hexWidth,  row * hexLength,
+                (col + 1) * hexWidth,  (row + 1) * hexLength,
+                 (col + 0.5) * hexWidth,  (row + 1.5) * hexLength,
+                col * hexWidth,  (row + 1) * hexLength
         };
         this.getPoints().addAll(pointArray);
     }
 
 
-    private int getUpperLeftX () {
-        return upperLeftX;
-    }
-
-    private int getUpperLeftY() {
-        return upperLeftY;
-    }
 
 }

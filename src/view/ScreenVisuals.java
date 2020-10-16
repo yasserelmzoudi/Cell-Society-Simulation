@@ -1,14 +1,12 @@
 package view;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import model.cell.CellType;
 import model.grid.Grid;
@@ -28,8 +26,8 @@ public class ScreenVisuals extends BorderPane {
     //Pop up a dialog before that sheos
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
-    private static final int GRID_PADDING_LR =180;
-    private static final int GRID_PADDING_TB =300;
+    private static final int GRID_PADDING_TB =200;
+    private static final int GRID_PADDING_LR =10;
 
     private int visualWidth;
     private int visualHeight;
@@ -54,12 +52,17 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void setupUserInterface() {
-        myGamePane = new HexGamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
+        int gridHeight = Math.max(0, visualHeight-GRID_PADDING_TB);
+        int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
+        myGamePane = new HexagonGamePane(myGrid, gridWidth, gridHeight);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
         this.setTop(makeTitleDisplay());
-        this.setCenter(myGamePane);
+        HBox myGameBox = new HBox(myGamePane);
+        myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY()- myGameBox.getBoundsInLocal().getMinY()));
+        myGameBox.setId("gameDisplayBox");
+        this.setCenter(myGameBox);
     }
 
     public UserOptions getMyButtonDisplay() {
@@ -135,14 +138,28 @@ public class ScreenVisuals extends BorderPane {
     }
 
 
-    public void changeCellStatus(int rowIndex, int colIndex) {
-        Random rand = new Random();
-        List<String> cellChoices = myGrid.getAllTypes();
-        System.out.println(cellChoices);
-        String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
-        CellType newCellType = CellType.valueOf(newChoice);
-        myGrid.getCell(rowIndex, colIndex).setCellType(newCellType);
-        myGamePane.setUpPane(myGrid);
+    public void changeCellStatus(double x, double y) {
+        Shape[][] myShapeGrid = myGamePane.getInitialArray();
+        for (int i = 0; i < myGrid.gridRows(); i++) {
+            for (int j = 0; j < myGrid.gridColumns(); j++) {
+                if (checkWithinX(myShapeGrid[i][j], x) && checkWithinY(myShapeGrid[i][j], y)) {
+                    Random rand = new Random();
+                    List<String> cellChoices = myGrid.getAllTypes();
+                    String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
+                    CellType newCellType = CellType.valueOf(newChoice);
+                    myGrid.getCell(i,j).setCellType(newCellType);
+                    myGamePane.setUpPane(myGrid);
+                }
+            }
+        }
+    }
+
+    private boolean checkWithinX(Shape myShape, double x) {
+        return x< myShape.getBoundsInLocal().getMaxX() && x> myShape.getBoundsInLocal().getMinX();
+    }
+
+    private boolean checkWithinY(Shape myShape, double y) {
+        return y< myShape.getBoundsInLocal().getMaxY() && y> myShape.getBoundsInLocal().getMinY();
     }
 
     public void checkUserChanges() {
