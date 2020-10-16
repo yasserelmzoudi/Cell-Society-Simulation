@@ -124,8 +124,8 @@ public abstract class Grid {
     boolean[][] isUpdated = new boolean[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        List<Cell> neighbors = getNeighbors(grid, row, column);
-        List<Cell> newNeighbors = getNeighbors(this.gridOfCells, row, column);
+        List<Cell> neighbors = getNeighborsTorodial(grid, row, column);
+        List<Cell> newNeighbors = getNeighborsTorodial(this.gridOfCells, row, column);
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
@@ -155,8 +155,97 @@ public abstract class Grid {
         }
       }
     }
+    //boolean diagonal = true;
+    //if (diagonal) {
+    //  getNeighborsDiagonal(listOfCells, row, column);
+    //}
     return listOfCells;
   }
+
+  public void getNeighborsCardinal(List<Cell> completeCells, int row, int column) {
+    for (int i = completeCells.size() - 1; i >= 0; i--) {
+      Cell neighbor = completeCells.get(i);
+      if (((neighbor.getRow() == (row - 1) % gridHeight) && (neighbor.getColumn() == (column - 1) % gridWidth))
+          ||
+          ((neighbor.getRow() == (row - 1) % gridHeight) && (neighbor.getColumn() == (column + 1) % gridWidth))
+          ||
+          ((neighbor.getRow() == (row + 1) % gridHeight) && (neighbor.getColumn() == (column - 1) % gridWidth))
+          ||
+          ((neighbor.getRow() == (row + 1) % gridHeight)
+              && (neighbor.getColumn() == (column + 1) % gridWidth))) {
+        completeCells.remove(i);
+      }
+    }
+    //return completeCells;
+  }
+
+  public void getNeighborsDiagonal(List<Cell> completeCells, int row, int column) {
+    for (int i = completeCells.size() - 1; i >= 0; i--) {
+      Cell neighbor = completeCells.get(i);
+      if (((neighbor.getRow() == (row - 1) % gridHeight) && (neighbor.getColumn() == column % gridWidth))
+          ||
+          ((neighbor.getRow() == row % gridHeight) && (neighbor.getColumn() == (column + 1) % gridWidth))
+          ||
+          ((neighbor.getRow() == (row + 1) % gridHeight) && (neighbor.getColumn() == column % gridWidth))
+          ||
+          ((neighbor.getRow() == row % gridHeight)
+              && (neighbor.getColumn() == (column - 1) % gridWidth))) {
+        completeCells.remove(i);
+      }
+    }
+    //return completeCells;
+  }
+
+  public List<Cell> getNeighborsTorodial(Cell[][] grid, int row, int column) {
+    int minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    int maxRow = (row + 1) % gridHeight;
+    int minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    int maxCol = (column + 1) % gridWidth;
+    List<Cell> torodialCells = new ArrayList<>();
+        torodialCells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+    boolean cardinal = true;
+    if (cardinal) {
+      getNeighborsDiagonal(torodialCells, row, column);
+    }
+    return torodialCells;
+  }
+
+  public List<Cell> getNeighborsKleinBottle(Cell[][] grid, int row, int column) {
+    int minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    int maxRow = (row + 1) % gridHeight;
+    int minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    int maxCol = (column + 1) % gridWidth;
+    List<Cell> kleinBottleCells = new ArrayList<>();
+        kleinBottleCells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+    int newMinRow = (gridHeight - row - 1) % gridHeight;
+    if (newMinRow<0) newMinRow+=gridHeight;
+    int newMaxRow = (gridHeight - row + 1) % gridHeight;
+    if (newMaxRow<0) newMaxRow+=gridHeight;
+    int newRow = (gridHeight - row) % gridHeight;
+    if(newRow<0) newRow+=gridHeight;
+    if (column == 0) {
+      kleinBottleCells.removeAll(Arrays.asList(grid[minRow][minCol],grid[row][minCol],grid[maxRow][minCol]));
+      kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][minCol],grid[newMaxRow][minCol],grid[newRow][minCol]));
+    }
+    if (column == (gridWidth-1)) {
+      kleinBottleCells.removeAll(Arrays.asList(grid[minRow][maxCol],grid[row][maxCol],grid[maxRow][maxCol]));
+      kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][maxCol],grid[newMaxRow][maxCol],grid[newRow][maxCol]));
+    }
+    boolean diagonal = true;
+    if (diagonal) {
+      getNeighborsDiagonal(kleinBottleCells, row, column);
+    }
+    return kleinBottleCells;
+  }
+
 
   public int gridColumns() {
     return gridOfCells[0].length;
