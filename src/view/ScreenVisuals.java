@@ -28,8 +28,8 @@ public class ScreenVisuals extends BorderPane {
     //Pop up a dialog before that sheos
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
-    private static final int GRID_PADDING_LR =100;
-    private static final int GRID_PADDING_TB =200;
+    private static final int GRID_PADDING_LR =180;
+    private static final int GRID_PADDING_TB =300;
 
     private int visualWidth;
     private int visualHeight;
@@ -54,7 +54,7 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void setupUserInterface() {
-        myGamePane = new GamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
+        myGamePane = new HexGamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());

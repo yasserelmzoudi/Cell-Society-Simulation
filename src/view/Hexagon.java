@@ -4,12 +4,17 @@ import javafx.scene.shape.Polygon;
 import model.grid.Grid;
 
 public class Hexagon extends Polygon{
+    private static final int GRID_PADDING_LR =200;
     private int myRow;
     private int myColumn;
     private Double[] pointArray;
-    public Hexagon (int row, int column, double hexLength) {
+    private int upperLeftX;
+    private int upperLeftY;
+    public Hexagon (int row, int column, double hexLength, int upperX, int upperY) {
         myRow = row;
         myColumn =column;
+        upperLeftX = upperX;
+        upperLeftY = upperY;
         makeInitialShape(myRow, myColumn, hexLength);
 
     }
@@ -33,18 +38,13 @@ public class Hexagon extends Polygon{
         this.getPoints().addAll(pointArray);
     }
 
+
     private int getUpperLeftX () {
-        return 100;
+        return upperLeftX;
     }
 
     private int getUpperLeftY() {
-        return 30;
+        return upperLeftY;
     }
 
-    public int rowIndex() {
-        return myRow;
-    }
-    public int columIndex() {
-        return myColumn;
-    }
 }

@@ -4,13 +4,14 @@ package view;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Node;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Shape;
 import model.grid.Grid;
 
 import javax.imageio.ImageIO;
@@ -22,22 +23,22 @@ import java.util.List;
 
 
 
-public class GamePane extends Pane {
+public abstract class GamePane extends Pane {
     private Grid myGrid;
     private int gridHeight;
     private int gridWidth;
     private TreeMap<String, String> gridCellTypesWithColor;
-    private Hexagon[][] allHex;
+    private Shape[][] allShapes;
 
     public GamePane(Grid grid, int width, int height){
         gridHeight = height;
         gridWidth =width;
         myGrid = grid;
-        allHex = new Hexagon[myGrid.gridRows()][myGrid.gridColumns()];
+        makeArray(grid);
+        allShapes = getInitialArray();
         this.setId("GameGrid");
         gridCellTypesWithColor = new TreeMap<>();
         List<String> myTypes = grid.getAllTypes();
-        makeHex();
         for (int i =0; i< myTypes.size(); i++) {
           gridCellTypesWithColor.putIfAbsent(myTypes.get(i), myTypes.get(i));
         }
@@ -49,14 +50,13 @@ public class GamePane extends Pane {
     }
 
 
-
     public void setUpPane(Grid grid) {
         //System.out.format("Cell Height: %d, Frame Height: %d, Number of Columns: %d \n", cellHeight, (int) framesize.getHeight(), gridRows);
         //System.out.format("Cell Width: %d, Frame Width: %d, Number of Rows: %d \n", cellWidth, (int) framesize.getWidth(), gridColumns);
         myGrid = grid;
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Hexagon mynewPixel = allHex[r][c];
+                Shape mynewPixel = allShapes[r][c];
                 checkForRemoval(mynewPixel);
                 String state = getColorId(myGrid.getCell(r, c).getState().toString());
                 setImage(mynewPixel, state);
@@ -76,17 +76,12 @@ public class GamePane extends Pane {
     }
 
 
-    private void checkForRemoval(Hexagon newPixel) {
+    private void checkForRemoval(Shape newPixel) {
         if(this.getChildren().contains(newPixel)) {
             this.getChildren().remove(newPixel);
         }
     }
 
-    private double determinePolyLength() {
-        double maxHeight = gridHeight / (myGrid.gridRows()*1.7);
-
-        return maxHeight;
-    }
 
     public int getGridHeight() {
         return gridHeight;
@@ -96,7 +91,7 @@ public class GamePane extends Pane {
         return gridWidth;
     }
 
-    public void setImage(Hexagon cell, String imageDirectory) {
+    public void setImage(Shape cell, String imageDirectory) {
         if(imageDirectory ==null || !isImage(imageDirectory)) return;
         File file = new File(imageDirectory);
         try {
@@ -109,15 +104,7 @@ public class GamePane extends Pane {
         }
     }
 
-    public void makeHex() {
-        for (int r = 0; r < myGrid.gridRows(); r++) {
-            for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Hexagon mynewPixel = new Hexagon(r, c, determinePolyLength());
-                allHex[r][c] = mynewPixel;
-            }
-        }
-    }
-
-
+    public abstract void makeArray(Grid grid);
+    public abstract Shape[][] getInitialArray();
 
 }
