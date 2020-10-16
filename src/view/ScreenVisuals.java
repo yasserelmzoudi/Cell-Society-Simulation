@@ -54,7 +54,7 @@ public class ScreenVisuals extends BorderPane {
     private void setupUserInterface() {
         int gridHeight = Math.max(0, visualHeight-GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
-        myGamePane = new HexagonGamePane(myGrid, gridWidth, gridHeight);
+        myGamePane = new TriangleGamePane(myGrid, gridWidth, gridHeight);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
@@ -175,5 +175,7 @@ public class ScreenVisuals extends BorderPane {
             }
         }
     }
+
+
 
 }

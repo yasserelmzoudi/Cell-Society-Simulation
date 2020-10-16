@@ -12,6 +12,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Shape;
+import javafx.scene.shape.TriangleMesh;
 import model.grid.Grid;
 
 import javax.imageio.ImageIO;
