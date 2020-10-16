@@ -166,15 +166,6 @@ public abstract class Grid {
     return gridOfCells.length;
   }
 
-  public double cellWidth(int framewidth) {
-    double cellWidth = framewidth/ gridColumns() ;
-    return cellWidth;
-  }
-
-  public double cellHeight(int frameheight) {
-    double cellHeight = frameheight / gridRows();
-    return cellHeight;
-  }
 
   public Cell getCell(int row, int column) {
     return gridOfCells[row][column];

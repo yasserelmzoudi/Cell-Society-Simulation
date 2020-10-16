@@ -8,10 +8,11 @@
 #gameDisplay{
     -fx-alignment: center;
 }
-
-#GameGrid {
+#gameDisplayBox {
     -fx-alignment: center;
+    -fx-padding: 2;
 }
+
 #slider{
     -fx-font-size: 9pt;
     -fx-padding: 10px;
@@ -67,7 +68,7 @@
 
 #buttonPanel {
     -fx-alignment: center;
-    -fx-padding: 10px;
+    -fx-padding: 8px;
 }
 
 #hBox {

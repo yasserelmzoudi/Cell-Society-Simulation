@@ -21,8 +21,7 @@ public class Start extends Application {
      */
     public void start(Stage stage) {
         new StartSimulation(stage, 600,600);
-        Stage newStage = new Stage();
-        new StartSimulation(newStage, 600,600);
+
     }
 
     /**

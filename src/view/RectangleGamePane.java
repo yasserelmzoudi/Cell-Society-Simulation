@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -22,9 +23,7 @@ import java.util.List;
 
 
 public class RectangleGamePane extends GamePane{
-    private int gridHeight;
-    private int gridWidth;
-    private TreeMap<String, String> gridCellTypesWithColor;
+
     private Shape[][] allShapes;
 
     public RectangleGamePane(Grid grid, int width, int height){
@@ -37,7 +36,7 @@ public class RectangleGamePane extends GamePane{
         allShapes = new Shape[myGrid.gridRows()][myGrid.gridColumns()];
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Rectangle mynewPixel = new Rectangle(myGrid.cellWidth(getGridWidth()), myGrid.cellHeight(getGridHeight()));
+                Rectangle mynewPixel = new Rectangle( c*cellWidth(),r*cellHeight(), cellWidth(),cellHeight());
                 allShapes[r][c] = mynewPixel;
             }
         }
