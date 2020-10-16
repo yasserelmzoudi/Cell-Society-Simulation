@@ -23,11 +23,13 @@ public class ScreenVisuals extends BorderPane {
 //TODO change main directory for loading file to fit with Yasser's properties file directory
 // TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
 // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
+//TODO For complete: before starting simulation, run a dialog that has the language, the style- dark, unc, etc. (this will load in a style sheet based onthe value in the combo box)
 
+    //Pop up a dialog before that sheos
     private static final int MIN_SLIDER_SPEED =0;
     private static final int MAX_SLIDER_SPEED =8;
-    private static final int GRID_PADDING_LR =100;
-    private static final int GRID_PADDING_TB =200;
+    private static final int GRID_PADDING_LR =180;
+    private static final int GRID_PADDING_TB =300;
 
     private int visualWidth;
     private int visualHeight;
@@ -52,7 +54,7 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void setupUserInterface() {
-        myGamePane = new GamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
+        myGamePane = new HexGamePane(myGrid, visualWidth-GRID_PADDING_LR, visualHeight- GRID_PADDING_TB);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
@@ -129,20 +131,9 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void addGridEvent() {
-        myGamePane.getChildren().forEach(item -> {
-            item.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Node source = (Node)event.getSource() ;
-                    Integer colIndex = GridPane.getColumnIndex(source);
-                    Integer rowIndex = GridPane.getRowIndex(source);
-                    changeCellStatus(rowIndex.intValue(), colIndex.intValue());
-
-                }
-            });
-
-        });
+    myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
     }
+
 
     public void changeCellStatus(int rowIndex, int colIndex) {
         Random rand = new Random();
