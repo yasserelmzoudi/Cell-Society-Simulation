@@ -1,4 +1,4 @@
-package view;
+package view.GamePaneShapes;
 
 
 import javafx.embed.swing.SwingFXUtils;

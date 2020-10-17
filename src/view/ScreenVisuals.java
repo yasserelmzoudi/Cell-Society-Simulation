@@ -9,13 +9,17 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import model.cell.CellType;
+import model.exceptions.InvalidSimulationTypeException;
 import model.grid.Grid;
+import view.GamePaneShapes.GamePane;
+import view.GamePaneShapes.TriangleGamePane;
 
+import java.io.InputStream;
 import java.util.*;
 
 public class ScreenVisuals extends BorderPane {
-    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
-    private ResourceBundle titleresource = ResourceBundle.getBundle("resources.title");
+    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("styleresources.ObjectID");
+    private ResourceBundle titleresource = ResourceBundle.getBundle("languageresources.english");
     private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image", "Burning Tree Image", "Tree Image", "Water Image", "Green Color", "Grass Image");
 //TODO change userChangeOptions to be according to a grid, probably in a configuration file
 //TODO change main directory for loading file to fit with Yasser's properties file directory
@@ -33,19 +37,24 @@ public class ScreenVisuals extends BorderPane {
     private int visualHeight;
     private Grid myGrid;
     private GamePane myGamePane;
+    private String myShapeType;
     private StartSimulation currentSimulation;
     private UserOptions myButtonDisplay;
     private HBox mySliderDisplay;
     private String gameTitle;
     private List<ComboBox> cellChange = new ArrayList<>();
     private List<String> cellTypes = new ArrayList<>();
+    private Class<?> gamePaneType;
+    private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
+    private ResourceBundle errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
 
 
-    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
+    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title, String shapeType) {
         myGrid = grid;
         visualWidth = width;
         visualHeight = height;
         gameTitle =title;
+        myShapeType = shapeType;
         currentSimulation = thisSimulation;
         setupUserInterface();
         addGridEvent();
@@ -54,7 +63,16 @@ public class ScreenVisuals extends BorderPane {
     private void setupUserInterface() {
         int gridHeight = Math.max(0, visualHeight-GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
-        myGamePane = new TriangleGamePane(myGrid, gridWidth, gridHeight);
+        try {
+            gamePaneType = Class.forName("view.GamePaneShapes." + myShapeType + "GamePane");
+            System.out.println("view.GamePaneShapes." + myShapeType + "GamePane");
+            Object gridShapeInstance = gamePaneType.getDeclaredConstructor(
+                    new Class[]{Grid.class, int.class, int.class}).newInstance(myGrid, gridWidth, gridHeight);
+            myGamePane = (GamePane) gridShapeInstance;
+        } catch (Exception e) {
+            throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
+        }
+        //myGamePane = new TriangleGamePane(myGrid, gridWidth, gridHeight);
         myGamePane.setId(objectIdBundle.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());

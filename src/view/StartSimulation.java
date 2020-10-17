@@ -122,7 +122,7 @@ public class StartSimulation  {
 
 
     public Scene setUpVisualScene(Grid newgrid, int width, int height) {
-        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
+        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Triangle");
         System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
         assignStyleSheet(myscene, PANEL_STYLESHEET_PATH);

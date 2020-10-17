@@ -1,6 +1,5 @@
 package view;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import model.grid.GridCSVWriter;
+import view.GamePaneShapes.GamePane;
 
 public class UserOptions extends GridPane{
     private static final String RESOURCES = "resources/";
@@ -30,6 +30,9 @@ public class UserOptions extends GridPane{
     public static final String CONTROL_STYLESHEET = "Control_Styles.css";
     public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
+    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("styleresources.ObjectID");
+    private ResourceBundle titlesBundle = ResourceBundle.getBundle("languageresources.english");
+    private ResourceBundle errorMessageSource;
 
     private boolean simShouldResume = true;
     private boolean wantNewFile = false;
@@ -38,9 +41,6 @@ public class UserOptions extends GridPane{
     private TextField authorField;
     private TextField titleField;
     private TextArea descriptionField;
-    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("resources.ObjectID");
-    private ResourceBundle titlesBundle = ResourceBundle.getBundle("resources.title");
-    private ResourceBundle errorMessageSource;
 
     public UserOptions(GamePane myPane, Grid grid) {
         myGamePane = myPane;
@@ -63,12 +63,12 @@ public class UserOptions extends GridPane{
 
     private List<Button> setUpButtons() {
 
-        Button resumeButton = new Button(objectIdBundle.getString("ResumeButton"));
-        Button loadButton = new Button(objectIdBundle.getString("LoadButton"));
-        Button quitButton = new Button(objectIdBundle.getString("QuitButton"));
-        Button nextButton = new Button(objectIdBundle.getString("NextButton"));
-        Button pauseButton = new Button(objectIdBundle.getString("PauseButton"));
-        Button saveButton = new Button (objectIdBundle.getString("SaveButton"));
+        Button resumeButton = new Button(titlesBundle.getString("ResumeButton"));
+        Button loadButton = new Button(titlesBundle.getString("LoadButton"));
+        Button quitButton = new Button(titlesBundle.getString("QuitButton"));
+        Button nextButton = new Button(titlesBundle.getString("NextButton"));
+        Button pauseButton = new Button(titlesBundle.getString("PauseButton"));
+        Button saveButton = new Button (titlesBundle.getString("SaveButton"));
         //pauseButton.getStyleClass().add("pauseButton");
 
 
@@ -88,7 +88,6 @@ public class UserOptions extends GridPane{
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("PAUSE");
                 simShouldResume =false;
             }
         });
@@ -133,7 +132,7 @@ public class UserOptions extends GridPane{
         userData.getChildren().add(makeTitleField(myCells.get(1)));
         userData.getChildren().add(makeDesciptionField(myCells.get(2)));
 
-        Button okButton = new Button(objectIdBundle.getString("OkButtonText"));
+        Button okButton = new Button(titlesBundle.getString("OkButtonText"));
         okButton.setId(objectIdBundle.getString("OkButton"));
         HBox column = new HBox();
         column.getChildren().add(okButton);
