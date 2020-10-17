@@ -139,7 +139,6 @@ public class ScreenVisuals extends BorderPane {
 
 
     public void changeCellStatus(double x, double y) {
-       // System.out.println("X: " + x+ "Y: "+y);
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -150,6 +149,7 @@ public class ScreenVisuals extends BorderPane {
                     CellType newCellType = CellType.valueOf(newChoice);
                     myGrid.getCell(i,j).setCellType(newCellType);
                     myGamePane.setUpPane(myGrid);
+                    //swww
                 }
             }
         }
@@ -175,7 +175,5 @@ public class ScreenVisuals extends BorderPane {
             }
         }
     }
-
-
 
 }
