@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RockPaperScissorsCell extends Cell {
   private int state;
-  private static final int THRESHOLD = 4;
+  private static final int THRESHOLD = 2;
 
   /**
    * Constructor for this class.
