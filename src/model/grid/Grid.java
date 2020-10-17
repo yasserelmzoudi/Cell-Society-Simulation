@@ -177,27 +177,33 @@ public abstract class Grid {
   }
 
   public List<Cell> getEdgeTypeTorodial(Cell[][] grid, int row, int column) {
-    int minRow = (row - 1) % gridHeight;
-    if (minRow <0) minRow+=gridHeight;
-    int maxRow = (row + 1) % gridHeight;
-    int minCol = (column - 1) % gridWidth;
-    if (minCol<0) minCol+=gridWidth;
-    int maxCol = (column + 1) % gridWidth;
     List<Cell> torodialCells = new ArrayList<>();
-    torodialCells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
-        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
-        grid[maxRow][column],grid[maxRow][maxCol]));
+    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
+    findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, torodialCells, grid);
     return torodialCells;
   }
 
+  private void findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
+      int column, List<Cell> cells, Cell[][]grid) {
+    minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    maxRow = (row + 1) % gridHeight;
+    minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    maxCol = (column + 1) % gridWidth;
+    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+  }
+
   public List<Cell> getEdgeTypeKleinBottle(Cell[][] grid, int row, int column) {
+    List<Cell> kleinBottleCells = new ArrayList<>();
     int minRow = (row - 1) % gridHeight;
     if (minRow <0) minRow+=gridHeight;
     int maxRow = (row + 1) % gridHeight;
     int minCol = (column - 1) % gridWidth;
     if (minCol<0) minCol+=gridWidth;
     int maxCol = (column + 1) % gridWidth;
-    List<Cell> kleinBottleCells = new ArrayList<>();
     kleinBottleCells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
         grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
         grid[maxRow][column],grid[maxRow][maxCol]));
@@ -254,9 +260,6 @@ public abstract class Grid {
   public void setNeighborComplete(List<Cell> completeCells, int row, int column) {
     return;
   }
-
-
-
 
   public int gridColumns() {
     return gridOfCells[0].length;
