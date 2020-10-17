@@ -44,6 +44,11 @@ public class SimulationGraph {
     Scene scene = new Scene(graphRoot, GRAPH_WINDOW_WIDTH, GRAPH_WINDOW_HEIGHT);
     Stage stage = new Stage();
 
+    cellTypeData = new HashMap<>();
+
+    xAxis = new NumberAxis();
+    yAxis = new NumberAxis();
+
     simulationGraph = createSimulationGraph();
 
     graphRoot.setCenter(simulationGraph);
@@ -52,10 +57,7 @@ public class SimulationGraph {
     stage.setScene(scene);
     stage.show();
 
-    cellTypeData = new HashMap<>();
 
-    xAxis = new NumberAxis();
-    yAxis = new NumberAxis();
   }
 
   public LineChart createSimulationGraph() {
