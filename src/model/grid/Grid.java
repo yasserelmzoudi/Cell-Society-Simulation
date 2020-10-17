@@ -48,10 +48,9 @@ public abstract class Grid {
   private String myType = "";
   private ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-
   private String edgePolicy;
   private String neighborhoodPolicy;
-
+  private List<CellType> gridTypes;
   /**
    * Constructor for this class.
    *
@@ -69,6 +68,16 @@ public abstract class Grid {
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
     gridSetUp(readLines);
+    gridTypes = new ArrayList<>();
+    setUpGridTypes();
+  }
+
+  public void setUpGridTypes() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridTypes.add(gridOfCells[row][column].getState());
+      }
+    }
   }
 
   /**
@@ -324,18 +333,77 @@ public abstract class Grid {
     return gridOfCells.length;
   }
 
-  public double cellWidth(int framewidth) {
-    double cellWidth = framewidth/ gridColumns() ;
-    return cellWidth;
-  }
-
-  public double cellHeight(int frameheight) {
-    double cellHeight = frameheight / gridRows();
-    return cellHeight;
-  }
 
   public Cell getCell(int row, int column) {
     return gridOfCells[row][column];
   }
 
+  public int getCellTypeState(int row, int column) {
+    return getCell(row, column).getNumericState();
+  }
+
+  /**
+   * Code adopted from Professor Duvall to read CSV files
+   * @return List<String[]> representing all of the lines read from data
+   * @author Robert C. Duvall
+   */
+  public List<String[]> readAll() throws InvalidCSVFileException {
+    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
+      return csvReader.readAll();
+    } catch (IOException | CsvException e) {
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
+    }
+  }
+
+  /*public void gridlayout(Grid grid) {
+    Cell[][] newGrid = grid.getAllCells();
+    int numRows =  newGrid.length;
+    int numColumns = newGrid[0].length;
+    for (int row = 0; row < numRows; row++) {
+      for (int column = 0; column < numColumns; column++) {
+        System.out.print(newGrid[row][column].isAlive()+ " ");
+      }
+      System.out.println("");
+    }
+  }*/
+
+  public List<String> getAllTypes() {
+    List<String> myTypes = new ArrayList<>();
+    return myTypes;
+  }
+
+  public int getGridHeight() {
+    return gridHeight;
+  }
+
+  public int getGridWidth() {
+    return gridWidth;
+  }
+
+  private CellType getRandomCellType() {
+    return CellType.valueOf(getAllTypes().get(getRandomIndex(getAllTypes().size())));
+  }
+
+  private int getRandomIndex(int range){
+    return (int) (Math.random() * range);
+  }
+
+  public void completeRandomizeGrid() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(getRandomCellType());
+      }
+    }
+  }
+
+  public void swapRandomizeGrid() {
+    Collections.shuffle(gridTypes);
+    int gridTypesCount = 0;
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(gridTypes.get(gridTypesCount));
+        gridTypesCount++;
+      }
+    }
+  }
 }
