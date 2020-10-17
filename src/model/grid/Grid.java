@@ -305,7 +305,6 @@ public abstract class Grid {
     return cells;
   }
 
-  public abstract List<String> getAllTypes();
 
   /**
    * Sets the grid type to a particular simulation.
@@ -347,13 +346,6 @@ public abstract class Grid {
    * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll() throws InvalidCSVFileException {
-    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
-      return csvReader.readAll();
-    } catch (IOException | CsvException e) {
-      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
-    }
-  }
 
   /*public void gridlayout(Grid grid) {
     Cell[][] newGrid = grid.getAllCells();
