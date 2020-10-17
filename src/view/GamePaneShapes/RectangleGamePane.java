@@ -1,25 +1,9 @@
-package view;
+package view.GamePaneShapes;
 
 
-import javafx.embed.swing.SwingFXUtils;
-
-import javafx.scene.image.Image;
-
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.grid.Grid;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
 
 
 public class RectangleGamePane extends GamePane{

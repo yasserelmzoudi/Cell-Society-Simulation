@@ -1,32 +1,33 @@
-package view;
+package view.GamePaneShapes;
 
 import javafx.scene.shape.Shape;
 import model.grid.Grid;
-import view.Shapes.Triangle;
+import view.Shapes.Hexagon;
 
 
-public class TriangleGamePane extends GamePane {
+public class HexagonGamePane extends GamePane {
     private Shape[][] allShapes;
 
-    public TriangleGamePane(Grid grid, int width, int height){
+    public HexagonGamePane(Grid grid, int width, int height){
         super(grid, width, height);
     }
 
-    private double triangleBase() {
-        return cellWidth()/1.5;
+
+    private double polyHeight() {
+        return cellHeight()/1.60;
     }
 
-    private double traingleHeight() {
-        return cellHeight();
+    private double polyWidth() {
+        return cellWidth() /1.3;
     }
 
 
     @Override
     public void makeArray(Grid myGrid) {
-        allShapes = new Triangle[myGrid.gridRows()][myGrid.gridColumns()];
+        allShapes = new Hexagon[myGrid.gridRows()][myGrid.gridColumns()];
         for (int r = 0; r < myGrid.gridRows(); r++) {
             for (int c = 0; c < myGrid.gridColumns(); c++) {
-                Triangle mynewPixel = new Triangle(r, c, triangleBase(), traingleHeight());
+                Hexagon mynewPixel = new Hexagon(r, c, polyWidth(), polyHeight());
                 allShapes[r][c] = mynewPixel;
             }
         }
