@@ -46,6 +46,8 @@ public abstract class Grid {
   private String myType = "";
   private ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
+  private String edgePolicy;
+  private String neighborhoodPolicy;
   private List<CellType> gridTypes;
   /**
    * Constructor for this class.

@@ -1,5 +1,8 @@
 package view;
 
+import java.util.Arrays;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
