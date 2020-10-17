@@ -17,8 +17,8 @@ public class GameOfLifeGrid extends Grid {
    *
    * @param data Data to read.
    */
-  public GameOfLifeGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
-    super(data, edgePolicy, neighborhoodPolicy);
+  public GameOfLifeGrid(InputStream data) {
+    super(data);
   }
 
   /**
@@ -59,7 +59,10 @@ public class GameOfLifeGrid extends Grid {
 
   @Override
   public List<String> getAllTypes() {
-    return CellType.getGameOfLifeTypes();
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.DEAD.toString());
+    myTypes.add(CellType.ALIVE.toString());
+    return myTypes;
   }
 
 }

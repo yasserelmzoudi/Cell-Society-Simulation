@@ -49,11 +49,6 @@ public class StartSimulation  {
     private int windowWidth =0;
     private int windowHeight =0;
 
-    private String edgePolicy;
-    private String neighborhoodPolicy;
-
-    private Class<?> gridParameters;
-
     public StartSimulation(Stage stage, int winWidth, int winHeight) {
         windowWidth = winWidth;
         windowHeight = winHeight;
@@ -66,13 +61,10 @@ public class StartSimulation  {
         simulationSettingsReader = new SimulationSettingsReader(PATH);
         simulationData = Grid.class.getClassLoader()
                 .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
-        edgePolicy = simulationSettingsReader.getSimulationEdgePolicy();
-        neighborhoodPolicy = simulationSettingsReader.getSimulationNeighborhoodPolicy();
-
+        System.out.println(simulationSettingsReader.getSimulationType());
         try {
             gridType = Class.forName("model.grid." + simulationSettingsReader.getSimulationType() + "Grid");
-            Object gridInstance = gridType.getDeclaredConstructor(
-                new Class[]{InputStream.class, String.class, String.class}).newInstance(simulationData, edgePolicy, neighborhoodPolicy);
+            Object gridInstance = gridType.getDeclaredConstructor(InputStream.class).newInstance(simulationData);
             grid = (Grid) gridInstance;
         } catch (Exception e) {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
@@ -94,12 +86,7 @@ public class StartSimulation  {
             System.exit(0);
         });
         stage.show();
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
-            try {
-                step();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {step();
         });
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -134,7 +121,7 @@ public class StartSimulation  {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() throws Exception {
+    public void step()  {
         checkNewFile();
         root.checkUserChanges();
         startSimulation();
@@ -156,15 +143,15 @@ public class StartSimulation  {
                 animation.play();
                 return;
             }
-            /*InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
+            InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
             grid = new GameOfLifeGrid(newGridData);
             newSimulationWindow(grid);
-            animation.play();*/
+            animation.play();
         }
 
     }
 
-    public void startSimulation() throws Exception {
+    public void startSimulation() {
         boolean shouldresume = root.getMyButtonDisplay().shouldcontinue();
         if (shouldresume) {
             grid.performNextStep();

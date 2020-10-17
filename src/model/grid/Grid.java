@@ -6,7 +6,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 
@@ -26,7 +25,6 @@ import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
-import org.apache.commons.collections.functors.ExceptionTransformer;
 
 
 /**
@@ -48,20 +46,15 @@ public abstract class Grid {
   private String myType = "";
   private ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-  private String edgePolicy;
-  private String neighborhoodPolicy;
   private List<CellType> gridTypes;
   /**
    * Constructor for this class.
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public Grid (InputStream data, String edgePolicy, String neighborhoodPolicy) {
+  public Grid (InputStream data) {
     errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-    this.edgePolicy = edgePolicy;
-    this.neighborhoodPolicy = neighborhoodPolicy;
     this.data = data;
-
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
@@ -86,19 +79,6 @@ public abstract class Grid {
    * @param readLines List of lines
    */
   public abstract void gridSetUp(List<String[]> readLines);
-
-  /**
-   * Code adopted from Professor Duvall to read CSV files
-   * @return List<String[]> representing all of the lines read from data
-   * @author Robert C. Duvall
-   */
-  public List<String[]> readAll() throws InvalidCSVFileException {
-    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
-      return csvReader.readAll();
-    } catch (IOException | CsvException e) {
-      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
-    }
-  }
 
   /**
    * The grid is copied into another new grid so that when updating the cells, the original cell
@@ -133,25 +113,29 @@ public abstract class Grid {
     return copyOfGrid;
   }
 
+  public String setGridType() {
+    return myType;
+  }
+
+  /**
+   * Gets all cells from the grid.
+   *
+   * @return A copy of the grid.
+   */
+  public Cell[][] getAllCells() {
+    return copyGrid();
+  }
+
   /**
    * Updates the cell in the next step.
    */
-  public void performNextStep(){
-    Cell[][] copyGrid = copyGrid();
+  public void performNextStep() {
+    Cell[][] grid = copyGrid();
     boolean[][] isUpdated = new boolean[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        List<Cell> neighbors = new ArrayList<>();
-        List<Cell> newNeighbors = new ArrayList<>();
-        try {
-          Method neighborType = Grid.class.getMethod("getEdgeType" + edgePolicy,
-              Cell[][].class, int.class, int.class);
-          Method edgeType = Grid.class.getMethod("setNeighbor" + neighborhoodPolicy,
-              List.class, List.class, int.class, int.class);
-          neighbors = (List<Cell>) neighborType.invoke(this, copyGrid, row, column);
-          newNeighbors = (List<Cell>) neighborType.invoke(this, this.gridOfCells, row, column);
-          edgeType.invoke(this, neighbors, newNeighbors, row, column);
-        } catch (Exception e){ e.printStackTrace(); }
+        List<Cell> neighbors = getNeighbors(grid, row, column);
+        List<Cell> newNeighbors = getNeighbors(this.gridOfCells, row, column);
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
@@ -168,7 +152,7 @@ public abstract class Grid {
    * @param column Column of cell.
    * @return list of neighbors
    */
-  public List<Cell> getEdgeTypeFinite(Cell[][] grid, int row, int column) {
+  public List<Cell> getNeighbors(Cell[][] grid, int row, int column) {
     List<Cell> listOfCells = new ArrayList<>();
     int minRow = Math.max(0, row - 1);
     int maxRow = Math.min(gridHeight - 1, row + 1);

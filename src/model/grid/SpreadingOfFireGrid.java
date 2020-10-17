@@ -16,8 +16,8 @@ public class SpreadingOfFireGrid extends Grid {
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public SpreadingOfFireGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
-    super(data, edgePolicy, neighborhoodPolicy);
+  public SpreadingOfFireGrid(InputStream data) {
+    super(data);
   }
 
   /**
@@ -63,6 +63,10 @@ public class SpreadingOfFireGrid extends Grid {
   }
   @Override
   public List<String> getAllTypes() {
-    return CellType.getSpreadingOfFireTypes();
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.EMPTY.toString());
+    myTypes.add(CellType.TREE.toString());
+    myTypes.add(CellType.BURNING.toString());
+    return myTypes;
   }
 }

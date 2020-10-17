@@ -17,8 +17,8 @@ public class RockPaperScissorsGrid extends Grid{
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public RockPaperScissorsGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
-    super(data, edgePolicy, neighborhoodPolicy);
+  public RockPaperScissorsGrid(InputStream data) {
+    super(data);
   }
 
   /**
@@ -66,7 +66,11 @@ public class RockPaperScissorsGrid extends Grid{
 
   @Override
   public List<String> getAllTypes() {
-    return CellType.getRockPaperScissorsTypes();
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.ROCK.toString());
+    myTypes.add(CellType.PAPER.toString());
+    myTypes.add(CellType.SCISSORS.toString());
+    return myTypes;
   }
 
 }

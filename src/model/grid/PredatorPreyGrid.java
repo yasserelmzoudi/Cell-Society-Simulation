@@ -17,8 +17,8 @@ public class PredatorPreyGrid extends Grid {
    *
    * @param data Data to read.
    */
-  public PredatorPreyGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
-    super(data, edgePolicy, neighborhoodPolicy);
+  public PredatorPreyGrid(InputStream data) {
+    super(data);
   }
 
   /**
@@ -67,6 +67,10 @@ public class PredatorPreyGrid extends Grid {
   }
   @Override
   public List<String> getAllTypes() {
-    return CellType.getPredatorPreyModelTypes();
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.SHARK.toString());
+    myTypes.add(CellType.FISH.toString());
+    myTypes.add(CellType.WATER.toString());
+    return myTypes;
   }
 }
