@@ -34,7 +34,7 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
     private static final File DATA_DIRECTORY = new File("./data/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private static final String PATH = "/resources/randomizedSimulation.properties";
+    private static final String PATH = "/resources/initialSimulationSettings.properties";
 
 
 
@@ -122,7 +122,7 @@ public class StartSimulation  {
 
 
     public Scene setUpVisualScene(Grid newgrid, int width, int height) {
-        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Rectangle");
+        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Hexagon");
         System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
         assignStyleSheet(myscene, PANEL_STYLESHEET_PATH);
