@@ -44,13 +44,13 @@ public abstract class Grid {
   protected final Cell[][] gridOfCells;
   protected final int gridWidth;
   protected final int gridHeight;
-  private InputStream data;
-  private String myType = "";
-  private ResourceBundle errorMessageSource;
+  private final InputStream data;
+  private final ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-  private String edgePolicy;
-  private String neighborhoodPolicy;
-  private List<CellType> gridTypes;
+  private final String edgePolicy;
+  private final String neighborhoodPolicy;
+  private final List<CellType> gridTypes;
+  private Map<String, Integer> cellTypeCounts;
   /**
    * Constructor for this class.
    *
@@ -61,6 +61,8 @@ public abstract class Grid {
     this.edgePolicy = edgePolicy;
     this.neighborhoodPolicy = neighborhoodPolicy;
     this.data = data;
+
+    cellTypeCounts = new HashMap<>();
 
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
@@ -75,7 +77,10 @@ public abstract class Grid {
   public void setUpGridTypes() {
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        gridTypes.add(gridOfCells[row][column].getState());
+        Cell differentCellTypes = gridOfCells[row][column];
+        gridTypes.add(differentCellTypes.getState());
+        cellTypeCounts.putIfAbsent(differentCellTypes.getState().name(), 0);
+        cellTypeCounts.put(differentCellTypes.getState().name(), cellTypeCounts.get(differentCellTypes.getState().name()) + 1);
       }
     }
   }
@@ -313,6 +318,7 @@ public abstract class Grid {
    * @return Type of grid required for simulation.
    */
   public String setGridType() {
+    String myType = "";
     return myType;
   }
 
@@ -393,5 +399,9 @@ public abstract class Grid {
         gridTypesCount++;
       }
     }
+  }
+
+  public Map<String, Integer> getCellTypeCounts() {
+    return cellTypeCounts;
   }
 }
