@@ -2,7 +2,6 @@ package view;
 
 import javafx.scene.shape.Shape;
 import model.grid.Grid;
-import view.Shapes.Hexagon;
 
 
 public class HexagonGamePane extends GamePane {
