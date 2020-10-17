@@ -177,29 +177,17 @@ public abstract class Grid {
   }
 
   public List<Cell> getEdgeTypeTorodial(Cell[][] grid, int row, int column) {
-    List<Cell> torodialCells = new ArrayList<>();
+    //List<Cell> torodialCells = new ArrayList<>();
     int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
-    findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, torodialCells, grid);
+    List<Cell> torodialCells = findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
     return torodialCells;
   }
 
-  private void findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
-      int column, List<Cell> cells, Cell[][]grid) {
-    minRow = (row - 1) % gridHeight;
-    if (minRow <0) minRow+=gridHeight;
-    maxRow = (row + 1) % gridHeight;
-    minCol = (column - 1) % gridWidth;
-    if (minCol<0) minCol+=gridWidth;
-    maxCol = (column + 1) % gridWidth;
-    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
-        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
-        grid[maxRow][column],grid[maxRow][maxCol]));
-  }
 
   public List<Cell> getEdgeTypeKleinBottle(Cell[][] grid, int row, int column) {
-    List<Cell> kleinBottleCells = new ArrayList<>();
+    //List<Cell> kleinBottleCells = new ArrayList<>();
     int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
-    findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, kleinBottleCells, grid);
+    List<Cell> kleinBottleCells = findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
     int newMinRow = (gridHeight - row - 1) % gridHeight;
     if (newMinRow<0) newMinRow+=gridHeight;
     int newMaxRow = (gridHeight - row + 1) % gridHeight;
@@ -217,6 +205,21 @@ public abstract class Grid {
     return kleinBottleCells;
   }
 
+  private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
+      int column, Cell[][]grid) {
+    List<Cell> cells = new ArrayList<>();
+    minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    maxRow = (row + 1) % gridHeight;
+    minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    maxCol = (column + 1) % gridWidth;
+    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+    return cells;
+  }
+
   public void setNeighborCardinal(List<Cell> completeCells, int row, int column) {
     for (int i = completeCells.size() - 1; i >= 0; i--) {
       Cell neighbor = completeCells.get(i);
@@ -231,7 +234,6 @@ public abstract class Grid {
         completeCells.remove(i);
       }
     }
-    //return completeCells;
   }
 
   public void setNeighborDiagonal(List<Cell> completeCells, int row, int column) {
@@ -288,18 +290,6 @@ public abstract class Grid {
       throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
   }
-
-  /*public void gridlayout(Grid grid) {
-    Cell[][] newGrid = grid.getAllCells();
-    int numRows =  newGrid.length;
-    int numColumns = newGrid[0].length;
-    for (int row = 0; row < numRows; row++) {
-      for (int column = 0; column < numColumns; column++) {
-        System.out.print(newGrid[row][column].isAlive()+ " ");
-      }
-      System.out.println("");
-    }
-  }*/
 
   public abstract List<String> getAllTypes();
 
