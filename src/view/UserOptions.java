@@ -26,8 +26,9 @@ import model.grid.GridCSVWriter;
 public class UserOptions extends GridPane{
     private static final String RESOURCES = "resources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
     public static final String CONTROL_STYLESHEET = "Control_Styles.css";
-    public static final String CONTROL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + CONTROL_STYLESHEET;
+    public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
     private boolean simShouldResume = true;
@@ -195,7 +196,7 @@ public class UserOptions extends GridPane{
             myAuthor = "No Name";
         }
         if(myTitle.isBlank()) {
-            myTitle = "No Title";//grid.getType(); //TODO: add my type enum
+            myTitle = "No Title";//TODO add properties files for text
         }
         if(myDescription.isEmpty()) {
             myDescription = "No description needed";

@@ -24,14 +24,15 @@ import java.util.ResourceBundle;
 
 public class StartSimulation  {
     private static final String RESOURCES = "resources/";
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     public static final String PANEL_STYLESHEET = "PanelStyles.css";
     public static final String CONTROL_STYLESHEET = "Control_Styles.css";
-    public static final String PANEL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + PANEL_STYLESHEET;
-    public static final String CONTROL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + CONTROL_STYLESHEET;
-    private static final File DATA_DIRECTORY = new File("./data/");
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
-    public static final String VISUAL_STYLESHEET_PATH = DEFAULT_RESOURCE_FOLDER + VISUAL_STYLESHEET;
+    public static final String PANEL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + PANEL_STYLESHEET;
+    public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
+    public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
+    private static final File DATA_DIRECTORY = new File("./data/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
     private static final String PATH = "/resources/randomizedSimulation.properties";
 
