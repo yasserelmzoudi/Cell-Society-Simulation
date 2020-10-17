@@ -50,7 +50,9 @@ public abstract class Grid {
   private final String edgePolicy;
   private final String neighborhoodPolicy;
   private final List<CellType> gridTypes;
-  private Map<String, Integer> cellTypeCounts;
+  private Map<String, Integer> totalCellTypeCounts;
+  private Map<String, Integer> currentCellTypeCounts;
+
   /**
    * Constructor for this class.
    *
@@ -62,7 +64,8 @@ public abstract class Grid {
     this.neighborhoodPolicy = neighborhoodPolicy;
     this.data = data;
 
-    cellTypeCounts = new HashMap<>();
+    currentCellTypeCounts = new HashMap<>();
+    totalCellTypeCounts = new HashMap<>();
 
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
@@ -79,8 +82,6 @@ public abstract class Grid {
       for (int column = 0; column < gridWidth; column++) {
         Cell differentCellTypes = gridOfCells[row][column];
         gridTypes.add(differentCellTypes.getState());
-        cellTypeCounts.putIfAbsent(differentCellTypes.getState().name(), 0);
-        cellTypeCounts.put(differentCellTypes.getState().name(), cellTypeCounts.get(differentCellTypes.getState().name()) + 1);
       }
     }
   }
@@ -148,6 +149,9 @@ public abstract class Grid {
       for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = new ArrayList<>();
         List<Cell> newNeighbors = new ArrayList<>();
+        //Cell differentCellTypes = gridOfCells[row][column];
+        ////currentCellTypeCounts.putIfAbsent(differentCellTypes.getState().name(), 0);
+        ////currentCellTypeCounts.put(differentCellTypes.getState().name(), currentCellTypeCounts.get(differentCellTypes.getState().name()) + 1);
         try {
           Method neighborType = Grid.class.getMethod("getEdgeType" + edgePolicy,
               Cell[][].class, int.class, int.class);
@@ -161,7 +165,28 @@ public abstract class Grid {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
       }
+      //setCellTypeCounts(currentCellTypeCounts);
+      //currentCellTypeCounts.clear();
     }
+    updateCellTypeCount();
+    System.out.println(totalCellTypeCounts.get("SHARK"));
+    totalCellTypeCounts.clear();
+  }
+
+  public void updateCellTypeCount() {
+    Cell [][] grid = getAllCells();
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        String cellTypeName = grid[row][column].getState().name();
+        totalCellTypeCounts.putIfAbsent(cellTypeName, 0);
+        totalCellTypeCounts.put(cellTypeName, totalCellTypeCounts.get(cellTypeName) + 1);
+      }
+    }
+  }
+
+  private void setCellTypeCounts(Map<String, Integer> cellTypeCounts) {
+    this.totalCellTypeCounts = cellTypeCounts;
+    System.out.println(totalCellTypeCounts.get("FISH"));
   }
 
   /**
@@ -401,7 +426,7 @@ public abstract class Grid {
     }
   }
 
-  public Map<String, Integer> getCellTypeCounts() {
-    return cellTypeCounts;
+  public Map<String, Integer> getTotalCellTypeCounts() {
+    return totalCellTypeCounts;
   }
 }

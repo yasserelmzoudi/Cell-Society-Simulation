@@ -53,6 +53,10 @@ public class StartSimulation  {
     private String edgePolicy;
     private String neighborhoodPolicy;
 
+    private int frameCount = 0;
+
+    private SimulationGraph simulationGraph;
+
     private Class<?> gridParameters;
 
     public StartSimulation(Stage stage, int winWidth, int winHeight) {
@@ -86,6 +90,7 @@ public class StartSimulation  {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
         }
 
+        simulationGraph = new SimulationGraph(grid, simulationSettingsReader.getSimulationTitle());
         Scene myScene = setUpVisualScene(grid, windowWidth,windowHeight);
         //stage.setTitle(simulationSettingsReader.getSimulationTitle());
         stage.setScene(myScene);
@@ -122,7 +127,7 @@ public class StartSimulation  {
 
 
     public Scene setUpVisualScene(Grid newgrid, int width, int height) {
-        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Hexagon");
+        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Rectangle");
         System.out.println(simulationSettingsReader.getSimulationTitle());
         Scene myscene = new Scene (root, width, height);
         assignStyleSheet(myscene, PANEL_STYLESHEET_PATH);
@@ -139,6 +144,7 @@ public class StartSimulation  {
         checkNewFile();
         root.checkUserChanges();
         startSimulation();
+
 
     }
 
@@ -169,6 +175,8 @@ public class StartSimulation  {
         boolean shouldresume = root.getMyButtonDisplay().shouldcontinue();
         if (shouldresume) {
             grid.performNextStep();
+            simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
+            frameCount++;
             root.getMyGamePane().setUpPane(grid);
         }
     }
