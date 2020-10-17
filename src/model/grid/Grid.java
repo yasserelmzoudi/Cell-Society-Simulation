@@ -372,6 +372,10 @@ public abstract class Grid {
     return (int) (Math.random() * range);
   }
 
+  public void noRandomization() {
+    return;
+  }
+
   public void completeRandomizeGrid() {
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {

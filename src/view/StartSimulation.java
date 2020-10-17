@@ -34,7 +34,7 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
     private static final File DATA_DIRECTORY = new File("./data/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private static final String PATH = "/resources/randomizedSimulation.properties";
+    private static final String PATH = "/resources/initialSimulationSettings.properties";
 
 
 
