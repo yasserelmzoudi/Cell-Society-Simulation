@@ -56,8 +56,6 @@ public class PredatorPreyCell extends PPCellFeatures {
   @Override
   public void update(List<Cell> neighbors, List<Cell> newNeighbors, boolean[][] isUpdated) {
 
-    //getFourNeighbors(neighbors, newNeighbors);
-
     List<PPCellFeatures> localFish = new ArrayList<>();
     List<PPCellFeatures> localWater = new ArrayList<>();
     List<PPCellFeatures> localSharks = new ArrayList<>();
@@ -217,30 +215,6 @@ public class PredatorPreyCell extends PPCellFeatures {
       }
     }
   }
-
-  /*
-   * Get North, East, South, West neighbors.
-   *
-   * @param neighbors List of neighbors.
-
-  private void getFourNeighbors(List<Cell> neighbors, List<Cell> newNeighbors) {
-    for (int i = neighbors.size() - 1; i >= 0; i--) {
-      Cell neighbor = neighbors.get(i);
-      Cell newNeighbor = newNeighbors.get(i);
-      if ((neighbor.getRow() == this.getRow() - 1 && neighbor.getColumn() == this.getColumn() - 1)
-          ||
-          (neighbor.getRow() == this.getRow() - 1 && neighbor.getColumn() == this.getColumn() + 1)
-          ||
-          (neighbor.getRow() == this.getRow() + 1 && neighbor.getColumn() == this.getColumn() - 1)
-          ||
-          (neighbor.getRow() == this.getRow() + 1
-              && neighbor.getColumn() == this.getColumn() + 1)) {
-        neighbors.remove(i);
-        newNeighbors.remove(i);
-      }
-    }
-  }
-   */
 
   /**
    * Generate random index.
