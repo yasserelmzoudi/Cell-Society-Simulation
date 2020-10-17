@@ -17,8 +17,8 @@ public class SegregationGrid extends Grid{
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public SegregationGrid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
-    super(data, edgePolicy, neighborhoodPolicy);
+  public SegregationGrid(InputStream data) {
+    super(data);
   }
 
   /**
@@ -61,9 +61,12 @@ public class SegregationGrid extends Grid{
       row++;
     }
   }
-
   @Override
   public List<String> getAllTypes() {
-    return CellType.getSegregationTypes();
+    List<String> myTypes = super.getAllTypes();
+    myTypes.add(CellType.X.toString());
+    myTypes.add(CellType.O.toString());
+    myTypes.add(CellType.NO_RACE.toString());
+    return myTypes;
   }
 }
