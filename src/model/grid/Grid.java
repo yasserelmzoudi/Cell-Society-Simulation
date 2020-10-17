@@ -198,15 +198,8 @@ public abstract class Grid {
 
   public List<Cell> getEdgeTypeKleinBottle(Cell[][] grid, int row, int column) {
     List<Cell> kleinBottleCells = new ArrayList<>();
-    int minRow = (row - 1) % gridHeight;
-    if (minRow <0) minRow+=gridHeight;
-    int maxRow = (row + 1) % gridHeight;
-    int minCol = (column - 1) % gridWidth;
-    if (minCol<0) minCol+=gridWidth;
-    int maxCol = (column + 1) % gridWidth;
-    kleinBottleCells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
-        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
-        grid[maxRow][column],grid[maxRow][maxCol]));
+    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
+    findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, kleinBottleCells, grid);
     int newMinRow = (gridHeight - row - 1) % gridHeight;
     if (newMinRow<0) newMinRow+=gridHeight;
     int newMaxRow = (gridHeight - row + 1) % gridHeight;
