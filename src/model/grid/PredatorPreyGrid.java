@@ -67,10 +67,6 @@ public class PredatorPreyGrid extends Grid {
   }
   @Override
   public List<String> getAllTypes() {
-    List<String> myTypes = super.getAllTypes();
-    myTypes.add(CellType.SHARK.toString());
-    myTypes.add(CellType.FISH.toString());
-    myTypes.add(CellType.WATER.toString());
-    return myTypes;
+    return CellType.getPredatorPreyModelTypes();
   }
 }

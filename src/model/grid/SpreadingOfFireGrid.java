@@ -63,10 +63,6 @@ public class SpreadingOfFireGrid extends Grid {
   }
   @Override
   public List<String> getAllTypes() {
-    List<String> myTypes = super.getAllTypes();
-    myTypes.add(CellType.EMPTY.toString());
-    myTypes.add(CellType.TREE.toString());
-    myTypes.add(CellType.BURNING.toString());
-    return myTypes;
+    return CellType.getSpreadingOfFireTypes();
   }
 }

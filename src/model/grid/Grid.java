@@ -305,9 +305,6 @@ public abstract class Grid {
     }
   }*/
 
-  public List<String> getAllTypes() {
-    List<String> myTypes = new ArrayList<>();
-    return myTypes;
-  }
+  public abstract List<String> getAllTypes();
 
 }

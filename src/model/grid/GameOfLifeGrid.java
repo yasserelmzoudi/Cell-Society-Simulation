@@ -59,10 +59,7 @@ public class GameOfLifeGrid extends Grid {
 
   @Override
   public List<String> getAllTypes() {
-    List<String> myTypes = super.getAllTypes();
-    myTypes.add(CellType.DEAD.toString());
-    myTypes.add(CellType.ALIVE.toString());
-    return myTypes;
+    return CellType.getGameOfLifeTypes();
   }
 
 }

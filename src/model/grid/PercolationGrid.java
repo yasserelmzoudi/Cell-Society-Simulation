@@ -64,11 +64,7 @@ public class PercolationGrid extends Grid{
 
   @Override
   public List<String> getAllTypes() {
-    List<String> myTypes = super.getAllTypes();
-    myTypes.add(CellType.EMPTY_OPEN.toString());
-    myTypes.add(CellType.FULL_OPEN.toString());
-    myTypes.add(CellType.BLOCKED.toString());
-    return myTypes;
+    return CellType.getPercolationTypes();
   }
 
 }

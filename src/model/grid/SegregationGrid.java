@@ -61,12 +61,9 @@ public class SegregationGrid extends Grid{
       row++;
     }
   }
+
   @Override
   public List<String> getAllTypes() {
-    List<String> myTypes = super.getAllTypes();
-    myTypes.add(CellType.X.toString());
-    myTypes.add(CellType.O.toString());
-    myTypes.add(CellType.NO_RACE.toString());
-    return myTypes;
+    return CellType.getSegregationTypes();
   }
 }

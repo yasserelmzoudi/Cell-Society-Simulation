@@ -1,5 +1,7 @@
 package model.cell;
 
+import java.util.List;
+
 /**
  * Enum that represents the different states of cells for each simulation.
  *
@@ -56,4 +58,30 @@ public enum CellType {
   X,
   O,
   NO_RACE;
+
+  public static List<String> getGameOfLifeTypes() {
+    return List.of(DEAD.toString(), ALIVE.toString());
+  }
+
+  public static List<String> getPercolationTypes() {
+    return List.of(EMPTY_OPEN.toString(), FULL_OPEN.toString(), BLOCKED.toString());
+  }
+
+  public static List<String> getPredatorPreyModelTypes() {
+    return List.of(FISH.toString(), SHARK.toString(), WATER.toString());
+  }
+
+  public static List<String> getSegregationTypes() {
+    return List.of(X.toString(), O.toString(), NO_RACE.toString());
+  }
+
+  public static List<String> getRockPaperScissorsTypes() {
+    return List.of(ROCK.toString(), PAPER.toString(), SCISSORS.toString());
+  }
+
+  public static List<String> getSpreadingOfFireTypes(){
+    return List.of(TREE.toString(), BURNING.toString(), EMPTY.toString());
+  }
+
 }
+
