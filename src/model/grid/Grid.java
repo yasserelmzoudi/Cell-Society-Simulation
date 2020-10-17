@@ -79,6 +79,19 @@ public abstract class Grid {
   public abstract void gridSetUp(List<String[]> readLines);
 
   /**
+   * Code adopted from Professor Duvall to read CSV files
+   * @return List<String[]> representing all of the lines read from data
+   * @author Robert C. Duvall
+   */
+  public List<String[]> readAll() throws InvalidCSVFileException {
+    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
+      return csvReader.readAll();
+    } catch (IOException | CsvException e) {
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
+    }
+  }
+
+  /**
    * The grid is copied into another new grid so that when updating the cells, the original cell
    * values are known.
    *
@@ -112,24 +125,6 @@ public abstract class Grid {
   }
 
   /**
-   * Sets the grid type to a particular simulation.
-   *
-   * @return Type of grid required for simulation.
-   */
-  public String setGridType() {
-    return myType;
-  }
-
-  /**
-   * Gets all cells from the grid.
-   *
-   * @return A copy of the grid.
-   */
-  public Cell[][] getAllCells() {
-    return copyGrid();
-  }
-
-  /**
    * Updates the cell in the next step.
    */
   public void performNextStep(){
@@ -147,10 +142,7 @@ public abstract class Grid {
           neighbors = (List<Cell>) neighborType.invoke(this, copyGrid, row, column);
           newNeighbors = (List<Cell>) neighborType.invoke(this, this.gridOfCells, row, column);
           edgeType.invoke(this, neighbors, row, column);
-        } catch (Exception e){
-          e.printStackTrace();
-        }
-
+        } catch (Exception e){ e.printStackTrace(); }
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
@@ -228,21 +220,6 @@ public abstract class Grid {
     return kleinBottleCells;
   }
 
-  private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
-      int column, Cell[][]grid) {
-    List<Cell> cells = new ArrayList<>();
-    minRow = (row - 1) % gridHeight;
-    if (minRow <0) minRow+=gridHeight;
-    maxRow = (row + 1) % gridHeight;
-    minCol = (column - 1) % gridWidth;
-    if (minCol<0) minCol+=gridWidth;
-    maxCol = (column + 1) % gridWidth;
-    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
-        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
-        grid[maxRow][column],grid[maxRow][maxCol]));
-    return cells;
-  }
-
   /**
    * Gets neighbors of a cell with the cardinal neighborhood policy.
    *
@@ -289,7 +266,49 @@ public abstract class Grid {
     }
   }
 
+  /**
+   * Gets neighbors of a cell with the complete neighborhood policy.
+   *
+   * @param completeCells The cells from the complete neighborhood policy.
+   * @param row The row of the cell.
+   * @param column The column of the cell.
+   */
   public void setNeighborComplete(List<Cell> completeCells, int row, int column) {
+  }
+
+  private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
+      int column, Cell[][]grid) {
+    List<Cell> cells = new ArrayList<>();
+    minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    maxRow = (row + 1) % gridHeight;
+    minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    maxCol = (column + 1) % gridWidth;
+    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+    return cells;
+  }
+
+  public abstract List<String> getAllTypes();
+
+  /**
+   * Sets the grid type to a particular simulation.
+   *
+   * @return Type of grid required for simulation.
+   */
+  public String setGridType() {
+    return myType;
+  }
+
+  /**
+   * Gets all cells from the grid.
+   *
+   * @return A copy of the grid.
+   */
+  public Cell[][] getAllCells() {
+    return copyGrid();
   }
 
   public int gridColumns() {
@@ -313,20 +332,5 @@ public abstract class Grid {
   public Cell getCell(int row, int column) {
     return gridOfCells[row][column];
   }
-
-  /**
-   * Code adopted from Professor Duvall to read CSV files
-   * @return List<String[]> representing all of the lines read from data
-   * @author Robert C. Duvall
-   */
-  public List<String[]> readAll() throws InvalidCSVFileException {
-    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
-      return csvReader.readAll();
-    } catch (IOException | CsvException e) {
-      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
-    }
-  }
-
-  public abstract List<String> getAllTypes();
 
 }
