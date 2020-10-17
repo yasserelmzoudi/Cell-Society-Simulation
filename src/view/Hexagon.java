@@ -1,4 +1,4 @@
-package view.Shapes;
+package view;
 
 import javafx.scene.shape.Polygon;
 import model.grid.Grid;
