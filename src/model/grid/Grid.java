@@ -71,6 +71,7 @@ public abstract class Grid {
     gridSetUp(readLines);
     gridTypes = new ArrayList<>();
     setUpGridTypes();
+    //fixed merge
   }
 
   public void setUpGridTypes() {
