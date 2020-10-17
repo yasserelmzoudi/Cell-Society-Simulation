@@ -138,10 +138,10 @@ public abstract class Grid {
           Method neighborType = Grid.class.getMethod("getEdgeType" + edgePolicy,
               Cell[][].class, int.class, int.class);
           Method edgeType = Grid.class.getMethod("setNeighbor" + neighborhoodPolicy,
-              List.class, int.class, int.class);
+              List.class, List.class, int.class, int.class);
           neighbors = (List<Cell>) neighborType.invoke(this, copyGrid, row, column);
           newNeighbors = (List<Cell>) neighborType.invoke(this, this.gridOfCells, row, column);
-          edgeType.invoke(this, neighbors, row, column);
+          edgeType.invoke(this, neighbors, newNeighbors, row, column);
         } catch (Exception e){ e.printStackTrace(); }
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
@@ -223,13 +223,14 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the cardinal neighborhood policy.
    *
-   * @param completeCells The cells from the complete neighborhood policy.
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
    * @param row The row of the cell.
    * @param column The column of the cell.
    */
-  public void setNeighborCardinal(List<Cell> completeCells, int row, int column) {
-    for (int i = completeCells.size() - 1; i >= 0; i--) {
-      Cell neighbor = completeCells.get(i);
+  public void setNeighborCardinal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+    for (int i = neighbors.size() - 1; i >= 0; i--) {
+      Cell neighbor = neighbors.get(i);
       if (((neighbor.getRow() == (row - 1) % gridHeight) &&
           (neighbor.getColumn() == (column - 1) % gridWidth)) ||
           ((neighbor.getRow() == (row - 1) % gridHeight) &&
@@ -238,7 +239,8 @@ public abstract class Grid {
               (neighbor.getColumn() == (column - 1) % gridWidth)) ||
           ((neighbor.getRow() == (row + 1) % gridHeight)
               && (neighbor.getColumn() == (column + 1) % gridWidth))) {
-        completeCells.remove(i);
+        neighbors.remove(i);
+        newNeighbors.remove(i);
       }
     }
   }
@@ -246,13 +248,14 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the diagonal neighborhood policy.
    *
-   * @param completeCells The cells from the complete neighborhood policy.
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
    * @param row The row of the cell.
    * @param column The column of the cell.
    */
-  public void setNeighborDiagonal(List<Cell> completeCells, int row, int column) {
-    for (int i = completeCells.size() - 1; i >= 0; i--) {
-      Cell neighbor = completeCells.get(i);
+  public void setNeighborDiagonal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+    for (int i = neighbors.size() - 1; i >= 0; i--) {
+      Cell neighbor = neighbors.get(i);
       if (((neighbor.getRow() == (row - 1) % gridHeight) &&
           (neighbor.getColumn() == column % gridWidth)) ||
           ((neighbor.getRow() == row % gridHeight) &&
@@ -261,7 +264,8 @@ public abstract class Grid {
               (neighbor.getColumn() == column % gridWidth)) ||
           ((neighbor.getRow() == row % gridHeight)
               && (neighbor.getColumn() == (column - 1) % gridWidth))) {
-        completeCells.remove(i);
+        neighbors.remove(i);
+        newNeighbors.remove(i);
       }
     }
   }
@@ -269,11 +273,12 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the complete neighborhood policy.
    *
-   * @param completeCells The cells from the complete neighborhood policy.
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
    * @param row The row of the cell.
    * @param column The column of the cell.
    */
-  public void setNeighborComplete(List<Cell> completeCells, int row, int column) {
+  public void setNeighborComplete(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
   }
 
   private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
