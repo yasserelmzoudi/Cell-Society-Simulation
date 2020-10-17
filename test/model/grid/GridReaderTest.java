@@ -1,4 +1,4 @@
-package model.grid;
+/*package model.grid;
 
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -23,4 +23,4 @@ public class GridReaderTest {
       assertArrayEquals(expectedReading.get(row), actualReading.get(row));
     }
   }
-}
+}*/

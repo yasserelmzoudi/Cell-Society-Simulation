@@ -50,8 +50,6 @@ public class SpreadingOfFireCell extends Cell{
    */
   @Override
   public void update(List<Cell> neighbors, List<Cell> newNeighbors, boolean[][] isUpdated) {
-    getFourNeighbors(neighbors);
-
     updateBurningTree();
     boolean neighboringFire = isNeighboringFire(neighbors);
 
@@ -66,23 +64,6 @@ public class SpreadingOfFireCell extends Cell{
       }
     }
 
-  }
-
-  /**
-   * Get North, East, South, West neighbors.
-   *
-   * @param neighbors List of neighbors.
-   */
-  private void getFourNeighbors(List<Cell> neighbors) {
-    for (int i = neighbors.size()-1; i >= 0; i--) {
-      Cell neighbor = neighbors.get(i);
-      if ((neighbor.getRow() == this.getRow() - 1 && neighbor.getColumn() == this.getColumn() - 1) ||
-          (neighbor.getRow() == this.getRow() - 1 && neighbor.getColumn() == this.getColumn() + 1) ||
-          (neighbor.getRow() == this.getRow() + 1 && neighbor.getColumn() == this.getColumn() - 1) ||
-          (neighbor.getRow() == this.getRow() + 1 && neighbor.getColumn() == this.getColumn() + 1)) {
-        neighbors.remove(i);
-      }
-    }
   }
 
   /**

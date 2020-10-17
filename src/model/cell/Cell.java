@@ -1,8 +1,5 @@
 package model.cell;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-
 import java.util.List;
 
 /**

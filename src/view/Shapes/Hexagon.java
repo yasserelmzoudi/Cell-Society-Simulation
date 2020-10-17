@@ -1,10 +1,9 @@
-package view;
+package view.Shapes;
 
 import javafx.scene.shape.Polygon;
 import model.grid.Grid;
 
 public class Hexagon extends Polygon{
-    private static final int GRID_PADDING_LR =200;
     private int myRow;
     private int myColumn;
     private Double[] pointArray;

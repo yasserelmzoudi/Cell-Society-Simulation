@@ -10,7 +10,7 @@
 }
 #gameDisplayBox {
     -fx-alignment: center;
-    -fx-padding: 2;
+    -fx-padding: 5;
 }
 
 #slider{
