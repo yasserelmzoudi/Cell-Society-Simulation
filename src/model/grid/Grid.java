@@ -168,6 +168,146 @@ public abstract class Grid {
     return listOfCells;
   }
 
+  /**
+   * Gets the neighbors for the Torodial edge policy.
+   *
+   * @param grid The grid from which to read the neighbors.
+   * @param row The row of the given cell.
+   * @param column The column of the given cell.
+   * @return List of neighbors.
+   */
+  public List<Cell> getEdgeTypeTorodial(Cell[][] grid, int row, int column) {
+    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
+    return findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
+  }
+
+  /**
+   * Gets the neighbors for the Klein Bottle edge policy.
+   *
+   * @param grid The grid from which to read the neighbors.
+   * @param row The row of the given cell.
+   * @param column The column of the given cell.
+   * @return List of neighbors.
+   */
+  public List<Cell> getEdgeTypeKleinBottle(Cell[][] grid, int row, int column) {
+    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
+    List<Cell> kleinBottleCells = findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
+    int newMinRow = (gridHeight - row - 1) % gridHeight;
+    if (newMinRow<0) newMinRow+=gridHeight;
+    int newMaxRow = (gridHeight - row + 1) % gridHeight;
+    if (newMaxRow<0) newMaxRow+=gridHeight;
+    int newRow = (gridHeight - row) % gridHeight;
+    if(newRow<0) newRow+=gridHeight;
+    if (column == 0) {
+      kleinBottleCells.removeAll(Arrays.asList(grid[minRow][minCol],
+          grid[row][minCol],grid[maxRow][minCol]));
+      kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][minCol],
+          grid[newMaxRow][minCol],grid[newRow][minCol]));
+    }
+    if (column == (gridWidth-1)) {
+      kleinBottleCells.removeAll(Arrays.asList(grid[minRow][maxCol],
+          grid[row][maxCol],grid[maxRow][maxCol]));
+      kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][maxCol],
+          grid[newMaxRow][maxCol],grid[newRow][maxCol]));
+    }
+    return kleinBottleCells;
+  }
+
+  /**
+   * Gets neighbors of a cell with the cardinal neighborhood policy.
+   *
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
+   * @param row The row of the cell.
+   * @param column The column of the cell.
+   */
+  public void setNeighborCardinal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+    for (int i = neighbors.size() - 1; i >= 0; i--) {
+      Cell neighbor = neighbors.get(i);
+      if (((neighbor.getRow() == (row - 1) % gridHeight) &&
+          (neighbor.getColumn() == (column - 1) % gridWidth)) ||
+          ((neighbor.getRow() == (row - 1) % gridHeight) &&
+              (neighbor.getColumn() == (column + 1) % gridWidth)) ||
+          ((neighbor.getRow() == (row + 1) % gridHeight) &&
+              (neighbor.getColumn() == (column - 1) % gridWidth)) ||
+          ((neighbor.getRow() == (row + 1) % gridHeight)
+              && (neighbor.getColumn() == (column + 1) % gridWidth))) {
+        neighbors.remove(i);
+        newNeighbors.remove(i);
+      }
+    }
+  }
+
+  /**
+   * Gets neighbors of a cell with the diagonal neighborhood policy.
+   *
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
+   * @param row The row of the cell.
+   * @param column The column of the cell.
+   */
+  public void setNeighborDiagonal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+    for (int i = neighbors.size() - 1; i >= 0; i--) {
+      Cell neighbor = neighbors.get(i);
+      if (((neighbor.getRow() == (row - 1) % gridHeight) &&
+          (neighbor.getColumn() == column % gridWidth)) ||
+          ((neighbor.getRow() == row % gridHeight) &&
+              (neighbor.getColumn() == (column + 1) % gridWidth)) ||
+          ((neighbor.getRow() == (row + 1) % gridHeight) &&
+              (neighbor.getColumn() == column % gridWidth)) ||
+          ((neighbor.getRow() == row % gridHeight)
+              && (neighbor.getColumn() == (column - 1) % gridWidth))) {
+        neighbors.remove(i);
+        newNeighbors.remove(i);
+      }
+    }
+  }
+
+  /**
+   * Gets neighbors of a cell with the complete neighborhood policy.
+   *
+   * @param neighbors The cells from the complete neighborhood policy.
+   * @param newNeighbors The neighboring cells that have been updated thus far.
+   * @param row The row of the cell.
+   * @param column The column of the cell.
+   */
+  public void setNeighborComplete(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+  }
+
+  private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
+      int column, Cell[][]grid) {
+    List<Cell> cells = new ArrayList<>();
+    minRow = (row - 1) % gridHeight;
+    if (minRow <0) minRow+=gridHeight;
+    maxRow = (row + 1) % gridHeight;
+    minCol = (column - 1) % gridWidth;
+    if (minCol<0) minCol+=gridWidth;
+    maxCol = (column + 1) % gridWidth;
+    cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
+        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
+        grid[maxRow][column],grid[maxRow][maxCol]));
+    return cells;
+  }
+
+
+  /**
+   * Sets the grid type to a particular simulation.
+   *
+   * @return Type of grid required for simulation.
+   */
+  public String setGridType() {
+    return myType;
+  }
+
+  /**
+   * Gets all cells from the grid.
+   *
+   * @return A copy of the grid.
+   */
+  public Cell[][] getAllCells() {
+    return copyGrid();
+  }
+
   public int gridColumns() {
     return gridOfCells[0].length;
   }
@@ -190,13 +330,6 @@ public abstract class Grid {
    * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll() throws InvalidCSVFileException {
-    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
-      return csvReader.readAll();
-    } catch (IOException | CsvException e) {
-      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
-    }
-  }
 
   /*public void gridlayout(Grid grid) {
     Cell[][] newGrid = grid.getAllCells();
