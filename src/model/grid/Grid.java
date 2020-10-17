@@ -112,19 +112,19 @@ public abstract class Grid {
     }
     return copyOfGrid;
   }
-
-  public String setGridType() {
-    return myType;
-  }
-
   /**
-   * Gets all cells from the grid.
-   *
-   * @return A copy of the grid.
+   * Code adopted from Professor Duvall to read CSV files
+   * @return List<String[]> representing all of the lines read from data
+   * @author Robert C. Duvall
    */
-  public Cell[][] getAllCells() {
-    return copyGrid();
+  public List<String[]> readAll() throws InvalidCSVFileException {
+    try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
+      return csvReader.readAll();
+    } catch (IOException | CsvException e) {
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
+    }
   }
+
 
   /**
    * Updates the cell in the next step.
