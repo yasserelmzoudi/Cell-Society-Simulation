@@ -59,3 +59,6 @@
 #GREEN {
     -fx-fill: green;
 }
+#GameGrid {
+    -fx-alignment: center;
+}
