@@ -92,13 +92,13 @@ public abstract class Grid {
    * @return List<String[]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
-  public List<String[]> readAll() throws InvalidCSVFileException {
+ /* public List<String[]> readAll() throws InvalidCSVFileException {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {
       throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
-  }
+  }*/
 
   /**
    * The grid is copied into another new grid so that when updating the cells, the original cell
@@ -366,11 +366,6 @@ public abstract class Grid {
       System.out.println("");
     }
   }*/
-
-  public List<String> getAllTypes() {
-    List<String> myTypes = new ArrayList<>();
-    return myTypes;
-  }
 
   public int getGridHeight() {
     return gridHeight;
