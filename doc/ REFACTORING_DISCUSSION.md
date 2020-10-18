@@ -32,7 +32,8 @@
 
  * What are the code's biggest issues?
 
- Handling of the neighborhood and edge policies.
+ -Handling of the neighborhood policies
+ -Handling of edge policies.
 
  * Which issues are easy to fix and which are hard?
 
@@ -43,6 +44,7 @@
  * What are good ways to implement the changes "in place"?
 
  Start replacing the parts of the code that can be refactored with reflection.
+ Making more abstractions where needed.
 
 
 ### Refactoring Work
