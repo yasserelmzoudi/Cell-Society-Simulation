@@ -200,19 +200,25 @@ public class PredatorPreyCell extends PPCellFeatures {
     for (int i = 0; i < neighbors.size(); i++) {
       Cell neighbor = neighbors.get(i);
       Cell newNeighbor = newNeighbors.get(i);
-      if (neighbor.getState().name().equals("FISH") && newNeighbor.getState().name()
-          .equals("FISH")) {
-        localFish.add((PPCellFeatures) newNeighbor);
-      }
-      if (neighbor.getState().name().equals("SHARK") && newNeighbor.getState().name()
-          .equals("SHARK")
-          && ((PPCellFeatures) neighbor).getCellReproduction() != 0) {
-        localSharks.add((PPCellFeatures) newNeighbor);
-      }
-      if (neighbor.getState().name().equals("WATER") && newNeighbor.getState().name()
-          .equals("WATER")) {
-        localWater.add((PPCellFeatures) newNeighbor);
-      }
+      neighboringFishOrWater(localFish, neighbor, newNeighbor, "FISH");
+      neighboringShark(localSharks, neighbor, newNeighbor);
+      neighboringFishOrWater(localWater, neighbor, newNeighbor, "WATER");
+    }
+  }
+
+  private void neighboringShark(List<PPCellFeatures> localSharks, Cell neighbor, Cell newNeighbor) {
+    if (neighbor.getState().name().equals("SHARK") && newNeighbor.getState().name()
+        .equals("SHARK")
+        && ((PPCellFeatures) neighbor).getCellReproduction() != 0) {
+      localSharks.add((PPCellFeatures) newNeighbor);
+    }
+  }
+
+  private void neighboringFishOrWater(List<PPCellFeatures> localFish, Cell neighbor, Cell newNeighbor,
+      String cell) {
+    if (neighbor.getState().name().equals(cell) && newNeighbor.getState().name()
+        .equals(cell)) {
+      localFish.add((PPCellFeatures) newNeighbor);
     }
   }
 
