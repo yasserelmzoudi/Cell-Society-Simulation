@@ -11,7 +11,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import model.exceptions.UnableToSaveFileException;
-import view.ErrorPanel;
+
+/**
+ * Class encapsulating logic that writes to the CSV.
+ */
 
 public class GridCSVWriter {
   private Grid grid;
@@ -25,6 +28,14 @@ public class GridCSVWriter {
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
 
+  /**
+   * Constructor for this class.
+   *
+   * @param grid The given grid.
+   * @param title Title of the simulation.
+   * @param author Author of the simulation.
+   * @param description Description of the simulation.
+   */
   public GridCSVWriter(Grid grid, String title, String author, String description) {
     this.grid = grid;
     this.title = title;
@@ -39,6 +50,9 @@ public class GridCSVWriter {
     setUpSaveFile();
   }
 
+  /**
+   * Throws error if the no title is given.
+   */
   private void checkIfTitleProvided() {
     if (title.length() == 0) {
       throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
