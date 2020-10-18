@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import model.exceptions.UnableToSaveFileException;
+import view.ErrorPanel;
 
 public class GridCSVWriter {
   private Grid grid;
   private String title;
+  private String author;
+  private String description;
 
   private int gridHeight;
   private int gridWidth;
@@ -22,15 +25,41 @@ public class GridCSVWriter {
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
 
-  public GridCSVWriter(Grid grid, String title) {
+
+  public GridCSVWriter(Grid grid, String title, String author, String description) {
     this.grid = grid;
     this.title = title;
+    this.author = author;
+    this.description = description;
     gridHeight = grid.getGridHeight();
     gridWidth = grid.getGridWidth();
     errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+
+    checkIfTitleProvided();
+
+    setUpSaveFile();
+  }
+
+  private void checkIfTitleProvided() {
+    if (title.length() == 0) {
+      throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
+    }
+  }
+
+  private void setUpSaveFile() {
+    try (OutputStream saveFile = new FileOutputStream("src/resources/" + title + ".properties")) {
+      Properties prop = new Properties();
+      prop.setProperty("Title", title);
+      prop.setProperty("Author", author);
+      prop.setProperty("Description", description);
+      prop.store(saveFile, null);
+    } catch (Exception e) {
+      throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
+    }
   }
 
   public void saveFile() {
+    checkIfTitleProvided();
     try{
       Writer saveFile = new FileWriter("data/" + title + ".csv");
       CSVWriter writer = new CSVWriter(saveFile, ',', CSVWriter.NO_QUOTE_CHARACTER,
