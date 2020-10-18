@@ -14,6 +14,10 @@ public class SimulationSettingsReader {
 
 
   public SimulationSettingsReader(String path) {
+    readSimulationSettings(path);
+  }
+
+  private void readSimulationSettings(String path) {
     try {
       errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
       prop = new Properties();
