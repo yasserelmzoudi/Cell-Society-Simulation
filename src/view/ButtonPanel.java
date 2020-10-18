@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import model.grid.GridCSVWriter;
 import view.GamePaneShapes.GamePane;
 
-public class UserOptions extends GridPane{
+public class ButtonPanel extends GridPane{
     private static final String RESOURCES = "resources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
     private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
@@ -42,7 +42,7 @@ public class UserOptions extends GridPane{
     private TextField titleField;
     private TextArea descriptionField;
 
-    public UserOptions(GamePane myPane, Grid grid) {
+    public ButtonPanel(GamePane myPane, Grid grid) {
         myGamePane = myPane;
         myGameGrid = grid;
         setUpButtons();

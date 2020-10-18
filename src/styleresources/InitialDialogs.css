@@ -1,0 +1,19 @@
+.root {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Times New Roman";
+    -fx-background: #7bafd8;
+    -fx-padding: 5px;
+}
+
+#initialUserDialogs {
+    -fx-pref-width: 300;
+    -fx-pref-height: 200;
+    -fx-background-color: #7bafd8;
+    -fx-alignment: center;
+}
+#column {
+    -fx-alignment: center;
+    -fx-padding: 5;
+}
+
+
