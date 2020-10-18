@@ -51,7 +51,7 @@ public abstract class Grid {
    *
    * @param data InputStream whose CSV file is read to initialize Grid
    */
-  public Grid (InputStream data, String edgePolicy, String neighborhoodPolicy) {
+  public Grid(InputStream data, String edgePolicy, String neighborhoodPolicy) {
     errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
     this.edgePolicy = edgePolicy;
     this.neighborhoodPolicy = neighborhoodPolicy;
@@ -72,7 +72,7 @@ public abstract class Grid {
   }
 
   public void resetCellTypeCounts() {
-    for (String cellTypeName: getAllTypes()) {
+    for (String cellTypeName : getAllTypes()) {
       totalCellTypeCounts.put(cellTypeName, 0);
     }
   }
@@ -94,8 +94,15 @@ public abstract class Grid {
   public abstract void gridSetUp(List<String[]> readLines);
 
   /**
+   * Abstract method to get all the types of cells in a simulation.
+   * @return List of types.
+   */
+  public abstract List<String> getAllTypes();
+
+  /**
    * Code adopted from Professor Duvall to read CSV files
-   * @return List<String[]> representing all of the lines read from data
+   *
+   * @return List<String [ ]> representing all of the lines read from data
    * @author Robert C. Duvall
    */
   public List<String[]> readAll() throws InvalidCSVFileException {
@@ -142,7 +149,7 @@ public abstract class Grid {
   /**
    * Updates the cell in the next step.
    */
-  public void performNextStep(){
+  public void performNextStep() {
     Cell[][] copyGrid = copyGrid();
     boolean[][] isUpdated = new boolean[gridHeight][gridWidth];
     for (int row = 0; row < gridHeight; row++) {
@@ -157,7 +164,9 @@ public abstract class Grid {
           neighbors = (List<Cell>) neighborType.invoke(this, copyGrid, row, column);
           newNeighbors = (List<Cell>) neighborType.invoke(this, this.gridOfCells, row, column);
           edgeType.invoke(this, neighbors, newNeighbors, row, column);
-        } catch (Exception e){ e.printStackTrace(); }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
@@ -168,7 +177,7 @@ public abstract class Grid {
   }
 
   public void updateCellTypeCount() {
-    Cell [][] grid = getAllCells();
+    Cell[][] grid = getAllCells();
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
         String cellTypeName = grid[row][column].getState().name();
@@ -205,44 +214,57 @@ public abstract class Grid {
   /**
    * Gets the neighbors for the Torodial edge policy.
    *
-   * @param grid The grid from which to read the neighbors.
-   * @param row The row of the given cell.
+   * @param grid   The grid from which to read the neighbors.
+   * @param row    The row of the given cell.
    * @param column The column of the given cell.
    * @return List of neighbors.
    */
   public List<Cell> getEdgeTypeTorodial(Cell[][] grid, int row, int column) {
-    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
+    int minRow = 0;
+    int maxRow = 0;
+    int minCol = 0;
+    int maxCol = 0;
     return findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
   }
 
   /**
    * Gets the neighbors for the Klein Bottle edge policy.
    *
-   * @param grid The grid from which to read the neighbors.
-   * @param row The row of the given cell.
+   * @param grid   The grid from which to read the neighbors.
+   * @param row    The row of the given cell.
    * @param column The column of the given cell.
    * @return List of neighbors.
    */
   public List<Cell> getEdgeTypeKleinBottle(Cell[][] grid, int row, int column) {
-    int minRow = 0; int maxRow = 0; int minCol= 0; int maxCol=0;
-    List<Cell> kleinBottleCells = findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column, grid);
+    int minRow = 0;
+    int maxRow = 0;
+    int minCol = 0;
+    int maxCol = 0;
+    List<Cell> kleinBottleCells = findMinMaxRowsCols(minRow, maxRow, minCol, maxCol, row, column,
+        grid);
     int newMinRow = (gridHeight - row - 1) % gridHeight;
-    if (newMinRow<0) newMinRow+=gridHeight;
+    if (newMinRow < 0) {
+      newMinRow += gridHeight;
+    }
     int newMaxRow = (gridHeight - row + 1) % gridHeight;
-    if (newMaxRow<0) newMaxRow+=gridHeight;
+    if (newMaxRow < 0) {
+      newMaxRow += gridHeight;
+    }
     int newRow = (gridHeight - row) % gridHeight;
-    if(newRow<0) newRow+=gridHeight;
+    if (newRow < 0) {
+      newRow += gridHeight;
+    }
     if (column == 0) {
       kleinBottleCells.removeAll(Arrays.asList(grid[minRow][minCol],
-          grid[row][minCol],grid[maxRow][minCol]));
+          grid[row][minCol], grid[maxRow][minCol]));
       kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][minCol],
-          grid[newMaxRow][minCol],grid[newRow][minCol]));
+          grid[newMaxRow][minCol], grid[newRow][minCol]));
     }
-    if (column == (gridWidth-1)) {
+    if (column == (gridWidth - 1)) {
       kleinBottleCells.removeAll(Arrays.asList(grid[minRow][maxCol],
-          grid[row][maxCol],grid[maxRow][maxCol]));
+          grid[row][maxCol], grid[maxRow][maxCol]));
       kleinBottleCells.addAll(Arrays.asList(grid[newMinRow][maxCol],
-          grid[newMaxRow][maxCol],grid[newRow][maxCol]));
+          grid[newMaxRow][maxCol], grid[newRow][maxCol]));
     }
     return kleinBottleCells;
   }
@@ -250,12 +272,13 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the cardinal neighborhood policy.
    *
-   * @param neighbors The cells from the complete neighborhood policy.
+   * @param neighbors    The cells from the complete neighborhood policy.
    * @param newNeighbors The neighboring cells that have been updated thus far.
-   * @param row The row of the cell.
-   * @param column The column of the cell.
+   * @param row          The row of the cell.
+   * @param column       The column of the cell.
    */
-  public void setNeighborCardinal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+  public void setNeighborCardinal(List<Cell> neighbors, List<Cell> newNeighbors, int row,
+      int column) {
     for (int i = neighbors.size() - 1; i >= 0; i--) {
       Cell neighbor = neighbors.get(i);
       if (((neighbor.getRow() == (row - 1) % gridHeight) &&
@@ -275,12 +298,13 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the diagonal neighborhood policy.
    *
-   * @param neighbors The cells from the complete neighborhood policy.
+   * @param neighbors    The cells from the complete neighborhood policy.
    * @param newNeighbors The neighboring cells that have been updated thus far.
-   * @param row The row of the cell.
-   * @param column The column of the cell.
+   * @param row          The row of the cell.
+   * @param column       The column of the cell.
    */
-  public void setNeighborDiagonal(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+  public void setNeighborDiagonal(List<Cell> neighbors, List<Cell> newNeighbors, int row,
+      int column) {
     for (int i = neighbors.size() - 1; i >= 0; i--) {
       Cell neighbor = neighbors.get(i);
       if (((neighbor.getRow() == (row - 1) % gridHeight) &&
@@ -300,30 +324,33 @@ public abstract class Grid {
   /**
    * Gets neighbors of a cell with the complete neighborhood policy.
    *
-   * @param neighbors The cells from the complete neighborhood policy.
+   * @param neighbors    The cells from the complete neighborhood policy.
    * @param newNeighbors The neighboring cells that have been updated thus far.
-   * @param row The row of the cell.
-   * @param column The column of the cell.
+   * @param row          The row of the cell.
+   * @param column       The column of the cell.
    */
-  public void setNeighborComplete(List<Cell> neighbors, List<Cell> newNeighbors, int row, int column) {
+  public void setNeighborComplete(List<Cell> neighbors, List<Cell> newNeighbors, int row,
+      int column) {
   }
 
   private List<Cell> findMinMaxRowsCols(int minRow, int maxRow, int minCol, int maxCol, int row,
-      int column, Cell[][]grid) {
+      int column, Cell[][] grid) {
     List<Cell> cells = new ArrayList<>();
     minRow = (row - 1) % gridHeight;
-    if (minRow <0) minRow+=gridHeight;
+    if (minRow < 0) {
+      minRow += gridHeight;
+    }
     maxRow = (row + 1) % gridHeight;
     minCol = (column - 1) % gridWidth;
-    if (minCol<0) minCol+=gridWidth;
+    if (minCol < 0) {
+      minCol += gridWidth;
+    }
     maxCol = (column + 1) % gridWidth;
     cells.addAll(Arrays.asList(grid[minRow][minCol], grid[minRow][column],
-        grid[minRow][maxCol], grid[row][maxCol],grid[row][minCol],grid[maxRow][minCol],
-        grid[maxRow][column],grid[maxRow][maxCol]));
+        grid[minRow][maxCol], grid[row][maxCol], grid[row][minCol], grid[maxRow][minCol],
+        grid[maxRow][column], grid[maxRow][maxCol]));
     return cells;
   }
-
-  public abstract List<String> getAllTypes();
 
 
   public void completeRandomizeGrid() {
@@ -372,7 +399,6 @@ public abstract class Grid {
     return gridOfCells.length;
   }
 
-
   public Cell getCell(int row, int column) {
     return gridOfCells[row][column];
   }
@@ -389,14 +415,6 @@ public abstract class Grid {
     return gridWidth;
   }
 
-  private CellType getRandomCellType() {
-    return CellType.valueOf(getAllTypes().get(getRandomIndex(getAllTypes().size())));
-  }
-
-  private int getRandomIndex(int range){
-    return (int) (Math.random() * range);
-  }
-
   public void noRandomization() {
     return;
   }
@@ -404,4 +422,14 @@ public abstract class Grid {
   public Map<String, Integer> getTotalCellTypeCounts() {
     return totalCellTypeCounts;
   }
+
+  private CellType getRandomCellType() {
+    return CellType.valueOf(getAllTypes().get(getRandomIndex(getAllTypes().size())));
+  }
+
+  private int getRandomIndex(int range) {
+    return (int) (Math.random() * range);
+  }
+
+
 }
