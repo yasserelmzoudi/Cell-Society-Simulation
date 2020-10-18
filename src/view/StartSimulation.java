@@ -1,5 +1,6 @@
 package view;
 
+import controller.CellSocietyController;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import javafx.animation.KeyFrame;
@@ -48,21 +49,25 @@ public class StartSimulation  {
     private String edgePolicy;
     private String neighborhoodPolicy;
 
+    private CellSocietyController simulationController;
+
     private int frameCount = 0;
+
 
     private SimulationGraph simulationGraph;
 
     private Class<?> gridParameters;
 
-    public StartSimulation(Stage stage, int winWidth, int winHeight) {
+    public StartSimulation(Stage stage, int winWidth, int winHeight)
+        throws ReflectiveOperationException {
         windowWidth = winWidth;
         windowHeight = winHeight;
         start(stage);
 
     }
 
-    public void start(Stage stage){
-        errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+    public void start(Stage stage) throws ReflectiveOperationException {
+        /*errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
         simulationSettingsReader = new SimulationSettingsReader(PATH);
         simulationData = Grid.class.getClassLoader()
                 .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
@@ -83,7 +88,13 @@ public class StartSimulation  {
             randomizeType.invoke(grid);
         } catch(Exception e) {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
+        }*/
+        try {
+            simulationController = new CellSocietyController();
+        } catch (InvalidSimulationTypeException exception){
+            new ErrorPanel();
         }
+        grid = simulationController.getGrid();
         primaryStage =stage;
         setUpVisualScene(grid, windowWidth,windowHeight);
 
@@ -121,7 +132,7 @@ public class StartSimulation  {
 
 
     public void setUpVisualScene(Grid newgrid, int width, int height){
-        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
+        root = new ScreenVisuals(this, newgrid, width, height, simulationController.getSimulationTitle());
     }
 
     public void setUpScene(int width, int height) {
@@ -134,7 +145,7 @@ public class StartSimulation  {
             Platform.exit();
             System.exit(0);
         });
-        simulationGraph = new SimulationGraph(grid, simulationSettingsReader.getSimulationTitle());
+        simulationGraph = new SimulationGraph(grid, simulationController.getSimulationTitle());
         setUpKeyFrames();
 }
     

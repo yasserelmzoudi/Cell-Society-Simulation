@@ -10,7 +10,7 @@ public class Start extends Application {
     /**
      * Starts a new Simulation Window
      */
-    public void start(Stage stage) {
+    public void start(Stage stage) throws ReflectiveOperationException {
         new StartSimulation(stage, 600,600);
     }
 
