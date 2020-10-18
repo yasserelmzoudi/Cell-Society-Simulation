@@ -71,20 +71,7 @@ public abstract class Grid {
     setUpGridTypes();
   }
 
-  public void resetCellTypeCounts() {
-    for (String cellTypeName : getAllTypes()) {
-      totalCellTypeCounts.put(cellTypeName, 0);
-    }
-  }
 
-  public void setUpGridTypes() {
-    for (int row = 0; row < gridHeight; row++) {
-      for (int column = 0; column < gridWidth; column++) {
-        Cell differentCellTypes = gridOfCells[row][column];
-        gridTypes.add(differentCellTypes.getState());
-      }
-    }
-  }
 
   /**
    * Abstract method to set up grid for each type of simulation
@@ -182,6 +169,21 @@ public abstract class Grid {
       for (int column = 0; column < gridWidth; column++) {
         String cellTypeName = grid[row][column].getState().name();
         totalCellTypeCounts.put(cellTypeName, totalCellTypeCounts.get(cellTypeName) + 1);
+      }
+    }
+  }
+
+  public void resetCellTypeCounts() {
+    for (String cellTypeName : getAllTypes()) {
+      totalCellTypeCounts.put(cellTypeName, 0);
+    }
+  }
+
+  public void setUpGridTypes() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        Cell differentCellTypes = gridOfCells[row][column];
+        gridTypes.add(differentCellTypes.getState());
       }
     }
   }

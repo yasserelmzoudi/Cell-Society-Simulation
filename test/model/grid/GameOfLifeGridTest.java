@@ -3,33 +3,44 @@ package model.grid;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+import model.cell.Cell;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class GameOfLifeGridTest {
+  private GameOfLifeGrid grid;
+  ResourceBundle resources = ResourceBundle.getBundle("resources.data");
+  InputStream data = Grid.class.getClassLoader()
+      .getResourceAsStream(resources.getString("TestSource"));
+
+  @BeforeEach
+  public void setup() {
+    grid = new GameOfLifeGrid(data, "Finite", "Complete");
+  }
 
   @Test
-  public void GameOfLifeGridTest() {
-    ResourceBundle resources = ResourceBundle.getBundle("resources.data");
-    InputStream data = Grid.class.getClassLoader()
-        .getResourceAsStream(resources.getString("TestSource"));
-    //Scanner s = new Scanner(data).useDelimiter("\\A");
-    //System.out.println(s.hasNext() ? s.next() : "");
-    Grid grid = new PredatorPreyGrid(data,"Finite","Complete");
-    //System.out.println(Arrays.deepToString();
-    /*List<String[]> expectedReading = List.of(new String[]{"3", "3"}, new String[]{"1", "0", "1"},
-        new String[]{"0", "1", "1"}, new String[]{"1", "1", "1"});
-    List<String[]> actualReading = grid.readAll();
-    System.out.println(actualReading);
-    for (int row = 0; row < expectedReading.size(); row++) {
-      assertArrayEquals(expectedReading.get(row), actualReading.get(row));
-    }*/
-
+  public void checkGridHeight() {
+    assertEquals(5, grid.gridHeight);
   }
+
+  @Test
+  public void checkGridWidth() {
+    assertEquals(5, grid.gridHeight);
+  }
+
+  @Test
+  public void getCellTypes() {
+    List<String> expectedCellTypes = Arrays.asList("ALIVE", "DEAD");
+    List<String> actualCellTypes = grid.getAllTypes();
+    assertTrue(expectedCellTypes.size() == actualCellTypes.size() &&
+        expectedCellTypes.containsAll(actualCellTypes) &&
+        expectedCellTypes.containsAll(actualCellTypes));
+  }
+
 
 
 }
