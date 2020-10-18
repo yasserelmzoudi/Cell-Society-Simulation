@@ -63,28 +63,37 @@ public class PredatorPreyCell extends PPCellFeatures {
     getLocalOrganisms(neighbors, newNeighbors, localFish, localWater, localSharks);
 
     if ((getState().name().equals("FISH"))) {
-      if (!localSharks.isEmpty()) {
-        manageFishEatenBySharks(isUpdated, localSharks);
-      } else if (!localWater.isEmpty()) {
-        manageFishMoving(isUpdated, localWater);
-      } else {
-        setCellType(CellType.FISH);
-        this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
-      }
+      manageCurrentStateFish(isUpdated, localWater, localSharks);
     } else if ((getState().name().equals("SHARK"))) {
+      manageCurrentStateShark(isUpdated, localFish, localWater);
+    }
+  }
 
-      if (this.getCellEnergy() == 0) {
-        setCellType(CellType.WATER);
-        this.setCellReproduction(0);
-      } else if (!localFish.isEmpty()) {
-        manageSharkEatingFish(isUpdated, localFish);
-      } else if (!localWater.isEmpty()) {
-        manageSharkMoving(isUpdated, localWater);
-      } else {
-        this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
-        this.setCellEnergy(this.getCellEnergy() - UNIT_ENERGY);
-        this.setCellType(CellType.SHARK);
-      }
+  private void manageCurrentStateShark(boolean[][] isUpdated, List<PPCellFeatures> localFish,
+      List<PPCellFeatures> localWater) {
+    if (this.getCellEnergy() == 0) {
+      setCellType(CellType.WATER);
+      this.setCellReproduction(0);
+    } else if (!localFish.isEmpty()) {
+      manageSharkEatingFish(isUpdated, localFish);
+    } else if (!localWater.isEmpty()) {
+      manageSharkMoving(isUpdated, localWater);
+    } else {
+      this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
+      this.setCellEnergy(this.getCellEnergy() - UNIT_ENERGY);
+      this.setCellType(CellType.SHARK);
+    }
+  }
+
+  private void manageCurrentStateFish(boolean[][] isUpdated, List<PPCellFeatures> localWater,
+      List<PPCellFeatures> localSharks) {
+    if (!localSharks.isEmpty()) {
+      manageFishEatenBySharks(isUpdated, localSharks);
+    } else if (!localWater.isEmpty()) {
+      manageFishMoving(isUpdated, localWater);
+    } else {
+      setCellType(CellType.FISH);
+      this.setCellReproduction(this.getCellReproduction() + UNIT_REPRODUCE);
     }
   }
 
