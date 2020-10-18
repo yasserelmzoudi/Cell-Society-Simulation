@@ -1,71 +1,84 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.cell.CellType;
 import model.exceptions.InvalidSimulationTypeException;
 import model.grid.Grid;
 import view.GamePaneShapes.GamePane;
-import view.GamePaneShapes.TriangleGamePane;
 
-import java.io.InputStream;
 import java.util.*;
 
 public class ScreenVisuals extends BorderPane {
-    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("styleresources.ObjectID");
-    private ResourceBundle titleresource = ResourceBundle.getBundle("languageresources.english");
-    private static final List<String> userChangeOptions= Arrays.asList("Shark Image", "Pink Color" , "Blue Color", "Fish Image", "Burning Tree Image", "Tree Image", "Water Image", "Green Color", "Grass Image");
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
+    public static final String INIT_DIALOG_STYLESHEET = "InitialDialogs.css";
+    public static final String INIT_DIALOG_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + INIT_DIALOG_STYLESHEET;
+    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("styleresources.ObjectID");
+    private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("styleresources.InitialOptions");
+
 //TODO change userChangeOptions to be according to a grid, probably in a configuration file
 //TODO change main directory for loading file to fit with Yasser's properties file directory
 // TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
 // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
 //TODO For complete: before starting simulation, run a dialog that has the language, the style- dark, unc, etc. (this will load in a style sheet based onthe value in the combo box)
 
-    //Pop up a dialog before that sheos
-    private static final int MIN_SLIDER_SPEED =0;
-    private static final int MAX_SLIDER_SPEED =8;
-    private static final int GRID_PADDING_TB =220;
-    private static final int GRID_PADDING_LR =30;
+    private static final int MIN_SLIDER_SPEED = 0;
+    private static final int MAX_SLIDER_SPEED = 8;
+    private static final int GRID_PADDING_TB = 220;
+    private static final int GRID_PADDING_LR = 30;
 
+    private ResourceBundle titleresource;
     private int visualWidth;
     private int visualHeight;
     private Grid myGrid;
     private GamePane myGamePane;
     private String myShapeType;
     private StartSimulation currentSimulation;
-    private UserOptions myButtonDisplay;
+    private ButtonPanel myButtonDisplay;
     private HBox mySliderDisplay;
     private String gameTitle;
     private List<ComboBox> cellChange = new ArrayList<>();
+    private List<ComboBox> userChangeInputs;
     private List<String> cellTypes = new ArrayList<>();
     private Class<?> gamePaneType;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
     private ResourceBundle errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+    private ResourceBundle titlesBundle = ResourceBundle.getBundle("languageresources.english");
+    private String myStyle;
+    private String myLang;
+    Map<String, ComboBox> myLangOption;
+    Map<String, ComboBox> myOtherOptions;
+    private boolean shouldShowWindow = false;
 
 
-    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title, String shapeType) {
+    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
         myGrid = grid;
         visualWidth = width;
         visualHeight = height;
-        gameTitle =title;
-        myShapeType = shapeType;
+        gameTitle = title;
         currentSimulation = thisSimulation;
-        setupUserInterface();
-        addGridEvent();
+        initialSetUp();
     }
 
-    private void setupUserInterface() {
-        int gridHeight = Math.max(0, visualHeight-GRID_PADDING_TB);
+    public void setupUserInterface() {
+        int gridHeight = Math.max(0, visualHeight - GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
         try {
-            gamePaneType = Class.forName("view.GamePaneShapes." + myShapeType + "GamePane");
-            System.out.println("view.GamePaneShapes." + myShapeType + "GamePane");
+            String myEnglishShapeType = getEnglishShape();
+            System.out.println(myEnglishShapeType);
+            gamePaneType = Class.forName("view.GamePaneShapes." + myEnglishShapeType + "GamePane");
             Object gridShapeInstance = gamePaneType.getDeclaredConstructor(
                     new Class[]{Grid.class, int.class, int.class}).newInstance(myGrid, gridWidth, gridHeight);
             myGamePane = (GamePane) gridShapeInstance;
@@ -73,32 +86,32 @@ public class ScreenVisuals extends BorderPane {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
         }
         //myGamePane = new TriangleGamePane(myGrid, gridWidth, gridHeight);
-        myGamePane.setId(objectIdBundle.getString("GameDisplay"));
+        myGamePane.setId(OBJECT_ID_BUNDLE.getString("GameDisplay"));
         myGamePane.setUpPane(myGrid);
         this.setBottom(makeBottomPanel());
         this.setTop(makeTitleDisplay());
         HBox myGameBox = new HBox(myGamePane);
-        myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY()- myGameBox.getBoundsInLocal().getMinY()));
+        myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY() - myGameBox.getBoundsInLocal().getMinY()));
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
+        addGridEvent();
+        currentSimulation.setUpScene(visualWidth, visualHeight);
     }
 
-    public UserOptions getMyButtonDisplay() {
-        return myButtonDisplay;
-    }
+
     public GamePane getMyGamePane() {
         return myGamePane;
     }
 
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
-        optionDisplay.setId(objectIdBundle.getString("BottomPanel"));
-        myButtonDisplay = new UserOptions(myGamePane, myGrid);
-        myButtonDisplay.setId(objectIdBundle.getString("ButtonPanel"));
-        HBox cellChanger = new HBox();
+        optionDisplay.setId(OBJECT_ID_BUNDLE.getString("BottomPanel"));
+        myButtonDisplay = new ButtonPanel(myGamePane, myGrid);
+        myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
+        Pane cellChanger = new HBox();
         cellTypes = myGrid.getAllTypes();
-        addDropDowns(cellTypes, cellChanger);
-        cellChanger.setId(objectIdBundle.getString("HBox"));
+        addCellDropDowns(cellTypes, cellChanger);
+        cellChanger.setId(OBJECT_ID_BUNDLE.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
         optionDisplay.setTop(makeSlider());
@@ -106,15 +119,17 @@ public class ScreenVisuals extends BorderPane {
     }
 
 
-
-    private void addDropDowns(List<String> cellNames, HBox cellChanger) {
-        for (String cell: cellNames) {
-            HBox column = new HBox();
-            Label cellTypeLabel = new Label(cell.toLowerCase()+": ");
-            column.getChildren().add(cellTypeLabel);
-            column.getChildren().add(makeDropDownOptions());
-            cellChanger.getChildren().add(column);
+    private void addCellDropDowns(List<String> cellNames, Pane cellChanger) {
+        for (String cell : cellNames) {
+            ComboBox newCombo = addToLocation(cell, Arrays.asList(titleresource.getString("CellChanges").split(",")), cellChanger);
+            cellChange.add(newCombo);
         }
+    }
+
+    private ComboBox makeDropDownOptions(List<String> dropDownOptions) {
+        ComboBox eachcell = new ComboBox();
+        eachcell.getItems().addAll(dropDownOptions);
+        return eachcell;
     }
 
     private Node makeTitleDisplay() {
@@ -124,14 +139,6 @@ public class ScreenVisuals extends BorderPane {
         titleDisplay.getChildren().add(simulationTitleText);
         return titleDisplay;
     }
-
-    private Node makeDropDownOptions() {
-        ComboBox eachcell = new ComboBox();
-        eachcell.getItems().addAll(userChangeOptions);
-        cellChange.add(eachcell);
-        return eachcell;
-    }
-
 
     private Node makeSlider() {
         mySliderDisplay = new HBox();
@@ -145,19 +152,28 @@ public class ScreenVisuals extends BorderPane {
         //slider.setShowTickMarks(true);
         slider.valueProperty().addListener(
                 (ov, old_val, new_val) -> currentSimulation.setAnimationSpeed((Double) new_val));
-        slider.setId(objectIdBundle.getString("Slider"));
+        slider.setId(OBJECT_ID_BUNDLE.getString("Slider"));
         mySliderDisplay.getChildren().add(slider);
-        mySliderDisplay.setId(objectIdBundle.getString("SliderBox"));
+        mySliderDisplay.setId(OBJECT_ID_BUNDLE.getString("SliderBox"));
         return mySliderDisplay;
     }
 
     private void addGridEvent() {
-    myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
+        myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
+    }
+
+    private String getEnglishShape() {
+        for(String key: titleresource.keySet()) {
+            if(titleresource.getString(key).equals(myShapeType)) {
+                return key;
+            }
+        }
+        return "invalid shape";
     }
 
 
     public void changeCellStatus(double x, double y) {
-       // System.out.println("X: " + x+ "Y: "+y);
+        // System.out.println("X: " + x+ "Y: "+y);
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -166,7 +182,7 @@ public class ScreenVisuals extends BorderPane {
                     List<String> cellChoices = myGrid.getAllTypes();
                     String newChoice = cellChoices.get(rand.nextInt(cellChoices.size()));
                     CellType newCellType = CellType.valueOf(newChoice);
-                    myGrid.getCell(i,j).setCellType(newCellType);
+                    myGrid.getCell(i, j).setCellType(newCellType);
                     myGamePane.setUpPane(myGrid);
                 }
             }
@@ -174,20 +190,20 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private boolean checkWithinX(Shape myShape, double x) {
-        return x< myShape.getBoundsInLocal().getMaxX() && x> myShape.getBoundsInLocal().getMinX();
+        return x < myShape.getBoundsInLocal().getMaxX() && x > myShape.getBoundsInLocal().getMinX();
     }
 
     private boolean checkWithinY(Shape myShape, double y) {
-        return y< myShape.getBoundsInLocal().getMaxY() && y> myShape.getBoundsInLocal().getMinY();
+        return y < myShape.getBoundsInLocal().getMaxY() && y > myShape.getBoundsInLocal().getMinY();
     }
 
     public void checkUserChanges() {
-        if(!cellChange.isEmpty()) {
-            for(int i=0; i< cellTypes.size(); i++) {
+        if (!cellChange.isEmpty()) {
+            for (int i = 0; i < cellTypes.size(); i++) {
                 Object checkObject = cellChange.get(i).getSelectionModel().getSelectedItem();
-                if(checkObject !=null ) {
+                if (checkObject != null) {
                     String newCellAppearance = cellChange.get(i).getSelectionModel().getSelectedItem().toString();
-                    myGamePane.setNewColor(cellTypes.get(i), objectIdBundle.getString(newCellAppearance));
+                    myGamePane.setNewColor(cellTypes.get(i), OBJECT_ID_BUNDLE.getString(newCellAppearance));
                     myGamePane.setUpPane(myGrid);
                 }
             }
@@ -195,5 +211,136 @@ public class ScreenVisuals extends BorderPane {
     }
 
 
+    private boolean allOptionsChosen(Map<String, ComboBox> myOptionMap) {
+        String optionChosen = "";
+        if (myOptionMap == null || myOptionMap.isEmpty()) return false;
+        for (String setUpOption : myOptionMap.keySet()) {
+            Object checkObject = myOptionMap.get(setUpOption).getSelectionModel().getSelectedItem();
+            if (checkObject == null) return false;
+            else {  //can you assign to a certain variable here using reflection? ex myShape = optionChosed
+                optionChosen = myOptionMap.get(setUpOption).getSelectionModel().getSelectedItem().toString();
+                if (optionChosen == null || optionChosen.isEmpty()) return false;
+            }
+        }
+        return true;
+    }
+
+    private void setUpLanguage() {
+        myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
+        System.out.println(myLang);
+        titleresource = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
+        askForOthers();
+        //myStyleuserInput = this.getStylesheets().add(getClass().getResource(myStyle + ".css").toExternalForm());
+        //System.out.println(myShapeType + " "+ myStyle+ " "+ myLang);
+    }
+
+    private void askForOthers() {
+        myOtherOptions= new HashMap<>();
+        Pane newPane = new VBox();
+        List<String> initialOptionLabels = new ArrayList<>();
+        initialOptionLabels = Arrays.asList("Style", "Shape");
+
+        addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titleresource);
+        Stage otherOptionStage = new Stage();
+        EventHandler newHandler = e -> {
+            if (allOptionsChosen(myOtherOptions)) {
+                otherOptionStage.close();
+                setUpOtherOptions();
+                shouldShowWindow = true;
+                setupUserInterface();
+            }
+            else System.out.println("Please choose a value for each");
+        };
+        makeOkButton(newPane, newHandler);
+        newPane.setId("initialUserDialogs");
+        Scene userInput = new Scene(newPane);
+        assignStyleSheet(userInput, INIT_DIALOG_STYLESHEET_PATH);
+        otherOptionStage.setScene(userInput);
+        otherOptionStage.show();
+    }
+
+    private void setUpOtherOptions() {
+        myShapeType = myOtherOptions.get("Shape").getSelectionModel().getSelectedItem().toString();
+        myStyle = myOtherOptions.get("Style").getSelectionModel().getSelectedItem().toString();
+    }
+
+
+    //TODO add options for different styles, for language, and for possible shapes
+
+    private void initialSetUp() {
+        myLangOption = new HashMap<>();
+        Pane initialUserOptions = new VBox();
+        List<String> initialOptionLabels = new ArrayList<>();
+        for (String x : INITIAL_OPTIONS.keySet())
+            initialOptionLabels.add(x);
+        addDifferentDropDowns(initialOptionLabels, initialUserOptions, myLangOption, INITIAL_OPTIONS);
+        Stage newWindow = new Stage();
+        EventHandler newHandler = e -> {
+            if (allOptionsChosen(myLangOption)) {
+                newWindow.close();
+                setUpLanguage();
+            }
+            else System.out.println("Please choose a value for each");
+        };
+        makeOkButton(initialUserOptions, newHandler); //add event handler
+        initialUserOptions.setId("initialUserDialogs");
+        Scene userInput = new Scene(initialUserOptions);
+        assignStyleSheet(userInput, INIT_DIALOG_STYLESHEET_PATH);
+        newWindow.setScene(userInput);
+        newWindow.show();
+    }
+
+    private void addDifferentDropDowns(List<String> allLabels, Pane comboBoxLocation, Map initialComboMap, ResourceBundle resourceFile) {
+        List<String> dropDownItems;
+        for (String label : allLabels) {
+            dropDownItems = Arrays.asList(resourceFile.getString(label).split(","));
+            initialComboMap.putIfAbsent(label, addToLocation(label, dropDownItems, comboBoxLocation));
+        }
+    }
+
+    private ComboBox addToLocation(String label, List<String> dropDownItems, Pane comboBoxLocation) {
+        HBox column = new HBox();
+        Label cellTypeLabel = new Label(label.toLowerCase() + ": ");
+        column.getChildren().add(cellTypeLabel);
+        ComboBox eachCombo = makeDropDownOptions(dropDownItems);
+        column.getChildren().add(eachCombo);
+        column.setId("column");
+        comboBoxLocation.getChildren().add(column);
+        return eachCombo;
+    }
+
+    private void makeOkButton(Pane buttonLocation, EventHandler<ActionEvent> handler) {
+        Button okButton = new Button(titlesBundle.getString("OkButtonText"));
+        okButton.setId(OBJECT_ID_BUNDLE.getString("OkButton"));
+        HBox column = new HBox();
+        okButton.setOnAction(handler);
+        column.getChildren().add(okButton);
+        column.setAlignment(Pos.CENTER);
+        column.setPadding(new Insets(7,6,7,6));
+        buttonLocation.getChildren().add(column);
+    }
+
+    public boolean getShouldShowWindow() {
+        return shouldShowWindow;
+    }
+
+    public boolean shouldContinue() {
+        return myButtonDisplay.shouldcontinue();
+    }
+
+    public void resetGUI(Grid newGrid) {
+        myButtonDisplay.resetGUI(newGrid);
+    }
+
+    public boolean wantNewFile() {
+        return myButtonDisplay.wantNewFile();
+    }
+
+    private void assignStyleSheet(Scene scene, String styleSheetPath) {
+        scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
+    }
 
 }
+
+
+
