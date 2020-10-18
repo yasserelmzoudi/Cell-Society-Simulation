@@ -2,7 +2,6 @@ package model.grid;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,23 +9,17 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 
-import com.sun.source.tree.Tree;
 import model.cell.Cell;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.ResourceBundle;
-import model.cell.Cell;
-import model.cell.CellType;
-import model.cell.GameOfLifeCell;
 import model.cell.PercolationCell;
 import model.cell.PredatorPreyCell;
 import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
-import org.apache.commons.collections.functors.ExceptionTransformer;
 
 
 /**
@@ -44,13 +37,15 @@ public abstract class Grid {
   protected final Cell[][] gridOfCells;
   protected final int gridWidth;
   protected final int gridHeight;
-  private InputStream data;
-  private String myType = "";
-  private ResourceBundle errorMessageSource;
+  private final InputStream data;
+  private final ResourceBundle errorMessageSource;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-  private String edgePolicy;
-  private String neighborhoodPolicy;
-  private List<CellType> gridTypes;
+  private final String edgePolicy;
+  private final String neighborhoodPolicy;
+  private final List<CellType> gridTypes;
+  private Map<String, Integer> totalCellTypeCounts;
+  private Map<String, Integer> currentCellTypeCounts;
+
   /**
    * Constructor for this class.
    *
@@ -62,6 +57,10 @@ public abstract class Grid {
     this.neighborhoodPolicy = neighborhoodPolicy;
     this.data = data;
 
+    currentCellTypeCounts = new HashMap<>();
+    totalCellTypeCounts = new HashMap<>();
+    resetCellTypeCounts();
+
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
@@ -72,10 +71,17 @@ public abstract class Grid {
     setUpGridTypes();
   }
 
+  public void resetCellTypeCounts() {
+    for (String cellTypeName: getAllTypes()) {
+      totalCellTypeCounts.put(cellTypeName, 0);
+    }
+  }
+
   public void setUpGridTypes() {
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        gridTypes.add(gridOfCells[row][column].getState());
+        Cell differentCellTypes = gridOfCells[row][column];
+        gridTypes.add(differentCellTypes.getState());
       }
     }
   }
@@ -143,6 +149,9 @@ public abstract class Grid {
       for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = new ArrayList<>();
         List<Cell> newNeighbors = new ArrayList<>();
+        //Cell differentCellTypes = gridOfCells[row][column];
+        ////currentCellTypeCounts.putIfAbsent(differentCellTypes.getState().name(), 0);
+        ////currentCellTypeCounts.put(differentCellTypes.getState().name(), currentCellTypeCounts.get(differentCellTypes.getState().name()) + 1);
         try {
           Method neighborType = Grid.class.getMethod("getEdgeType" + edgePolicy,
               Cell[][].class, int.class, int.class);
@@ -155,6 +164,20 @@ public abstract class Grid {
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
+      }
+      //setCellTypeCounts(currentCellTypeCounts);
+      //currentCellTypeCounts.clear();
+    }
+    updateCellTypeCount();
+    System.out.println(totalCellTypeCounts.get("SHARK"));
+  }
+
+  public void updateCellTypeCount() {
+    Cell [][] grid = getAllCells();
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        String cellTypeName = grid[row][column].getState().name();
+        totalCellTypeCounts.put(cellTypeName, totalCellTypeCounts.get(cellTypeName) + 1);
       }
     }
   }
@@ -313,6 +336,7 @@ public abstract class Grid {
    * @return Type of grid required for simulation.
    */
   public String setGridType() {
+    String myType = "";
     return myType;
   }
 
@@ -379,6 +403,10 @@ public abstract class Grid {
     return (int) (Math.random() * range);
   }
 
+  public void noRandomization() {
+    return;
+  }
+
   public void completeRandomizeGrid() {
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
@@ -396,5 +424,9 @@ public abstract class Grid {
         gridTypesCount++;
       }
     }
+  }
+
+  public Map<String, Integer> getTotalCellTypeCounts() {
+    return totalCellTypeCounts;
   }
 }

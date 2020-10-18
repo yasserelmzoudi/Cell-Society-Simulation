@@ -1,25 +1,20 @@
 package view;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 
-import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.exceptions.InvalidSimulationTypeException;
-import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class StartSimulation  {
@@ -34,7 +29,7 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
     private static final File DATA_DIRECTORY = new File("./data/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private static final String PATH = "/resources/randomizedSimulation.properties";
+    private static final String PATH = "/resources/initialSimulationSettings.properties";
 
 
 
@@ -52,6 +47,10 @@ public class StartSimulation  {
 
     private String edgePolicy;
     private String neighborhoodPolicy;
+
+    private int frameCount = 0;
+
+    private SimulationGraph simulationGraph;
 
     private Class<?> gridParameters;
 
@@ -104,8 +103,8 @@ public class StartSimulation  {
             animation.setCycleCount(Timeline.INDEFINITE);
             animation.getKeyFrames().add(frame);
             animation.play();
-       // }
-    }
+        }
+    
 
 
     private void newSimulationWindow(Grid newgrid) {
@@ -135,8 +134,10 @@ public class StartSimulation  {
             Platform.exit();
             System.exit(0);
         });
+        simulationGraph = new SimulationGraph(grid, simulationSettingsReader.getSimulationTitle());
         setUpKeyFrames();
-    }
+}
+    
 
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
@@ -146,6 +147,7 @@ public class StartSimulation  {
             checkNewFile();
             root.checkUserChanges();
             startSimulation();
+
     }
 
     public void setAnimationSpeed(double speed) {
@@ -175,6 +177,9 @@ public class StartSimulation  {
         boolean shouldresume = root.shouldContinue();
         if (shouldresume) {
             grid.performNextStep();
+            simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
+            grid.resetCellTypeCounts();
+            frameCount++;
             root.getMyGamePane().setUpPane(grid);
         }
     }
