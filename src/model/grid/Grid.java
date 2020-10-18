@@ -2,7 +2,6 @@ package model.grid;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,23 +9,17 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.List;
 
-import com.sun.source.tree.Tree;
 import model.cell.Cell;
 import model.cell.CellType;
 import model.cell.GameOfLifeCell;
-import org.apache.commons.collections.ArrayStack;
 
 import java.util.ResourceBundle;
-import model.cell.Cell;
-import model.cell.CellType;
-import model.cell.GameOfLifeCell;
 import model.cell.PercolationCell;
 import model.cell.PredatorPreyCell;
 import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
-import org.apache.commons.collections.functors.ExceptionTransformer;
 
 
 /**
@@ -66,6 +59,7 @@ public abstract class Grid {
 
     currentCellTypeCounts = new HashMap<>();
     totalCellTypeCounts = new HashMap<>();
+    resetCellTypeCounts();
 
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
@@ -75,6 +69,12 @@ public abstract class Grid {
     gridSetUp(readLines);
     gridTypes = new ArrayList<>();
     setUpGridTypes();
+  }
+
+  public void resetCellTypeCounts() {
+    for (String cellTypeName: getAllTypes()) {
+      totalCellTypeCounts.put(cellTypeName, 0);
+    }
   }
 
   public void setUpGridTypes() {
@@ -170,7 +170,6 @@ public abstract class Grid {
     }
     updateCellTypeCount();
     System.out.println(totalCellTypeCounts.get("SHARK"));
-    totalCellTypeCounts.clear();
   }
 
   public void updateCellTypeCount() {
@@ -178,15 +177,9 @@ public abstract class Grid {
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
         String cellTypeName = grid[row][column].getState().name();
-        totalCellTypeCounts.putIfAbsent(cellTypeName, 0);
         totalCellTypeCounts.put(cellTypeName, totalCellTypeCounts.get(cellTypeName) + 1);
       }
     }
-  }
-
-  private void setCellTypeCounts(Map<String, Integer> cellTypeCounts) {
-    this.totalCellTypeCounts = cellTypeCounts;
-    System.out.println(totalCellTypeCounts.get("FISH"));
   }
 
   /**

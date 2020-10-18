@@ -23,8 +23,6 @@ public class SimulationGraph {
   private static final int GRAPH_WINDOW_HEIGHT = 400;
 
   private Grid grid;
-  private Group root;
-  private GamePane gamePane;
   private NumberAxis xAxis;
   private NumberAxis yAxis;
   private Map<String, Series> cellTypeData;
@@ -36,8 +34,6 @@ public class SimulationGraph {
 
   public SimulationGraph(Grid grid, String simulationType) {
     this.grid = grid;
-    this.root = root;
-    this.gamePane = gamePane;
     this.simulationType = simulationType;
 
     BorderPane graphRoot = new BorderPane();

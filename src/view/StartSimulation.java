@@ -1,25 +1,20 @@
 package view;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 
-import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.exceptions.InvalidSimulationTypeException;
-import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class StartSimulation  {
@@ -144,6 +139,7 @@ public class StartSimulation  {
         checkNewFile();
         root.checkUserChanges();
         startSimulation();
+        System.out.println(grid.getTotalCellTypeCounts().get("SHARK"));
 
 
     }
@@ -176,6 +172,7 @@ public class StartSimulation  {
         if (shouldresume) {
             grid.performNextStep();
             simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
+            grid.resetCellTypeCounts();
             frameCount++;
             root.getMyGamePane().setUpPane(grid);
         }
