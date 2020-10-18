@@ -25,7 +25,6 @@ public class GridCSVWriter {
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
 
 
-
   public GridCSVWriter(Grid grid, String title, String author, String description) {
     this.grid = grid;
     this.title = title;

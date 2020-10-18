@@ -149,9 +149,6 @@ public abstract class Grid {
       for (int column = 0; column < gridWidth; column++) {
         List<Cell> neighbors = new ArrayList<>();
         List<Cell> newNeighbors = new ArrayList<>();
-        //Cell differentCellTypes = gridOfCells[row][column];
-        ////currentCellTypeCounts.putIfAbsent(differentCellTypes.getState().name(), 0);
-        ////currentCellTypeCounts.put(differentCellTypes.getState().name(), currentCellTypeCounts.get(differentCellTypes.getState().name()) + 1);
         try {
           Method neighborType = Grid.class.getMethod("getEdgeType" + edgePolicy,
               Cell[][].class, int.class, int.class);
@@ -165,8 +162,6 @@ public abstract class Grid {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
         }
       }
-      //setCellTypeCounts(currentCellTypeCounts);
-      //currentCellTypeCounts.clear();
     }
     updateCellTypeCount();
     System.out.println(totalCellTypeCounts.get("SHARK"));
@@ -330,6 +325,26 @@ public abstract class Grid {
 
   public abstract List<String> getAllTypes();
 
+
+  public void completeRandomizeGrid() {
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(getRandomCellType());
+      }
+    }
+  }
+
+  public void swapRandomizeGrid() {
+    Collections.shuffle(gridTypes);
+    int gridTypesCount = 0;
+    for (int row = 0; row < gridHeight; row++) {
+      for (int column = 0; column < gridWidth; column++) {
+        gridOfCells[row][column].setCellType(gridTypes.get(gridTypesCount));
+        gridTypesCount++;
+      }
+    }
+  }
+
   /**
    * Sets the grid type to a particular simulation.
    *
@@ -366,27 +381,6 @@ public abstract class Grid {
     return getCell(row, column).getNumericState();
   }
 
-/*  private void updateCellCount() {
-    for(String cellType: getAllTypes()) {
-      int count = Collections.frequency(Arr, cellType);
-      System.out.println(cellType+ " " + count);
-    }
-  }*/
-
-
-  /*public void gridlayout(Grid grid) {
-    Cell[][] newGrid = grid.getAllCells();
-    int numRows =  newGrid.length;
-    int numColumns = newGrid[0].length;
-    for (int row = 0; row < numRows; row++) {
-      for (int column = 0; column < numColumns; column++) {
-        System.out.print(newGrid[row][column].isAlive()+ " ");
-      }
-      System.out.println("");
-    }
-  }*/
-
-
   public int getGridHeight() {
     return gridHeight;
   }
@@ -405,25 +399,6 @@ public abstract class Grid {
 
   public void noRandomization() {
     return;
-  }
-
-  public void completeRandomizeGrid() {
-    for (int row = 0; row < gridHeight; row++) {
-      for (int column = 0; column < gridWidth; column++) {
-        gridOfCells[row][column].setCellType(getRandomCellType());
-      }
-    }
-  }
-
-  public void swapRandomizeGrid() {
-    Collections.shuffle(gridTypes);
-    int gridTypesCount = 0;
-    for (int row = 0; row < gridHeight; row++) {
-      for (int column = 0; column < gridWidth; column++) {
-        gridOfCells[row][column].setCellType(gridTypes.get(gridTypesCount));
-        gridTypesCount++;
-      }
-    }
   }
 
   public Map<String, Integer> getTotalCellTypeCounts() {
