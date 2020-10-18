@@ -42,8 +42,8 @@ public class StartSimulation  {
     private Timeline animation;
     private ScreenVisuals root;
 
-    private int windowWidth;
-    private int windowHeight;
+    private int windowWidth =0;
+    private int windowHeight =0;
 
     private String edgePolicy;
     private String neighborhoodPolicy;
@@ -84,69 +84,63 @@ public class StartSimulation  {
         } catch(Exception e) {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
         }
-        primaryStage =stage;
-        setUpVisualScene(grid, windowWidth,windowHeight);
 
-
+        simulationGraph = new SimulationGraph(grid, simulationSettingsReader.getSimulationTitle());
+        Scene myScene = setUpVisualScene(grid, windowWidth,windowHeight);
+        //stage.setTitle(simulationSettingsReader.getSimulationTitle());
+        stage.setScene(myScene);
+        primaryStage = stage;
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+        stage.show();
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
+            try {
+                step();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+        animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
     }
 
-    private void setUpKeyFrames() {
-        primaryStage.show();
-            KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
-                try {
-                    step();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            });
-            animation = new Timeline();
-            animation.setCycleCount(Timeline.INDEFINITE);
-            animation.getKeyFrames().add(frame);
-            animation.play();
-        }
-    
 
-
-    private void newSimulationWindow(Grid newgrid) {
+    private void newSimulationWindow(Grid newgrid) { //TODO: delete current and change back to uncommented
         primaryStage.close();
         //Stage newstage = new Stage();
         primaryStage = new Stage();
         primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
-        //primaryStage.setScene(setUpVisualScene(newgrid, windowWidth,windowHeight));
+        primaryStage.setScene(setUpVisualScene(newgrid, windowWidth,windowHeight));
         primaryStage.show();
-
     }
 
 
-    public void setUpVisualScene(Grid newgrid, int width, int height){
-        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle());
+    public Scene setUpVisualScene(Grid newgrid, int width, int height) {
+        root = new ScreenVisuals(this, newgrid, width, height, simulationSettingsReader.getSimulationTitle(), "Rectangle");
+        System.out.println(simulationSettingsReader.getSimulationTitle());
+        Scene myscene = new Scene (root, width, height);
+        assignStyleSheet(myscene, PANEL_STYLESHEET_PATH);
+        assignStyleSheet(myscene, VISUAL_STYLESHEET_PATH);
+        assignStyleSheet(myscene, CONTROL_STYLESHEET_PATH);
+        return myscene;
     }
-
-    public void setUpScene(int width, int height) {
-        Scene myScene = new Scene (root, width, height);
-        assignStyleSheet(myScene, PANEL_STYLESHEET_PATH);
-        assignStyleSheet(myScene, VISUAL_STYLESHEET_PATH);
-        assignStyleSheet(myScene, CONTROL_STYLESHEET_PATH);
-        primaryStage.setScene(myScene);
-        primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-        simulationGraph = new SimulationGraph(grid, simulationSettingsReader.getSimulationTitle());
-        setUpKeyFrames();
-}
-    
 
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
     public void step() throws Exception {
-            checkNewFile();
-            root.checkUserChanges();
-            startSimulation();
+        checkNewFile();
+        root.checkUserChanges();
+        startSimulation();
+        System.out.println(grid.getTotalCellTypeCounts().get("SHARK"));
+
 
     }
 
@@ -155,13 +149,13 @@ public class StartSimulation  {
     }
 
     private void checkNewFile() {
-        boolean chooseNewFile =root.wantNewFile();
+        boolean chooseNewFile = root.getMyButtonDisplay().wantNewFile();
         if(chooseNewFile) {
             animation.pause();
             String path = chooseNewFile();
             System.out.println(path);
             if(path.isEmpty()) {
-                root.resetGUI(grid);
+                root.getMyButtonDisplay().resetGUI(grid);
                 animation.play();
                 return;
             }
@@ -173,8 +167,8 @@ public class StartSimulation  {
 
     }
 
-    public void startSimulation() {
-        boolean shouldresume = root.shouldContinue();
+    public void startSimulation() throws Exception {
+        boolean shouldresume = root.getMyButtonDisplay().shouldcontinue();
         if (shouldresume) {
             grid.performNextStep();
             simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());

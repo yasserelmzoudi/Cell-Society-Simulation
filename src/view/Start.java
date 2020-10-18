@@ -14,7 +14,6 @@ public class Start extends Application {
         new StartSimulation(stage, 600,600);
     }
 
-
     /**
      * Starts the program
      */

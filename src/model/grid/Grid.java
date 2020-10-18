@@ -366,13 +366,6 @@ public abstract class Grid {
     return getCell(row, column).getNumericState();
   }
 
-/*  private void updateCellCount() {
-    for(String cellType: getAllTypes()) {
-      int count = Collections.frequency(Arr, cellType);
-      System.out.println(cellType+ " " + count);
-    }
-  }*/
-
 
   /*public void gridlayout(Grid grid) {
     Cell[][] newGrid = grid.getAllCells();

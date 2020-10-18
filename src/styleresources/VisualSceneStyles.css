@@ -76,10 +76,5 @@
     -fx-padding: 10;
 }
 
-#initialUserDialogs {
-    -fx-pref-width: 600;
-    -fx-pref-height: 600;
-    -fx-background-color: blue;
-}
 
 
