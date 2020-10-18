@@ -191,26 +191,16 @@ public class ButtonPanel extends GridPane{
         String myAuthor = authorField.getText();
         String myTitle = titleField.getText();
         String myDescription = descriptionField.getText();
-        if(myAuthor.isBlank()) {
-            myAuthor = "No Name";
+
+        try {
+            GridCSVWriter csvFile = new GridCSVWriter(myGameGrid, myTitle, myAuthor, myDescription);
+            csvFile.saveFile();
+        } catch (UnableToSaveFileException e) {
+            new ErrorPanel();
         }
-        if(myTitle.isBlank()) {
-            myTitle = "No Title";//TODO add properties files for text
-        }
-        if(myDescription.isEmpty()) {
-            myDescription = "No description needed";
-        }
-        try (OutputStream saveFile = new FileOutputStream("src/resources/" + myTitle + ".properties")) {
-            Properties prop = new Properties();
-            prop.setProperty("Title", myTitle);
-            prop.setProperty("Author", myAuthor);
-            prop.setProperty("Description", myDescription);
-            prop.store(saveFile, null);
-        } catch (IOException e) {
-            throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
-        }
-        GridCSVWriter csvFile = new GridCSVWriter(myGameGrid, myTitle);
-        csvFile.saveFile();
+
+
+
     }
 
 

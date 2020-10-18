@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.exceptions.InvalidCSVFileException;
+import model.exceptions.InvalidSimulationSettingsFileException;
 import model.exceptions.InvalidSimulationTypeException;
 import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
@@ -91,7 +93,7 @@ public class StartSimulation  {
         }*/
         try {
             simulationController = new CellSocietyController();
-        } catch (InvalidSimulationTypeException exception){
+        } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
             new ErrorPanel();
         }
         grid = simulationController.getGrid();
@@ -154,7 +156,7 @@ public class StartSimulation  {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() throws Exception {
+    public void step() {
             checkNewFile();
             root.checkUserChanges();
             startSimulation();
