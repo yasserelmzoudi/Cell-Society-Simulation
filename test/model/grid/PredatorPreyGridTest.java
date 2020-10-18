@@ -11,30 +11,30 @@ import model.cell.Cell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PercolationGridTest {
-  private PercolationGrid grid;
+class PredatorPreyGridTest {
+  private PredatorPreyGrid grid;
   ResourceBundle resources = ResourceBundle.getBundle("resources.data");
   InputStream data = Grid.class.getClassLoader()
-      .getResourceAsStream(resources.getString("PercolationGridTest"));
+      .getResourceAsStream(resources.getString("PredatorPreyGridTest"));
 
   @BeforeEach
   public void setup() {
-    grid = new PercolationGrid(data, "Finite", "Complete");
+    grid = new PredatorPreyGrid(data, "Finite", "Cardinal");
   }
 
   @Test
   public void checkGridHeight() {
-    assertEquals(20, grid.gridHeight);
+    assertEquals(30, grid.gridHeight);
   }
 
   @Test
   public void checkGridWidth() {
-    assertEquals(20, grid.gridHeight);
+    assertEquals(30, grid.gridHeight);
   }
 
   @Test
   public void getCellTypes() {
-    List<String> expectedCellTypes = Arrays.asList("EMPTY_OPEN","FULL_OPEN","BLOCKED");
+    List<String> expectedCellTypes = Arrays.asList("SHARK","WATER","FISH");
     List<String> actualCellTypes = grid.getAllTypes();
     assertTrue(expectedCellTypes.size() == actualCellTypes.size() &&
         expectedCellTypes.containsAll(actualCellTypes) &&
