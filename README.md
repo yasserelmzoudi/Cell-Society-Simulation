@@ -49,11 +49,11 @@ Features implemented:
 
 - There are six different simulations included - Game of Life, Percolation, Segregation, Rock Paper Scissors, Predatory Prey, and Spreading of Fire.
 
-Game of Life
+####Game of Life
 
 <img src="doc/GameOfLife.gif" width="500" height="500"/>
 
-Spreading of Fire
+####Spreading of Fire
 
 <img src="doc/SpreadingOfFire.gif" width="500" height="500"/>
 
