@@ -66,7 +66,7 @@ class PredatorPreyCellTest {
     assertEquals(CellType.WATER,shark.getState());
 
   }
-/*
+
   @Test
   public void sharkCannotMove() {
     neighbor1.setCellType(CellType.SHARK);
@@ -78,12 +78,65 @@ class PredatorPreyCellTest {
     List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
 
     shark.update(neighbors,newNeighbors,isUpdated);
-    assertEquals(CellType.SHARK,fish.getState());
+    assertEquals(CellType.SHARK,shark.getState());
 
   }
-*/
+
+  @Test
+  public void fishCannotMove() {
+    neighbor1.setCellType(CellType.FISH);
+    neighbor2.setCellType(CellType.FISH);
+    neighbor3.setCellType(CellType.FISH);
+    neighbor4.setCellType(CellType.FISH);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    fish.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.FISH,fish.getState());
+
+  }
+
+  @Test
+  public void fishMoving() {
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    fish.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.WATER,fish.getState());
+
+  }
+
+  @Test
+  public void sharkMoving() {
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    shark.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.WATER,shark.getState());
+
+  }
+
+  @Test
+  public void checkIfSharkReproduces() {
+
+    shark.setCellReproduction(5);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    shark.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.SHARK,shark.getState());
+
+  }
+
+
   @Test
   public void ensureCopyCellIsWorking() {
+    assertEquals(CellType.SHARK,copyCell.getState());
+
   }
 
 }
