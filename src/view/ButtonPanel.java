@@ -42,9 +42,10 @@ public class ButtonPanel extends GridPane{
     private TextField titleField;
     private TextArea descriptionField;
 
-    public ButtonPanel(GamePane myPane, Grid grid) {
+    public ButtonPanel(GamePane myPane, Grid grid, ResourceBundle titlesBundle) {
         myGamePane = myPane;
         myGameGrid = grid;
+        this.titlesBundle = titlesBundle;
         setUpButtons();
         addButtonsToGui();
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
@@ -56,7 +57,6 @@ public class ButtonPanel extends GridPane{
             Button eachbutton = setUpButtons().get(i);
             this.setColumnIndex(eachbutton, i);
             this.getChildren().add(eachbutton);
-            System.out.println(i);
         }
     }
 
