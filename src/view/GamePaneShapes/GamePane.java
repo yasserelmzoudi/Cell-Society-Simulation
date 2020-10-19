@@ -134,8 +134,10 @@ public abstract class GamePane extends Pane {
   }
 
   public void setNewColor(String cellType, String newColor) {
-    gridCellTypesWithColor.remove(cellType);
-    gridCellTypesWithColor.putIfAbsent(cellType, newColor);
+    if(gridCellTypesWithColor.containsKey(cellType)) {
+      gridCellTypesWithColor.remove(cellType);
+      gridCellTypesWithColor.putIfAbsent(cellType, newColor);
+    }
   }
 
   private String getColorId(String myType) {

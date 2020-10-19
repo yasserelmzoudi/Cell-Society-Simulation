@@ -47,7 +47,6 @@ public class ScreenVisuals extends BorderPane {
     private HBox mySliderDisplay;
     private String gameTitle;
     private List<ComboBox> cellChange = new ArrayList<>();
-    private List<ComboBox> userChangeInputs;
     private List<String> cellTypes = new ArrayList<>();
     private Class<?> gamePaneType;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
@@ -58,7 +57,6 @@ public class ScreenVisuals extends BorderPane {
     private String myLang;
     Map<String, ComboBox> myLangOption;
     Map<String, ComboBox> myOtherOptions;
-    private boolean shouldShowWindow = false;
     private String chosenStylePath;
 
 
@@ -95,11 +93,6 @@ public class ScreenVisuals extends BorderPane {
         addGridEvent();
         System.out.println(getChosenStylePath());
         currentSimulation.setUpScene(getChosenStylePath());
-    }
-
-
-    public GamePane getMyGamePane() {
-        return myGamePane;
     }
 
     private Node makeBottomPanel() {
@@ -253,7 +246,6 @@ public class ScreenVisuals extends BorderPane {
             if (allOptionsChosen(myOtherOptions)) {
                 otherOptionStage.close();
                 setUpOtherOptions();
-                shouldShowWindow = true;
                 setupUserInterface();
             }
             else System.out.println("Please choose a value for each");
@@ -278,10 +270,6 @@ public class ScreenVisuals extends BorderPane {
         chosenStylePath =  DEFAULT_STYLE_FOLDER + STYLE_OPTIONS.getString(myStyleEnglish);
         return chosenStylePath;
     }
-
-
-
-    //TODO add options for different styles, for language, and for possible shapes
 
     private void initialSetUp() {
         myLangOption = new HashMap<>();
@@ -336,8 +324,8 @@ public class ScreenVisuals extends BorderPane {
         buttonLocation.getChildren().add(column);
     }
 
-    public boolean getShouldShowWindow() {
-        return shouldShowWindow;
+    public boolean wantNewFile() {
+        return myButtonDisplay != null && myButtonDisplay.wantNewFile();
     }
 
     public boolean shouldContinue() {
@@ -350,12 +338,12 @@ public class ScreenVisuals extends BorderPane {
         }
     }
 
-    public boolean wantNewFile() {
-        return myButtonDisplay != null && myButtonDisplay.wantNewFile();
-    }
-
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
+    }
+
+    public GamePane getMyGamePane() {
+        return myGamePane;
     }
 
 }
