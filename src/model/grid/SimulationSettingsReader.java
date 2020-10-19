@@ -7,6 +7,11 @@ import java.util.ResourceBundle;
 import model.exceptions.InvalidSimulationSettingsFileException;
 import model.exceptions.UnableToSaveFileException;
 
+/**
+ * Class that reads the simulation settings.
+ */
+
+
 public class SimulationSettingsReader {
   private Properties prop;
   private InputStream initialSimulationSettings;
@@ -57,6 +62,9 @@ public class SimulationSettingsReader {
     throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
+  /**
+   * @return Title of simulation.
+   */
   public String getSimulationTitle() {
     if (!simTitle.isEmpty()) {
       return simTitle;
@@ -64,14 +72,23 @@ public class SimulationSettingsReader {
     throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
+  /**
+   * @return Author of simulation.
+   */
   public String getSimulationAuthor() {
     return simAuthor;
   }
 
+  /**
+   * @return Description of simulation.
+   */
   public String getSimulationDescription() {
     return simDescription;
   }
 
+  /**
+   * @return Type of randomization, if any.
+   */
   public String getSimulationRandomization() {
     if (!simRandomization.isEmpty()) {
       return simRandomization;
@@ -80,6 +97,9 @@ public class SimulationSettingsReader {
 
   }
 
+  /**
+   * @return Source of simulation.
+   */
   public String getSimulationDataSourceCSV() {
     if (!simDataSourceCSV.isEmpty()) {
       return simDataSourceCSV;
@@ -88,6 +108,9 @@ public class SimulationSettingsReader {
 
   }
 
+  /**
+   * @return Type of edge policy - finite, klein bottle, or torodial.
+   */
   public String getSimulationEdgePolicy() {
     if (!simEdgePolicy.isEmpty()) {
       return simEdgePolicy;
@@ -96,6 +119,9 @@ public class SimulationSettingsReader {
 
   }
 
+  /**
+   * @return Type of neighborhood policy - cardinal, complete, and diagonal.
+   */
   public String getSimulationNeighborhoodPolicy() {
     if (!simNeighborhoodPolicy.isEmpty()) {
       return simNeighborhoodPolicy;
