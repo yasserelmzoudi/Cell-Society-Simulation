@@ -34,7 +34,7 @@ class SpreadingOfFireCellTest {
   }
 
   @Test
-  public void neighborIsFull() {
+  public void neighboringTreeCatchingFire() {
     neighbor1.setCellType(CellType.BURNING);
     SpreadingOfFireCell.setProbCatch(1);
 
@@ -43,6 +43,29 @@ class SpreadingOfFireCellTest {
 
     tree.update(neighbors,newNeighbors,null);
     assertEquals(CellType.BURNING,tree.getState());
+  }
+
+  @Test
+  public void neighboringTreeNotCatchingFire() {
+    neighbor1.setCellType(CellType.BURNING);
+    SpreadingOfFireCell.setProbCatch(0);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    tree.update(neighbors,newNeighbors,null);
+    assertEquals(CellType.TREE,tree.getState());
+  }
+
+  @Test
+  public void emptyAfterBurning() {
+
+    SpreadingOfFireCell.getProbCatch();
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    burning.update(neighbors,newNeighbors,null);
+    assertEquals(CellType.EMPTY,burning.getState());
   }
 
 }

@@ -49,6 +49,8 @@ class SegregationCellTest {
     emptyCells.add(new SegregationCell(0,0,CellType.NO_RACE.ordinal()));
     SegregationCell.setEmptyCells(emptyCells);
 
+    O.setRow(isUpdated.length-1);
+    O.setColumn(isUpdated[0].length-1);
     O.update(neighbors,newNeighbors,isUpdated);
     assertEquals(CellType.NO_RACE,O.getState());
   }
