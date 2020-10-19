@@ -67,11 +67,11 @@ public enum CellType {
   }
 
   public static List<String> getPredatorPreyModelTypes() {
-    return List.of(FISH.toString(), SHARK.toString(), WATER.toString());
+    return List.of(WATER.toString(), FISH.toString(), SHARK.toString());
   }
 
   public static List<String> getSegregationTypes() {
-    return List.of(X.toString(), O.toString(), NO_RACE.toString());
+    return List.of(O.toString(), X.toString(), NO_RACE.toString());
   }
 
   public static List<String> getRockPaperScissorsTypes() {
@@ -79,7 +79,7 @@ public enum CellType {
   }
 
   public static List<String> getSpreadingOfFireTypes(){
-    return List.of(TREE.toString(), BURNING.toString(), EMPTY.toString());
+    return List.of(EMPTY.toString(), TREE.toString(), BURNING.toString());
   }
 
 }

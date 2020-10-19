@@ -56,75 +56,63 @@ public class SimulationSettingsReader {
   }
 
   public String getSimulationType() {
-    if (!simType.isEmpty()) {
-      return simType;
-    }
-    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+    return checkIfProvided(simType);
   }
 
   /**
    * @return Title of simulation.
    */
   public String getSimulationTitle() {
-    if (!simTitle.isEmpty()) {
-      return simTitle;
-    }
-    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+    return checkIfProvided(simTitle);
   }
 
   /**
    * @return Author of simulation.
    */
   public String getSimulationAuthor() {
-    return simAuthor;
+    return checkIfProvided(simAuthor);
   }
 
   /**
    * @return Description of simulation.
    */
   public String getSimulationDescription() {
-    return simDescription;
+    return checkIfProvided(simDescription);
   }
 
   /**
    * @return Type of randomization, if any.
    */
   public String getSimulationRandomization() {
-    if (!simRandomization.isEmpty()) {
-      return simRandomization;
-    }
-    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
-
+    return checkIfProvided(simRandomization);
   }
 
   /**
    * @return Source of simulation.
    */
   public String getSimulationDataSourceCSV() {
-    if (!simDataSourceCSV.isEmpty()) {
-      return simDataSourceCSV;
-    }
-    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
-
+    return checkIfProvided(simDataSourceCSV);
   }
 
   /**
    * @return Type of edge policy - finite, klein bottle, or torodial.
    */
   public String getSimulationEdgePolicy() {
-    if (!simEdgePolicy.isEmpty()) {
-      return simEdgePolicy;
-    }
-    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
-
+    return checkIfProvided(simEdgePolicy);
   }
+
+
 
   /**
    * @return Type of neighborhood policy - cardinal, complete, and diagonal.
    */
   public String getSimulationNeighborhoodPolicy() {
-    if (!simNeighborhoodPolicy.isEmpty()) {
-      return simNeighborhoodPolicy;
+    return checkIfProvided(simNeighborhoodPolicy);
+  }
+
+  private String checkIfProvided(String simulationValue) {
+    if (!simulationValue.isEmpty()) {
+      return simulationValue;
     }
     throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
 

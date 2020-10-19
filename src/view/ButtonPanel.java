@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import model.grid.GridCSVWriter;
+import model.grid.SimulationSettingsReader;
 import view.GamePaneShapes.GamePane;
 
 public class ButtonPanel extends GridPane{
@@ -35,13 +36,16 @@ public class ButtonPanel extends GridPane{
     private TextField titleField;
     private TextArea descriptionField;
 
-    public ButtonPanel(GamePane myPane, Grid grid, ResourceBundle titlesBundle) {
+    private SimulationSettingsReader previousSettings;
+
+    public ButtonPanel(GamePane myPane, Grid grid, ResourceBundle titlesBundle, SimulationSettingsReader previousSettings) {
         myGamePane = myPane;
         myGameGrid = grid;
         this.titlesBundle = titlesBundle;
         setUpButtons();
         addButtonsToGui();
         errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
+        this.previousSettings = previousSettings;
 
     }
 
@@ -165,7 +169,7 @@ public class ButtonPanel extends GridPane{
         String myDescription = descriptionField.getText();
 
         try {
-            GridCSVWriter csvFile = new GridCSVWriter(myGameGrid, myTitle, myAuthor, myDescription);
+            GridCSVWriter csvFile = new GridCSVWriter(myGameGrid, myTitle, myAuthor, myDescription, previousSettings);
             csvFile.saveFile();
         } catch (UnableToSaveFileException e) {
             new ErrorPanel();

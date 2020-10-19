@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -15,7 +16,9 @@ public class ErrorPanel {
     errorResource = ResourceBundle.getBundle(ERROR_RESOURCE);
     alert = new Alert(AlertType.ERROR);
     alert.setContentText(errorResource.getString("Error"));
-    alert.showAndWait();
+
+    alert.setOnHidden(evt -> Platform.exit());
+    alert.show();
   }
 
 }

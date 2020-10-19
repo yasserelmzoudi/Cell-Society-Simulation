@@ -98,7 +98,7 @@ public class ScreenVisuals extends BorderPane {
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
         optionDisplay.setId(OBJECT_ID_BUNDLE.getString("BottomPanel"));
-        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
+        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle, currentSimulation.getSimulationController().getSimulationSettingsReader());
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
         cellTypes =myGrid.getAllTypes() ;

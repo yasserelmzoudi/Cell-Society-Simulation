@@ -10,7 +10,7 @@ import model.cell.PercolationCell;
  *
  * @author Umika Paul
  */
-public class PercolationGrid extends Grid{
+public class PercolationGrid extends Grid {
 
   /**
    * Constructor for this class.

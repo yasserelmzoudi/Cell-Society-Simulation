@@ -59,4 +59,8 @@ public class SimulationInitializer {
   public String getSimulationTitle(){
     return simulationSettingsReader.getSimulationTitle();
   }
+
+  public SimulationSettingsReader getSimulationSettingsReader() {
+    return simulationSettingsReader;
+  }
 }

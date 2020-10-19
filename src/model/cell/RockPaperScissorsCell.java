@@ -79,4 +79,7 @@ public class RockPaperScissorsCell extends Cell {
     }
   }
 
+  public static int getTHRESHOLD() {
+    return THRESHOLD;
+  }
 }
