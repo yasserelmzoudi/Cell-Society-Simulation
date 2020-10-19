@@ -53,7 +53,7 @@ Game of Life
 
 Spreading of Fire
 
-<img src="doc/SpreadingOfFire.gif" width="600" height="300"/>
+<img src="doc/SpreadingOfFire.gif" width="500" height="500"/>
 
 
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
