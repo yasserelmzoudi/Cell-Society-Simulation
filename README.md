@@ -119,12 +119,12 @@ Hexagon
 
 - Style of Cells: Both images and different colors can be loaded onto the cells.
 
-<img src="doc/TreeImage.gif" width="500" height="500"/><img src="doc/FishImage.gif" width="500" height="500"/>
+<img src="doc/TreeImage.gif" width="400" height="400"/><img src="doc/FishImage.gif" width="400" height="400"/>
 
 - Different Themes: A few different colors / themes can be loaded upon startup into the simulation.
 
 Different themes can be chosen. Look at the Duke and UNC below!
-<img src="doc/Duke.gif" width="500" height="500"/><img src="doc/UNC.gif" width="500" height="500"/>
+<img src="doc/Duke.gif" width="400" height="400"/><img src="doc/UNC.gif" width="400" height="400"/>
 
 - Exception handling.
 
