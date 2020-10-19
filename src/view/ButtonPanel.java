@@ -1,9 +1,5 @@
 package view;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -17,6 +13,7 @@ import javafx.stage.Stage;
 import model.exceptions.UnableToSaveFileException;
 import model.grid.Grid;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,14 +21,13 @@ import model.grid.GridCSVWriter;
 import view.GamePaneShapes.GamePane;
 
 public class ButtonPanel extends GridPane{
-    private static final String RESOURCES = "resources/";
-    public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
-    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
-    public static final String CONTROL_STYLESHEET = "Control_Styles.css";
-    public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
+    public static final String DATA_STYLESHEET = "DataStyles.css";
+    public static final String DATA_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER+DATA_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("styleresources.ObjectID");
-    private ResourceBundle titlesBundle = ResourceBundle.getBundle("languageresources.english");
+    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("StyleResources.ObjectID");
+    private List<String> USER_DATA_NEEDED = Arrays.asList("Author", "Title", "Description");
+    private ResourceBundle titlesBundle;
     private ResourceBundle errorMessageSource;
 
     private boolean simShouldResume = true;
@@ -126,11 +122,10 @@ public class ButtonPanel extends GridPane{
 
     private void infoForSaving() {
         VBox userData = new VBox();
-        List<String> myCells = Arrays.asList("Author: ","Title: ","Description: " ); //TODO: get data names based on configuration file
 
-        userData.getChildren().add(makeAuthorField(myCells.get(0)));
-        userData.getChildren().add(makeTitleField(myCells.get(1)));
-        userData.getChildren().add(makeDesciptionField(myCells.get(2)));
+        userData.getChildren().add(makeAuthorField(titlesBundle.getString(USER_DATA_NEEDED.get(0))+":"));
+        userData.getChildren().add(makeTitleField(titlesBundle.getString(USER_DATA_NEEDED.get(1))+":"));
+        userData.getChildren().add(makeDesciptionField(titlesBundle.getString(USER_DATA_NEEDED.get(2))+":"));
 
         Button okButton = new Button(titlesBundle.getString("OkButtonText"));
         okButton.setId(objectIdBundle.getString("OkButton"));
@@ -153,7 +148,7 @@ public class ButtonPanel extends GridPane{
         userData.getChildren().add(column);
         userData.setId(objectIdBundle.getString("DataPanel"));
         Scene userInput  = new Scene(userData);
-        userInput.getStylesheets().add(getClass().getResource(CONTROL_STYLESHEET_PATH).toExternalForm());
+        userInput.getStylesheets().add(getClass().getResource(DATA_STYLESHEET_PATH).toExternalForm());
         newWindow.setScene(userInput);
         newWindow.show();
 
@@ -198,11 +193,7 @@ public class ButtonPanel extends GridPane{
         } catch (UnableToSaveFileException e) {
             new ErrorPanel();
         }
-
-
-
     }
-
 
     public boolean shouldcontinue(){
         return simShouldResume;

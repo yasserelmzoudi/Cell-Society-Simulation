@@ -22,17 +22,15 @@ import view.GamePaneShapes.GamePane;
 import java.util.*;
 
 public class ScreenVisuals extends BorderPane {
-    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String INIT_DIALOG_STYLESHEET = "InitialDialogs.css";
     public static final String INIT_DIALOG_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + INIT_DIALOG_STYLESHEET;
-    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("styleresources.ObjectID");
-    private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("styleresources.InitialOptions");
+    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
+    private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("StyleResources.InitialOptions");
+    private static final ResourceBundle STYLE_OPTIONS = ResourceBundle.getBundle("StyleResources.ColorStyles");
 
-//TODO change userChangeOptions to be according to a grid, probably in a configuration file
 //TODO change main directory for loading file to fit with Yasser's properties file directory
-// TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
 // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
-//TODO For complete: before starting simulation, run a dialog that has the language, the style- dark, unc, etc. (this will load in a style sheet based onthe value in the combo box)
 
     private static final int MIN_SLIDER_SPEED = 0;
     private static final int MAX_SLIDER_SPEED = 8;
@@ -54,12 +52,14 @@ public class ScreenVisuals extends BorderPane {
     private Class<?> gamePaneType;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
     private ResourceBundle errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-    private ResourceBundle titlesBundle = ResourceBundle.getBundle("languageresources.english");
+    private ResourceBundle titlesBundle = ResourceBundle.getBundle("LanguageResources.english");
     private String myStyle;
+    private String myStyleEnglish;
     private String myLang;
     Map<String, ComboBox> myLangOption;
     Map<String, ComboBox> myOtherOptions;
     private boolean shouldShowWindow = false;
+    private String chosenStylePath;
 
 
     public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
@@ -75,7 +75,7 @@ public class ScreenVisuals extends BorderPane {
         int gridHeight = Math.max(0, visualHeight - GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
         try {
-            String myEnglishShapeType = getEnglishShape();
+            String myEnglishShapeType = getEnglishTranslation(myShapeType);
             gamePaneType = Class.forName("view.GamePaneShapes." + myEnglishShapeType + "GamePane");
             Object gridShapeInstance = gamePaneType.getDeclaredConstructor(
                     new Class[]{Grid.class, int.class, int.class}).newInstance(myGrid, gridWidth, gridHeight);
@@ -93,7 +93,8 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
         addGridEvent();
-        currentSimulation.setUpScene();
+        System.out.println(getChosenStylePath());
+        currentSimulation.setUpScene(getChosenStylePath());
     }
 
 
@@ -107,9 +108,8 @@ public class ScreenVisuals extends BorderPane {
         myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
-        cellTypes =cellNamesWithSpace(myGrid.getAllTypes());
-
-        addCellDropDowns(cellTypes, cellChanger);
+        cellTypes =myGrid.getAllTypes() ;
+        addCellDropDowns(cellNamesWithSpace(myGrid.getAllTypes()), cellChanger);
         cellChanger.setId(OBJECT_ID_BUNDLE.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
@@ -173,9 +173,9 @@ public class ScreenVisuals extends BorderPane {
         myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
     }
 
-    private String getEnglishShape() {
+    private String getEnglishTranslation(String itemToSearchFor) {
         for(String key: titlesBundle.keySet()) {
-            if(titlesBundle.getString(key).equals(myShapeType)) {
+            if(titlesBundle.getString(key).equals(itemToSearchFor)) {
                 return key;
             }
         }
@@ -239,8 +239,6 @@ public class ScreenVisuals extends BorderPane {
         myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
         titlesBundle = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
         askForOthers();
-        //myStyleuserInput = this.getStylesheets().add(getClass().getResource(myStyle + ".css").toExternalForm());
-        //System.out.println(myShapeType + " "+ myStyle+ " "+ myLang);
     }
 
     private void askForOthers() {
@@ -248,7 +246,6 @@ public class ScreenVisuals extends BorderPane {
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
         initialOptionLabels = Arrays.asList(titlesBundle.getString("ShapeTranslation"), titlesBundle.getString("StyleTranslation"));
-       // initialOptionLabels = Arrays.asList("Shape", "Style");
 
         addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titlesBundle);
         Stage otherOptionStage = new Stage();
@@ -272,7 +269,16 @@ public class ScreenVisuals extends BorderPane {
     private void setUpOtherOptions() {
         myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
         myStyle = myOtherOptions.get(titlesBundle.getString("StyleTranslation")).getSelectionModel().getSelectedItem().toString();
+        System.out.println(myStyle);
+        myStyleEnglish = getEnglishTranslation(myStyle);
+        System.out.println(myStyleEnglish);
     }
+
+    private String getChosenStylePath() {
+        chosenStylePath =  DEFAULT_STYLE_FOLDER + STYLE_OPTIONS.getString(myStyleEnglish);
+        return chosenStylePath;
+    }
+
 
 
     //TODO add options for different styles, for language, and for possible shapes
