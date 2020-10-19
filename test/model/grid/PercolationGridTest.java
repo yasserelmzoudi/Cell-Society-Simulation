@@ -41,6 +41,11 @@ class PercolationGridTest {
         expectedCellTypes.containsAll(actualCellTypes));
   }
 
+  @Test
+  public void checkSetGridType() {
+    String actualGridType = grid.setGridType();
+    assertEquals("PERCOLATION", actualGridType);
+  }
 
 
 }

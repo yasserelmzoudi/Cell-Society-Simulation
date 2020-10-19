@@ -41,6 +41,10 @@ class PredatorPreyGridTest {
         expectedCellTypes.containsAll(actualCellTypes));
   }
 
-
+  @Test
+  public void checkSetGridType() {
+    String actualGridType = grid.setGridType();
+    assertEquals("PREDATOR_PREY", actualGridType);
+  }
 
 }
