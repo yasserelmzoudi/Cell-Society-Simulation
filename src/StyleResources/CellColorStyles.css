@@ -4,9 +4,8 @@
 #ALIVE {
     -fx-fill: red;
 }
-
 #EMPTY_OPEN {
-    -fx-fill: white;
+    -fx-fill: purple;
 }
 #FULL_OPEN {
     -fx-fill: blue;

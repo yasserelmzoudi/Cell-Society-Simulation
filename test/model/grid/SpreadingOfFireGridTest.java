@@ -42,5 +42,10 @@ class SpreadingOfFireGridTest {
   }
 
 
+  @Test
+  public void checkSetGridType() {
+    String actualGridType = grid.setGridType();
+    assertEquals("SPREADING_OF_FIRE", actualGridType);
+  }
 
 }

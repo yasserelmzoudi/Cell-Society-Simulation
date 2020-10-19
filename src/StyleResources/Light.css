@@ -1,7 +1,7 @@
 .root {
     -fx-font-size: 15pt;
     -fx-font-family: "Times New Roman";
-    -fx-background: #cce0ff;
+    -fx-background: #ffe6d0;
     -fx-padding: 5px;
 }
 
@@ -30,36 +30,36 @@
     -fx-border-color: #000000;
     -fx-border-radius: 5px;
     -fx-text-fill: #000000;
-    -fx-background-color: #a6a6a6;
+    -fx-background-color: #d0ffe6;
     -fx-background-radius: 5px;
 }
 
 .button:hover {
-    -fx-background-color: #3a3a3a;
+    -fx-background-color: #eafff4;
 }
 .combo-box {
     -fx-pref-width: 100;
-    -fx-font-size: 9pt;
+    -fx-font-size: 7pt;
     -fx-spacing: 20;
     -fx-alignment: center;
     -fx-padding: 0,0,0,0;
 }
 .label {
     -fx-alignment: center-right;
-    -fx-font-size: 12pt;
-    -fx-padding: 0,0,0,0;
+    -fx-font-size: 9pt;
+    -fx-padding: 0,20,0,0;
     -fx-font-family: "Times New Roman";
 }
 .combo-box-popup > .list-view {
     -fx-pref-width: 100;
-    -fx-font-size: 9pt;
+    -fx-font-size: 7pt;
 }
 
 #bottomPanel {
     -fx-spacing: 70px;
     -fx-alignment: center;
     -fx-padding: 10;
-    -fx-background-color: #7bafd8;
+    -fx-background-color: #f4eaff;
     -fx-background-radius: 3;
 }
 #title {
@@ -79,7 +79,7 @@
 #initialUserDialogs {
     -fx-pref-width: 600;
     -fx-pref-height: 600;
-    -fx-background-color: blue;
+    -fx-background-color: #ffe6d0;
 }
 
 

@@ -16,17 +16,15 @@ import model.exceptions.InvalidSimulationSettingsFileException;
 import model.exceptions.InvalidSimulationTypeException;
 import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
-import model.grid.SimulationSettingsReader;
 
 import java.io.File;
-import java.util.ResourceBundle;
 
 public class StartSimulation  {
     private static final String RESOURCES = "resources/";
-    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
-    public static final String PANEL_STYLESHEET = "PanelStyles.css";
-    public static final String CONTROL_STYLESHEET = "Control_Styles.css";
+    public static final String PANEL_STYLESHEET = "CellColorStyles.css";
+    public static final String CONTROL_STYLESHEET = "UserButtonStyles.css";
     public static final String VISUAL_STYLESHEET = "VisualSceneStyles.css";
     public static final String PANEL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + PANEL_STYLESHEET;
     public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
@@ -142,10 +140,10 @@ public class StartSimulation  {
         root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationTitle());
     }
 
-    public void setUpScene() {
+    public void setUpScene(String stylePath) {
         Scene myScene = new Scene (root, windowWidth, windowHeight);
         assignStyleSheet(myScene, PANEL_STYLESHEET_PATH);
-        assignStyleSheet(myScene, VISUAL_STYLESHEET_PATH);
+        assignStyleSheet(myScene, stylePath);
         assignStyleSheet(myScene, CONTROL_STYLESHEET_PATH);
         primaryStage.setScene(myScene);
         primaryStage.setOnCloseRequest(e -> {
