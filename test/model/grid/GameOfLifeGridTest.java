@@ -16,10 +16,12 @@ class GameOfLifeGridTest {
   ResourceBundle resources = ResourceBundle.getBundle("resources.data");
   InputStream data = Grid.class.getClassLoader()
       .getResourceAsStream(resources.getString("TestSource"));
+  private static final int row = 2;
+  private static final int column = 2;
 
   @BeforeEach
   public void setup() {
-    grid = new GameOfLifeGrid(data, "Finite", "Complete");
+    grid = new GameOfLifeGrid(data, "KleinBottle", "Diagonal");
   }
 
   @Test
@@ -47,6 +49,13 @@ class GameOfLifeGridTest {
     assertEquals("GAME_OF_LIFE", actualGridType);
   }
 
+  @Test
+  public void checkDiagonalNeighbors() {
+    List<Cell> neighbors = grid.getEdgeTypeKleinBottle(grid.getAllCells(),row,column);
+    List<Cell> newNeighbors = grid.getEdgeTypeKleinBottle(grid.getAllCells(),row,column);
+    grid.setNeighborDiagonal(neighbors,newNeighbors,row,column);
+    assertEquals(4,neighbors.size());
+  }
 
 
 }

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import model.cell.Cell;
+import model.cell.RockPaperScissorsCell;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,19 @@ class PredatorPreyGridTest {
   public void checkSetGridType() {
     String actualGridType = grid.setGridType();
     assertEquals("PREDATOR_PREY", actualGridType);
+  }
+
+  @Test
+  public void checkUpdatingNumberOfCellsForGraph() {
+    Cell[][] cells = grid.getAllCells();
+    Cell[][] copiedGrid = new Cell[cells.length][cells[0].length];
+    for (int row = 0; row<cells.length;row++) {
+      for (int col = 0; col<cells[0].length;col++) {
+        copiedGrid[row][col] = new RockPaperScissorsCell(cells[row][col]);
+      }
+    }
+    grid.performNextStep();
+    assertNotEquals(copiedGrid,cells);
   }
 
 }
