@@ -1,8 +1,8 @@
 package view;
 
-import controller.CellSocietyController;
+import controller.SimulationInitializer;
 import java.io.InputStream;
-import java.lang.reflect.Method;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import model.exceptions.InvalidCSVFileException;
 import model.exceptions.InvalidSimulationSettingsFileException;
 import model.exceptions.InvalidSimulationTypeException;
+import model.grid.GameOfLifeGrid;
 import model.grid.Grid;
 import model.grid.SimulationSettingsReader;
 
@@ -32,26 +33,21 @@ public class StartSimulation  {
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
     private static final File DATA_DIRECTORY = new File("./data/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private static final String PATH = "/resources/initialSimulationSettings.properties";
+    private static final String INITIAL_PATH = "/resources/initialSimulationSettings.properties";
 
 
-
-    private SimulationSettingsReader simulationSettingsReader;
-    private InputStream simulationData;
-    private Class<?> gridType;
-    private ResourceBundle errorMessageSource;
     private Grid grid;
     private Stage primaryStage;
     private Timeline animation;
     private ScreenVisuals root;
 
-    private int windowWidth;
-    private int windowHeight;
-
     private String edgePolicy;
     private String neighborhoodPolicy;
 
-    private CellSocietyController simulationController;
+    private int windowWidth;
+    private int windowHeight;
+
+    private SimulationInitializer simulationController;
 
     private int frameCount = 0;
 
@@ -91,16 +87,29 @@ public class StartSimulation  {
         } catch(Exception e) {
             throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
         }*/
-        try {
+       /* try {
             simulationController = new CellSocietyController();
         } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
             new ErrorPanel();
         }
         grid = simulationController.getGrid();
         primaryStage =stage;
-        setUpVisualScene(grid, windowWidth,windowHeight);
+        setUpVisualScene(grid);*/
+        simulationController = initializeSimulation(INITIAL_PATH);
+        grid = simulationController.getGrid();
+        primaryStage = stage;
+        setUpVisualScene(grid);
+    }
 
-
+    private SimulationInitializer initializeSimulation(String path) throws ReflectiveOperationException {
+        try {
+            simulationController = new SimulationInitializer(path);
+        } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
+            new ErrorPanel();
+        }
+        neighborhoodPolicy= "Diagonal";
+        edgePolicy= "Finite";
+        return simulationController;
     }
 
     private void setUpKeyFrames() {
@@ -120,25 +129,23 @@ public class StartSimulation  {
     
 
 
-    private void newSimulationWindow(Grid newgrid) {
+    private void newSimulationWindow(Grid newGrid) {
         primaryStage.close();
         //Stage newstage = new Stage();
         primaryStage = new Stage();
         primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
-        //primaryStage.setScene(setUpVisualScene(newgrid, windowWidth,windowHeight));
-        primaryStage.show();
-
+        setUpVisualScene(newGrid);
     }
 
 
-    public void setUpVisualScene(Grid newgrid, int width, int height){
-        root = new ScreenVisuals(this, newgrid, width, height, simulationController.getSimulationTitle());
+    public void setUpVisualScene(Grid newgrid){
+        root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationTitle());
     }
 
-    public void setUpScene(int width, int height) {
-        Scene myScene = new Scene (root, width, height);
+    public void setUpScene() {
+        Scene myScene = new Scene (root, windowWidth, windowHeight);
         assignStyleSheet(myScene, PANEL_STYLESHEET_PATH);
         assignStyleSheet(myScene, VISUAL_STYLESHEET_PATH);
         assignStyleSheet(myScene, CONTROL_STYLESHEET_PATH);
@@ -158,7 +165,7 @@ public class StartSimulation  {
 
     public void step() {
             checkNewFile();
-            root.checkUserChanges();
+            root.checkUserOptionsChosen();
             startSimulation();
 
     }
@@ -178,10 +185,9 @@ public class StartSimulation  {
                 animation.play();
                 return;
             }
-            /*InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
-            grid = new GameOfLifeGrid(newGridData);
+            InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
+            grid = new GameOfLifeGrid(newGridData, edgePolicy, neighborhoodPolicy);
             newSimulationWindow(grid);
-            animation.play();*/
         }
 
     }
@@ -189,6 +195,7 @@ public class StartSimulation  {
     public void startSimulation() {
         boolean shouldresume = root.shouldContinue();
         if (shouldresume) {
+            primaryStage.show();
             grid.performNextStep();
             simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
             grid.resetCellTypeCounts();

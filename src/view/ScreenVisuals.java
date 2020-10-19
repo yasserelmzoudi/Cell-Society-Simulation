@@ -92,8 +92,9 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY() - myGameBox.getBoundsInLocal().getMinY()));
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
+        System.out.println("made new borderpane");
         addGridEvent();
-        currentSimulation.setUpScene(visualWidth, visualHeight);
+        currentSimulation.setUpScene();
     }
 
 
@@ -171,7 +172,6 @@ public class ScreenVisuals extends BorderPane {
 
 
     public void changeCellStatus(double x, double y) {
-        // System.out.println("X: " + x+ "Y: "+y);
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -195,7 +195,7 @@ public class ScreenVisuals extends BorderPane {
         return y < myShape.getBoundsInLocal().getMaxY() && y > myShape.getBoundsInLocal().getMinY();
     }
 
-    public void checkUserChanges() {
+    public void checkUserOptionsChosen() {
         if (!cellChange.isEmpty()) {
             for (int i = 0; i < cellTypes.size(); i++) {
                 Object checkObject = cellChange.get(i).getSelectionModel().getSelectedItem();
@@ -236,7 +236,7 @@ public class ScreenVisuals extends BorderPane {
         myOtherOptions= new HashMap<>();
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
-        initialOptionLabels = Arrays.asList("Style", "Shape");
+        initialOptionLabels = Arrays.asList("Shape", "Style");
 
         addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titlesBundle);
         Stage otherOptionStage = new Stage();
@@ -323,15 +323,17 @@ public class ScreenVisuals extends BorderPane {
     }
 
     public boolean shouldContinue() {
-        return myButtonDisplay.shouldcontinue();
+         return myButtonDisplay != null && myButtonDisplay.shouldcontinue();
     }
 
     public void resetGUI(Grid newGrid) {
-        myButtonDisplay.resetGUI(newGrid);
+        if(myButtonDisplay != null) {
+            myButtonDisplay.resetGUI(newGrid);
+        }
     }
 
     public boolean wantNewFile() {
-        return myButtonDisplay.wantNewFile();
+        return myButtonDisplay != null && myButtonDisplay.wantNewFile();
     }
 
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
