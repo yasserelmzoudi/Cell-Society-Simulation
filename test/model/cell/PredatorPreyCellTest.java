@@ -121,7 +121,6 @@ class PredatorPreyCellTest {
 
   @Test
   public void checkIfSharkReproduces() {
-
     shark.setCellReproduction(5);
 
     List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
@@ -129,12 +128,10 @@ class PredatorPreyCellTest {
 
     shark.update(neighbors,newNeighbors,isUpdated);
     assertEquals(CellType.SHARK,shark.getState());
-
   }
 
   @Test
   public void checkIfFishReproduces() {
-
     fish.setCellReproduction(5);
 
     List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
@@ -142,10 +139,44 @@ class PredatorPreyCellTest {
 
     fish.update(neighbors,newNeighbors,isUpdated);
     assertEquals(CellType.FISH,fish.getState());
-
   }
 
 
+  @Test
+  public void checkIfSharkReproducesWhenEatingFish() {
+    neighbor1.setCellType(CellType.FISH);
+    shark.setCellReproduction(5);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    shark.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.SHARK,shark.getState());
+  }
+
+  @Test
+  public void checkIfSharkReproducesNeighboringFishIsEaten() {
+    neighbor1.setCellType(CellType.SHARK);
+    neighbor1.setCellReproduction(5);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    fish.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.SHARK,fish.getState());
+  }
+
+  @Test
+  public void checkIfSharkDiesWhenEnergyIs0() {
+
+    shark.setCellEnergy(0);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    shark.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.WATER,shark.getState());
+  }
 
   @Test
   public void ensureCopyCellIsWorking() {
