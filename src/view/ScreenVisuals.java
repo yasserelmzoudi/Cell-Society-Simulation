@@ -22,24 +22,21 @@ import view.GamePaneShapes.GamePane;
 import java.util.*;
 
 public class ScreenVisuals extends BorderPane {
-    private static final String DEFAULT_STYLE_FOLDER ="/" + "styleresources/";
+    private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String INIT_DIALOG_STYLESHEET = "InitialDialogs.css";
     public static final String INIT_DIALOG_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + INIT_DIALOG_STYLESHEET;
-    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("styleresources.ObjectID");
-    private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("styleresources.InitialOptions");
+    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
+    private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("StyleResources.InitialOptions");
+    private static final ResourceBundle STYLE_OPTIONS = ResourceBundle.getBundle("StyleResources.ColorStyles");
 
-//TODO change userChangeOptions to be according to a grid, probably in a configuration file
 //TODO change main directory for loading file to fit with Yasser's properties file directory
-// TODO add a color selector that displays the different cells available based on the id and that allows user to choose colors
 // TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
-//TODO For complete: before starting simulation, run a dialog that has the language, the style- dark, unc, etc. (this will load in a style sheet based onthe value in the combo box)
 
     private static final int MIN_SLIDER_SPEED = 0;
     private static final int MAX_SLIDER_SPEED = 8;
     private static final int GRID_PADDING_TB = 220;
     private static final int GRID_PADDING_LR = 30;
 
-    private ResourceBundle titleresource;
     private int visualWidth;
     private int visualHeight;
     private Grid myGrid;
@@ -55,12 +52,14 @@ public class ScreenVisuals extends BorderPane {
     private Class<?> gamePaneType;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
     private ResourceBundle errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-    private ResourceBundle titlesBundle = ResourceBundle.getBundle("languageresources.english");
+    private ResourceBundle titlesBundle = ResourceBundle.getBundle("LanguageResources.english");
     private String myStyle;
+    private String myStyleEnglish;
     private String myLang;
     Map<String, ComboBox> myLangOption;
     Map<String, ComboBox> myOtherOptions;
     private boolean shouldShowWindow = false;
+    private String chosenStylePath;
 
 
     public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
@@ -76,8 +75,7 @@ public class ScreenVisuals extends BorderPane {
         int gridHeight = Math.max(0, visualHeight - GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
         try {
-            String myEnglishShapeType = getEnglishShape();
-            System.out.println(myEnglishShapeType);
+            String myEnglishShapeType = getEnglishTranslation(myShapeType);
             gamePaneType = Class.forName("view.GamePaneShapes." + myEnglishShapeType + "GamePane");
             Object gridShapeInstance = gamePaneType.getDeclaredConstructor(
                     new Class[]{Grid.class, int.class, int.class}).newInstance(myGrid, gridWidth, gridHeight);
@@ -95,7 +93,8 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
         addGridEvent();
-        currentSimulation.setUpScene(visualWidth, visualHeight);
+        System.out.println(getChosenStylePath());
+        currentSimulation.setUpScene(getChosenStylePath());
     }
 
 
@@ -106,11 +105,11 @@ public class ScreenVisuals extends BorderPane {
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
         optionDisplay.setId(OBJECT_ID_BUNDLE.getString("BottomPanel"));
-        myButtonDisplay = new ButtonPanel(myGamePane, myGrid);
+        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
-        cellTypes = myGrid.getAllTypes();
-        addCellDropDowns(cellTypes, cellChanger);
+        cellTypes =myGrid.getAllTypes() ;
+        addCellDropDowns(cellNamesWithSpace(myGrid.getAllTypes()), cellChanger);
         cellChanger.setId(OBJECT_ID_BUNDLE.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
@@ -118,10 +117,22 @@ public class ScreenVisuals extends BorderPane {
         return optionDisplay;
     }
 
+    private List<String> cellNamesWithSpace(List<String> oldTypeList) {
+        List<String> oldTypes = oldTypeList;
+        List<String> newTypeList = new ArrayList<>();
+        for(String cellType : oldTypes) {
+            System.out.println(cellType);
+            String newCellType = cellType.replaceAll("_", " ");
+            System.out.println(newCellType);
+            newTypeList.add(newCellType);
+        }
+        return newTypeList;
+    }
+
 
     private void addCellDropDowns(List<String> cellNames, Pane cellChanger) {
         for (String cell : cellNames) {
-            ComboBox newCombo = addToLocation(cell, Arrays.asList(titleresource.getString("CellChanges").split(",")), cellChanger);
+            ComboBox newCombo = addToLocation(cell, Arrays.asList(titlesBundle.getString("CellChanges").split(",")), cellChanger);
             cellChange.add(newCombo);
         }
     }
@@ -162,9 +173,9 @@ public class ScreenVisuals extends BorderPane {
         myGamePane.setOnMouseClicked(e -> changeCellStatus((int) e.getSceneX(), (int) e.getSceneY()));
     }
 
-    private String getEnglishShape() {
-        for(String key: titleresource.keySet()) {
-            if(titleresource.getString(key).equals(myShapeType)) {
+    private String getEnglishTranslation(String itemToSearchFor) {
+        for(String key: titlesBundle.keySet()) {
+            if(titlesBundle.getString(key).equals(itemToSearchFor)) {
                 return key;
             }
         }
@@ -173,7 +184,6 @@ public class ScreenVisuals extends BorderPane {
 
 
     public void changeCellStatus(double x, double y) {
-        // System.out.println("X: " + x+ "Y: "+y);
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -197,7 +207,7 @@ public class ScreenVisuals extends BorderPane {
         return y < myShape.getBoundsInLocal().getMaxY() && y > myShape.getBoundsInLocal().getMinY();
     }
 
-    public void checkUserChanges() {
+    public void checkUserOptionsChosen() {
         if (!cellChange.isEmpty()) {
             for (int i = 0; i < cellTypes.size(); i++) {
                 Object checkObject = cellChange.get(i).getSelectionModel().getSelectedItem();
@@ -227,20 +237,17 @@ public class ScreenVisuals extends BorderPane {
 
     private void setUpLanguage() {
         myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
-        System.out.println(myLang);
-        titleresource = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
+        titlesBundle = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
         askForOthers();
-        //myStyleuserInput = this.getStylesheets().add(getClass().getResource(myStyle + ".css").toExternalForm());
-        //System.out.println(myShapeType + " "+ myStyle+ " "+ myLang);
     }
 
     private void askForOthers() {
         myOtherOptions= new HashMap<>();
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
-        initialOptionLabels = Arrays.asList("Style", "Shape");
+        initialOptionLabels = Arrays.asList(titlesBundle.getString("ShapeTranslation"), titlesBundle.getString("StyleTranslation"));
 
-        addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titleresource);
+        addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titlesBundle);
         Stage otherOptionStage = new Stage();
         EventHandler newHandler = e -> {
             if (allOptionsChosen(myOtherOptions)) {
@@ -260,9 +267,18 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void setUpOtherOptions() {
-        myShapeType = myOtherOptions.get("Shape").getSelectionModel().getSelectedItem().toString();
-        myStyle = myOtherOptions.get("Style").getSelectionModel().getSelectedItem().toString();
+        myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
+        myStyle = myOtherOptions.get(titlesBundle.getString("StyleTranslation")).getSelectionModel().getSelectedItem().toString();
+        System.out.println(myStyle);
+        myStyleEnglish = getEnglishTranslation(myStyle);
+        System.out.println(myStyleEnglish);
     }
+
+    private String getChosenStylePath() {
+        chosenStylePath =  DEFAULT_STYLE_FOLDER + STYLE_OPTIONS.getString(myStyleEnglish);
+        return chosenStylePath;
+    }
+
 
 
     //TODO add options for different styles, for language, and for possible shapes
@@ -325,15 +341,17 @@ public class ScreenVisuals extends BorderPane {
     }
 
     public boolean shouldContinue() {
-        return myButtonDisplay.shouldcontinue();
+         return myButtonDisplay != null && myButtonDisplay.shouldcontinue();
     }
 
     public void resetGUI(Grid newGrid) {
-        myButtonDisplay.resetGUI(newGrid);
+        if(myButtonDisplay != null) {
+            myButtonDisplay.resetGUI(newGrid);
+        }
     }
 
     public boolean wantNewFile() {
-        return myButtonDisplay.wantNewFile();
+        return myButtonDisplay != null && myButtonDisplay.wantNewFile();
     }
 
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
