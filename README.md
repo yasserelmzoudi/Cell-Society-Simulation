@@ -75,6 +75,16 @@ Segregation
 
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
 
+Klein Bottle
+
+<img src="doc/KleinBottle.gif" width="500" height="500"/>
+
+Torodial
+
+<img src="doc/Torodial.gif" width="500" height="500"/>
+
+
+
 Torodial
 
 
