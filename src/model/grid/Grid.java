@@ -167,7 +167,7 @@ public abstract class Grid {
       }
     }
     updateCellTypeCount();
-    System.out.println(totalCellTypeCounts.get("SHARK"));
+    //System.out.println(totalCellTypeCounts.get("SHARK"));
   }
 
   public void updateCellTypeCount() {
