@@ -29,7 +29,7 @@ public class StartSimulation  {
     public static final String PANEL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + PANEL_STYLESHEET;
     public static final String CONTROL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + CONTROL_STYLESHEET;
     public static final String VISUAL_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + VISUAL_STYLESHEET;
-    private static final File DATA_DIRECTORY = new File("./data/");
+    private static final File DATA_DIRECTORY = new File("src/resources/");
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
     private static final String INITIAL_PATH = "/resources/initialSimulationSettings.properties";
 
