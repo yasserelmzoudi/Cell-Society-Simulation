@@ -39,7 +39,6 @@ public class ScreenVisuals extends BorderPane {
     private static final int GRID_PADDING_TB = 220;
     private static final int GRID_PADDING_LR = 30;
 
-    private ResourceBundle titleresource;
     private int visualWidth;
     private int visualHeight;
     private Grid myGrid;
@@ -77,7 +76,6 @@ public class ScreenVisuals extends BorderPane {
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
         try {
             String myEnglishShapeType = getEnglishShape();
-            System.out.println(myEnglishShapeType);
             gamePaneType = Class.forName("view.GamePaneShapes." + myEnglishShapeType + "GamePane");
             Object gridShapeInstance = gamePaneType.getDeclaredConstructor(
                     new Class[]{Grid.class, int.class, int.class}).newInstance(myGrid, gridWidth, gridHeight);
@@ -106,7 +104,7 @@ public class ScreenVisuals extends BorderPane {
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
         optionDisplay.setId(OBJECT_ID_BUNDLE.getString("BottomPanel"));
-        myButtonDisplay = new ButtonPanel(myGamePane, myGrid);
+        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
         cellTypes = myGrid.getAllTypes();
@@ -121,7 +119,7 @@ public class ScreenVisuals extends BorderPane {
 
     private void addCellDropDowns(List<String> cellNames, Pane cellChanger) {
         for (String cell : cellNames) {
-            ComboBox newCombo = addToLocation(cell, Arrays.asList(titleresource.getString("CellChanges").split(",")), cellChanger);
+            ComboBox newCombo = addToLocation(cell, Arrays.asList(titlesBundle.getString("CellChanges").split(",")), cellChanger);
             cellChange.add(newCombo);
         }
     }
@@ -163,8 +161,8 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private String getEnglishShape() {
-        for(String key: titleresource.keySet()) {
-            if(titleresource.getString(key).equals(myShapeType)) {
+        for(String key: titlesBundle.keySet()) {
+            if(titlesBundle.getString(key).equals(myShapeType)) {
                 return key;
             }
         }
@@ -228,7 +226,7 @@ public class ScreenVisuals extends BorderPane {
     private void setUpLanguage() {
         myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
         System.out.println(myLang);
-        titleresource = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
+        titlesBundle = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
         askForOthers();
         //myStyleuserInput = this.getStylesheets().add(getClass().getResource(myStyle + ".css").toExternalForm());
         //System.out.println(myShapeType + " "+ myStyle+ " "+ myLang);
@@ -240,7 +238,7 @@ public class ScreenVisuals extends BorderPane {
         List<String> initialOptionLabels = new ArrayList<>();
         initialOptionLabels = Arrays.asList("Style", "Shape");
 
-        addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titleresource);
+        addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titlesBundle);
         Stage otherOptionStage = new Stage();
         EventHandler newHandler = e -> {
             if (allOptionsChosen(myOtherOptions)) {
