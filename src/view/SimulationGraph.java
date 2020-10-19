@@ -35,15 +35,19 @@ public class SimulationGraph {
 
   private String simulationType;
 
+  private BorderPane graphRoot;
+  private Scene scene;
+  private Stage stage;
+
 
   public SimulationGraph(Grid grid, String simulationType) {
     this.grid = grid;
     this.simulationType = simulationType;
     graphLabelSource = ResourceBundle.getBundle(GRAPH_RESOURCE);
 
-    BorderPane graphRoot = new BorderPane();
-    Scene scene = new Scene(graphRoot, GRAPH_WINDOW_WIDTH, GRAPH_WINDOW_HEIGHT);
-    Stage stage = new Stage();
+    graphRoot = new BorderPane();
+    scene = new Scene(graphRoot, GRAPH_WINDOW_WIDTH, GRAPH_WINDOW_HEIGHT);
+    stage = new Stage();
 
     cellTypeData = new HashMap<>();
 
@@ -57,8 +61,6 @@ public class SimulationGraph {
     stage.setTitle(simulationType);
     stage.setScene(scene);
     stage.show();
-
-
   }
 
   public LineChart createSimulationGraph() {
@@ -83,6 +85,10 @@ public class SimulationGraph {
       Data graphData = new Data(frameCount, cellTypeCounts.get(cellTypeName));
       cellTypeData.get(cellTypeName).getData().add(graphData);
     }
+  }
+
+  public void closeGraphWindow() {
+    stage.close();
   }
 
 }

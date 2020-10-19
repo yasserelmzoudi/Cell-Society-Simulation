@@ -54,12 +54,12 @@ class SimulationSettingsReaderTest {
 
   @Test
   void getSimulationAuthorNotPresent() {
-    assertDoesNotThrow(() -> simulationReaderError.getSimulationAuthor());
+    assertThrows(InvalidSimulationSettingsFileException.class, () -> simulationReaderError.getSimulationAuthor());
   }
 
   @Test
   void getSimulationDescriptionNotPresent() {
-    assertDoesNotThrow(() -> simulationReaderError.getSimulationDescription());
+    assertThrows(InvalidSimulationSettingsFileException.class, () -> simulationReaderError.getSimulationDescription());
   }
 
   @Test

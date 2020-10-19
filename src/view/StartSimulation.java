@@ -189,6 +189,7 @@ public class StartSimulation  {
             grid = simulationController.getGrid();
             newSimulationWindow(grid);
             frameCount = 0;
+            simulationGraph.closeGraphWindow();
         }
 
     }
