@@ -10,7 +10,7 @@ import model.grid.SimulationSettingsReader;
 
 
 
-public class CellSocietyController {
+public class SimulationInitializer {
   private String edgePolicy;
   private String neighborhoodPolicy;
   private SimulationSettingsReader simulationSettingsReader;
@@ -23,17 +23,13 @@ public class CellSocietyController {
 
 
 
-  private static final String PATH = "/resources/initialSimulationSettings.properties";
-
-
-
-  public CellSocietyController() throws ReflectiveOperationException {
-    setUpSimulation();
+  public SimulationInitializer(String path) throws ReflectiveOperationException {
+    setUpSimulation(path);
   }
 
-  public void setUpSimulation() throws ReflectiveOperationException {
+  public void setUpSimulation(String path) throws ReflectiveOperationException {
     errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-    simulationSettingsReader = new SimulationSettingsReader(PATH);
+    simulationSettingsReader = new SimulationSettingsReader(path);
     simulationData = Grid.class.getClassLoader()
         .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
     edgePolicy = simulationSettingsReader.getSimulationEdgePolicy();
