@@ -108,7 +108,7 @@ public abstract class Grid {
   }
 
   private void checkCSVFile(List<String[]> readLines) {
-    if (readLines.isEmpty() || gridHeight != readLines.size() || gridWidth != readLines.get(1).length) {
+    if (readLines.isEmpty()  || readLines.size() < 2 || gridHeight != readLines.size() - 1 || gridWidth != readLines.get(1).length) {
       throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
   }
