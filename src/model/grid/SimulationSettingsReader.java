@@ -50,10 +50,6 @@ public class SimulationSettingsReader {
     }
   }
 
-  public ResourceBundle getErrorMessageSource() {
-    return errorMessageSource;
-  }
-
   public String getSimulationType() {
     if (!simType.isEmpty()) {
       return simType;
