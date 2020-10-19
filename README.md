@@ -1,4 +1,4 @@
-simulation
+dsimulation
 ====
 
 This project implements a cellular automata simulator.
