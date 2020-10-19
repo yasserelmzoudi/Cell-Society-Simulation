@@ -76,9 +76,13 @@ Features implemented:
 
 #### Klein Bottle
 
+Notice how the enclosed block on the bottom right and top left side of the screen are full because the grid connects on both sides after twisting one of the sides. Site: https://en.wikipedia.org/wiki/Klein_bottle.
+
 <img src="doc/KleinBottle.gif" width="500" height="500"/>
 
 #### Torodial
+
+Notice how the enclosed block on the right and left side of the screen are full because the grid connects on both sides.
 
 <img src="doc/Torodial.gif" width="500" height="500"/>
 
