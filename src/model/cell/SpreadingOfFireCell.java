@@ -16,7 +16,8 @@ import java.util.Random;
 
 public class SpreadingOfFireCell extends Cell{
   private int state;
-  private static final double PROB_CATCH = 0.55;
+  //private static final double PROB_CATCH = 0.55;
+  private static double PROB_CATCH = 0.55;
 
   /**
    * Constructor for this class.
@@ -91,4 +92,11 @@ public class SpreadingOfFireCell extends Cell{
     }
   }
 
+  public static double getProbCatch() {
+    return PROB_CATCH;
+  }
+
+  public static void setProbCatch(double probCatch) {
+    PROB_CATCH = probCatch;
+  }
 }

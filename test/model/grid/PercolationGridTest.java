@@ -16,10 +16,12 @@ class PercolationGridTest {
   ResourceBundle resources = ResourceBundle.getBundle("resources.data");
   InputStream data = Grid.class.getClassLoader()
       .getResourceAsStream(resources.getString("PercolationGridTest"));
+  private static final int row = 2;
+  private static final int column = 2;
 
   @BeforeEach
   public void setup() {
-    grid = new PercolationGrid(data, "Finite", "Complete");
+    grid = new PercolationGrid(data, "Torodial", "Cardinal");
   }
 
   @Test
@@ -41,6 +43,21 @@ class PercolationGridTest {
         expectedCellTypes.containsAll(actualCellTypes));
   }
 
+  @Test
+  public void checkSetGridType() {
+    String actualGridType = grid.setGridType();
+    assertEquals("PERCOLATION", actualGridType);
+  }
+
+  @Test
+  public void checkCardinalNeighbors() {
+    List<Cell> neighbors = grid.getEdgeTypeTorodial(grid.getAllCells(),row,column);
+    List<Cell> newNeighbors = grid.getEdgeTypeTorodial(grid.getAllCells(),row,column);
+    grid.setNeighborCardinal(neighbors,newNeighbors,row,column);
+    assertEquals(4,neighbors.size());
+    }
+  }
 
 
-}
+
+

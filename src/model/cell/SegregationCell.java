@@ -126,6 +126,14 @@ public class SegregationCell extends Cell {
       }
   }
 
+  public static void setEmptyCells(List<Cell> emptyCells) {
+    SegregationCell.emptyCells = emptyCells;
+  }
+
+  public static List<Cell> getEmptyCells() {
+    return emptyCells;
+  }
+
   private int getRandomIndex(int rangeSize) {
     return (int) (Math.random() * rangeSize);
   }
