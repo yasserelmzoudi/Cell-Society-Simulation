@@ -41,6 +41,12 @@ class GameOfLifeGridTest {
         expectedCellTypes.containsAll(actualCellTypes));
   }
 
+  @Test
+  public void checkSetGridType() {
+    String actualGridType = grid.setGridType();
+    assertEquals("GAME_OF_LIFE", actualGridType);
+  }
+
 
 
 }
