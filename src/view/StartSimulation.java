@@ -215,4 +215,8 @@ public class StartSimulation  {
         return "";
     }
 
+    public SimulationInitializer getSimulationController() {
+        return simulationController;
+    }
+
 }

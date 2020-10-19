@@ -92,7 +92,6 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY() - myGameBox.getBoundsInLocal().getMinY()));
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
-        System.out.println("made new borderpane");
         addGridEvent();
         currentSimulation.setUpScene();
     }
@@ -105,7 +104,7 @@ public class ScreenVisuals extends BorderPane {
     private Node makeBottomPanel() {
         BorderPane optionDisplay = new BorderPane();
         optionDisplay.setId(OBJECT_ID_BUNDLE.getString("BottomPanel"));
-        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
+        myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle, currentSimulation.getSimulationController().getSimulationSettingsReader());
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
         cellTypes = myGrid.getAllTypes();

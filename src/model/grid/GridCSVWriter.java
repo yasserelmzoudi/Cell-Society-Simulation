@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 import model.exceptions.UnableToSaveFileException;
 
 /**
@@ -21,6 +23,11 @@ public class GridCSVWriter {
   private String title;
   private String author;
   private String description;
+  private String simulationType;
+  private String simulationRandomization;
+  private String simulationEdgePolicy;
+  private String simulationNeighborhoodPolicy;
+  private List<String> simulationCellStates;
 
   private int gridHeight;
   private int gridWidth;
@@ -37,16 +44,23 @@ public class GridCSVWriter {
    * @param author Author of the simulation.
    * @param description Description of the simulation.
    */
-  public GridCSVWriter(Grid grid, String title, String author, String description) {
+  public GridCSVWriter(Grid grid, String title, String author, String description, SimulationSettingsReader previousSettings) {
     this.grid = grid;
     this.title = title;
     this.author = author;
     this.description = description;
+    simulationType = previousSettings.getSimulationType();
+    simulationRandomization = previousSettings.getSimulationRandomization();
+    simulationEdgePolicy = previousSettings.getSimulationEdgePolicy();
+    simulationNeighborhoodPolicy = previousSettings.getSimulationNeighborhoodPolicy();
+
     gridHeight = grid.getGridHeight();
     gridWidth = grid.getGridWidth();
     errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
 
-    checkIfTitleProvided();
+    simulationCellStates = grid.getAllTypes();
+
+    checkIfMandatoryFieldsProvided();
 
     setUpSaveFile();
   }
@@ -54,8 +68,8 @@ public class GridCSVWriter {
   /**
    * Throws error if the no title is given.
    */
-  private void checkIfTitleProvided() {
-    if (title.length() == 0) {
+  private void checkIfMandatoryFieldsProvided() {
+    if (title.length() == 0 || author.length() == 0 || description.length() == 0) {
       throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
     }
   }
@@ -66,9 +80,15 @@ public class GridCSVWriter {
   private void setUpSaveFile() {
     try (OutputStream saveFile = new FileOutputStream("src/resources/" + title + ".properties")) {
       Properties prop = new Properties();
+      prop.setProperty("SimulationType", simulationType);
       prop.setProperty("Title", title);
       prop.setProperty("Author", author);
       prop.setProperty("Description", description);
+      prop.setProperty("DataSourceCSV", title + ".csv");
+      prop.setProperty("NeighborhoodPolicy", simulationNeighborhoodPolicy);
+      prop.setProperty("EdgePolicy", simulationEdgePolicy);
+      prop.setProperty("Random", simulationRandomization);
+
       prop.store(saveFile, null);
     } catch (Exception e) {
       throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
@@ -80,7 +100,6 @@ public class GridCSVWriter {
    * the cells.
    */
   public void saveFile() {
-    checkIfTitleProvided();
     try{
       Writer saveFile = new FileWriter("data/" + title + ".csv");
       CSVWriter writer = new CSVWriter(saveFile, FILE_DELIMITER, CSVWriter.NO_QUOTE_CHARACTER,
@@ -105,7 +124,8 @@ public class GridCSVWriter {
     for (int row = 0; row < gridHeight; row++) {
       rowData = new String[gridWidth];
       for (int column = 0; column < gridWidth; column++) {
-        rowData[column] = String.valueOf(grid.getCellTypeState(row, column));
+        int state = grid.getCellTypeState(row, column);
+        rowData[column] = String.valueOf(simulationCellStates.indexOf(grid.getCell(row, column).getState().name()));
       }
       data.add(rowData);
     }
