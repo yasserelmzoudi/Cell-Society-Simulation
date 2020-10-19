@@ -1,4 +1,4 @@
-simulation
+Simulation
 ====
 
 This project implements a cellular automata simulator.
@@ -27,17 +27,16 @@ Yasser Elmzoudi: Responsible for configuration and exceptions. He wrote the clas
 
 Professor Duvall's lectures and notes from class
 - Examples of reflection
-- Abstractions
+- Examples of abstraction
+- Principles such as Open Closed, Single Responsibility, Liskov's Substitution
 
 StackOverFlow
-- JavaFX Features
-- Reflection
 
 ### Running the Program
 
 Main class:
 
-Start: Contains the method to <code>launch args</code> and run the program.
+**Start**: Contains the method to <code>launch args</code> and run the program.
 
 Data files needed: 
 
@@ -48,15 +47,92 @@ Note: For the tests, some of the files needed to run the tests are in the <code>
 Features implemented:
 
 - There are six different simulations included - Game of Life, Percolation, Segregation, Rock Paper Scissors, Predatory Prey, and Spreading of Fire.
+
+#### Game of Life
+
+<img src="doc/GameOfLife.gif" width="500" height="500"/>
+
+#### Spreading of Fire
+
+<img src="doc/SpreadingOfFire.gif" width="500" height="500"/>
+
+#### Percolation
+
+<img src="doc/Percolation.gif" width="500" height="500"/>
+
+#### Predator Prey
+
+<img src="doc/PredatorPrey.gif" width="500" height="500"/>
+
+#### Rock, Paper, Scissors
+
+<img src="doc/RockPaperScissors.gif" width="500" height="500"/>
+
+#### Segregation
+
+<img src="doc/Segregation.gif" width="500" height="500"/>
+
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
+
+#### Klein Bottle
+
+Notice how the enclosed block on the bottom right and top left side of the screen are full because the grid connects on both sides after twisting one of the sides. Site: https://en.wikipedia.org/wiki/Klein_bottle.
+
+<img src="doc/KleinBottle.gif" width="500" height="500"/>
+
+#### Torodial
+
+Notice how the enclosed block on the right and left side of the screen are full because the grid connects on both sides.
+
+<img src="doc/Torodial.gif" width="500" height="500"/>
+
 - Different neighborhood policies: These include Complete, Diagonal, and Cardinal.
-- Three languages: English, Spanish, and French.
-- Simulation graph: Represents the number of each type of state in the simulation across time.
-- Ability to load new files, pause, reset, change speed, and step through simulation.
-- Different shapes in grid: Triangle, Hexagon, and Rectangle.
-- Style of Cells: Both images and different colors can be loaded onto the cells.
-- Different Themes: A few different colors / themes can be loaded upon startup into the simulation.
-- Exception handling.
+
+#### Diagonal
+
+<img src="doc/Diagonal.gif" width="500" height="500"/>
+
+#### Cardinal
+
+<img src="doc/Cardinal.gif" width="500" height="500"/>
+
+- **Three languages: English, Spanish, and French.**
+
+Below is the panel you can choose a language and shape from.
+
+<img src="doc/LanguageShape.gif" width="500" height="500"/>
+
+- **Simulation graph: Represents the number of each type of state in the simulation across time.**
+
+<img src="doc/Graph.gif" width="500" height="500"/>
+
+- **Ability to load new files, pause, reset, change speed, and step through simulation.**
+
+As shown in the above gifs, the user can press the buttons in order to change the simulation. To increase the speed, drag the slider to the right.
+
+- **Different shapes in grid: Triangle, Hexagon, and Rectangle.**
+
+#### Triangle
+
+<img src="doc/Spanish.gif" width="500" height="500"/>
+
+#### Hexagon
+
+<img src="doc/Hexagon.gif" width="500" height="500"/>
+
+**- Style of Cells: Both images and different colors can be loaded onto the cells.**
+
+<img src="doc/TreeImage.gif" width="500" height="500"/><img src="doc/FishImage.gif" width="500" height="500"/>
+
+**- Different Themes: A few different colors / themes can be loaded upon startup into the simulation.**
+
+Different themes can be chosen. Look at the Duke and UNC below!
+
+<img src="doc/Duke.gif" width="500" height="500"/><img src="doc/UNC.gif" width="500" height="500"/>
+
+**- Exception handling.**
+
+An error box opens up upon a user entering an invalid simulation or any other error.
 
 ### Notes/Assumptions
 
