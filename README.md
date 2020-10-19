@@ -51,12 +51,38 @@ Features implemented:
 
 Game of Life
 
+<img src="doc/GameOfLife.gif" width="500" height="500"/>
+
 Spreading of Fire
 
 <img src="doc/SpreadingOfFire.gif" width="500" height="500"/>
 
+Percolation
+
+<img src="doc/Percolation.gif" width="500" height="500"/>
+
+Predator Prey
+
+<img src="doc/PredatorPrey.gif" width="500" height="500"/>
+
+Rock, Paper, Scissors
+
+<img src="doc/RockPaperScissors.gif" width="500" height="500"/>
+
+Segregation
+
+<img src="doc/Segregation.gif" width="500" height="500"/>
 
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
+
+Torodial
+
+
+
+Klein Bottle
+
+
+
 - Different neighborhood policies: These include Complete, Diagonal, and Cardinal.
 - Three languages: English, Spanish, and French.
 - Simulation graph: Represents the number of each type of state in the simulation across time.
