@@ -1,9 +1,11 @@
 package model.grid;
 
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import model.exceptions.InvalidSimulationSettingsFileException;
+import model.exceptions.UnableToSaveFileException;
 
 public class SimulationSettingsReader {
   private Properties prop;
@@ -12,9 +14,29 @@ public class SimulationSettingsReader {
   private ResourceBundle errorMessageSource;
   private String path;
 
+  private String simType;
+  private String simTitle;
+  private String simAuthor;
+  private String simDescription;
+  private String simRandomization;
+  private String simDataSourceCSV;
+  private String simEdgePolicy;
+  private String simNeighborhoodPolicy;
+
+
+
+
 
   public SimulationSettingsReader(String path) {
     readSimulationSettings(path);
+    simType = prop.getProperty("SimulationType");
+    simTitle = prop.getProperty("Title");
+    simAuthor = prop.getProperty("Author");
+    simDescription = prop.getProperty("Description");
+    simRandomization = prop.getProperty("Random");
+    simDataSourceCSV = prop.getProperty("DataSourceCSV");
+    simEdgePolicy = prop.getProperty("EdgePolicy");
+    simNeighborhoodPolicy = prop.getProperty("NeighborhoodPolicy");
   }
 
   private void readSimulationSettings(String path) {
@@ -33,34 +55,56 @@ public class SimulationSettingsReader {
   }
 
   public String getSimulationType() {
-    return prop.getProperty("SimulationType");
+    if (!simType.isEmpty()) {
+      return simType;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
   public String getSimulationTitle() {
-    return prop.getProperty("Title");
+    if (!simTitle.isEmpty()) {
+      return simTitle;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
   public String getSimulationAuthor() {
-    return prop.getProperty("Author");
+    return simAuthor;
   }
 
   public String getSimulationDescription() {
-    return prop.getProperty("Description");
+    return simDescription;
   }
 
   public String getSimulationRandomization() {
-    return prop.getProperty("Random");
+    if (!simRandomization.isEmpty()) {
+      return simRandomization;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   public String getSimulationDataSourceCSV() {
-    return prop.getProperty("DataSourceCSV");
+    if (!simDataSourceCSV.isEmpty()) {
+      return simDataSourceCSV;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   public String getSimulationEdgePolicy() {
-    return prop.getProperty("EdgePolicy");
+    if (!simEdgePolicy.isEmpty()) {
+      return simEdgePolicy;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   public String getSimulationNeighborhoodPolicy() {
-    return prop.getProperty("NeighborhoodPolicy");
+    if (!simNeighborhoodPolicy.isEmpty()) {
+      return simNeighborhoodPolicy;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 }
