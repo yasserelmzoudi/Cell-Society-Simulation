@@ -1,4 +1,4 @@
-dsimulation
+Simulation
 ====
 
 This project implements a cellular automata simulator.
@@ -48,6 +48,14 @@ Note: For the tests, some of the files needed to run the tests are in the <code>
 Features implemented:
 
 - There are six different simulations included - Game of Life, Percolation, Segregation, Rock Paper Scissors, Predatory Prey, and Spreading of Fire.
+
+Game of Life
+
+Spreading of Fire
+
+<img src="doc/SpreadingOfFire.png" width="600" height="300"/>
+
+
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
 - Different neighborhood policies: These include Complete, Diagonal, and Cardinal.
 - Three languages: English, Spanish, and French.
