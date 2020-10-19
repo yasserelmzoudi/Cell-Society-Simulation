@@ -128,7 +128,7 @@ As shown in the above gifs, the user can press the buttons in order to change th
 
 Different themes can be chosen. Look at the Duke and UNC below!
 
-<img src="doc/Duke.gif" width="500" height="500"/><img src="doc/UNC.gif" width="500" height="500"/>
+<img src="doc/Duke.gif" width="450" height="450"/><img src="doc/UNC.gif" width="450" height="450"/>
 
 **- Exception handling.**
 
