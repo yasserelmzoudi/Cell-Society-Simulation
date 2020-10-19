@@ -1,9 +1,11 @@
 package model.grid;
 
 import java.io.InputStream;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import model.exceptions.InvalidSimulationSettingsFileException;
+import model.exceptions.UnableToSaveFileException;
 
 /**
  * Class that reads the simulation settings.
@@ -17,12 +19,32 @@ public class SimulationSettingsReader {
   private ResourceBundle errorMessageSource;
   private String path;
 
-  /**
-   * Constructor for this class.
-   *
-   * @param path Path of the file.
-   */
+  private String simType;
+  private String simTitle;
+  private String simAuthor;
+  private String simDescription;
+  private String simRandomization;
+  private String simDataSourceCSV;
+  private String simEdgePolicy;
+  private String simNeighborhoodPolicy;
+
+
+
+
+
   public SimulationSettingsReader(String path) {
+    readSimulationSettings(path);
+    simType = prop.getProperty("SimulationType");
+    simTitle = prop.getProperty("Title");
+    simAuthor = prop.getProperty("Author");
+    simDescription = prop.getProperty("Description");
+    simRandomization = prop.getProperty("Random");
+    simDataSourceCSV = prop.getProperty("DataSourceCSV");
+    simEdgePolicy = prop.getProperty("EdgePolicy");
+    simNeighborhoodPolicy = prop.getProperty("NeighborhoodPolicy");
+  }
+
+  private void readSimulationSettings(String path) {
     try {
       errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
       prop = new Properties();
@@ -33,68 +55,78 @@ public class SimulationSettingsReader {
     }
   }
 
-  /**
-   * Returns source of error message.
-   *
-   * @return Error message.
-   */
-  public ResourceBundle getErrorMessageSource() {
-    return errorMessageSource;
-  }
-
-  /**
-   * @return Simulation type.
-   */
   public String getSimulationType() {
-    return prop.getProperty("SimulationType");
+    if (!simType.isEmpty()) {
+      return simType;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
   /**
    * @return Title of simulation.
    */
   public String getSimulationTitle() {
-    return prop.getProperty("Title");
+    if (!simTitle.isEmpty()) {
+      return simTitle;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
   }
 
   /**
    * @return Author of simulation.
    */
   public String getSimulationAuthor() {
-    return prop.getProperty("Author");
+    return simAuthor;
   }
 
   /**
    * @return Description of simulation.
    */
   public String getSimulationDescription() {
-    return prop.getProperty("Description");
+    return simDescription;
   }
 
   /**
    * @return Type of randomization, if any.
    */
   public String getSimulationRandomization() {
-    return prop.getProperty("Random");
+    if (!simRandomization.isEmpty()) {
+      return simRandomization;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   /**
    * @return Source of simulation.
    */
   public String getSimulationDataSourceCSV() {
-    return prop.getProperty("DataSourceCSV");
+    if (!simDataSourceCSV.isEmpty()) {
+      return simDataSourceCSV;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   /**
    * @return Type of edge policy - finite, klein bottle, or torodial.
    */
   public String getSimulationEdgePolicy() {
-    return prop.getProperty("EdgePolicy");
+    if (!simEdgePolicy.isEmpty()) {
+      return simEdgePolicy;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 
   /**
    * @return Type of neighborhood policy - cardinal, complete, and diagonal.
    */
   public String getSimulationNeighborhoodPolicy() {
-    return prop.getProperty("NeighborhoodPolicy");
+    if (!simNeighborhoodPolicy.isEmpty()) {
+      return simNeighborhoodPolicy;
+    }
+    throw new InvalidSimulationSettingsFileException(errorMessageSource.getString("InvalidSettingsFile"));
+
   }
 }

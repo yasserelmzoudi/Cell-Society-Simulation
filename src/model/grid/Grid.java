@@ -64,6 +64,7 @@ public abstract class Grid {
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
+    checkCSVFile(readLines);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
     gridSetUp(readLines);
@@ -96,6 +97,12 @@ public abstract class Grid {
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(data))) {
       return csvReader.readAll();
     } catch (IOException | CsvException e) {
+      throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
+    }
+  }
+
+  private void checkCSVFile(List<String[]> readLines) {
+    if (readLines.isEmpty()  || readLines.size() < 2 || gridHeight != readLines.size() - 1 || gridWidth != readLines.get(1).length) {
       throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
     }
   }
