@@ -27,17 +27,16 @@ Yasser Elmzoudi: Responsible for configuration and exceptions. He wrote the clas
 
 Professor Duvall's lectures and notes from class
 - Examples of reflection
-- Abstractions
+- Examples of abstraction
+- Principles such as Open Closed, Single Responsibility, Liskov's Substitution
 
 StackOverFlow
-- JavaFX Features
-- Reflection
 
 ### Running the Program
 
 Main class:
 
-Start: Contains the method to <code>launch args</code> and run the program.
+**Start**: Contains the method to <code>launch args</code> and run the program.
 
 Data files needed: 
 
