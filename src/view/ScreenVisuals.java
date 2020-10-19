@@ -92,7 +92,6 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY() - myGameBox.getBoundsInLocal().getMinY()));
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
-        System.out.println("made new borderpane");
         addGridEvent();
         currentSimulation.setUpScene();
     }
@@ -108,13 +107,26 @@ public class ScreenVisuals extends BorderPane {
         myButtonDisplay = new ButtonPanel(myGamePane, myGrid, titlesBundle);
         myButtonDisplay.setId(OBJECT_ID_BUNDLE.getString("ButtonPanel"));
         Pane cellChanger = new HBox();
-        cellTypes = myGrid.getAllTypes();
+        cellTypes =cellNamesWithSpace(myGrid.getAllTypes());
+
         addCellDropDowns(cellTypes, cellChanger);
         cellChanger.setId(OBJECT_ID_BUNDLE.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
         optionDisplay.setTop(makeSlider());
         return optionDisplay;
+    }
+
+    private List<String> cellNamesWithSpace(List<String> oldTypeList) {
+        List<String> oldTypes = oldTypeList;
+        List<String> newTypeList = new ArrayList<>();
+        for(String cellType : oldTypes) {
+            System.out.println(cellType);
+            String newCellType = cellType.replaceAll("_", " ");
+            System.out.println(newCellType);
+            newTypeList.add(newCellType);
+        }
+        return newTypeList;
     }
 
 
@@ -225,7 +237,6 @@ public class ScreenVisuals extends BorderPane {
 
     private void setUpLanguage() {
         myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
-        System.out.println(myLang);
         titlesBundle = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
         askForOthers();
         //myStyleuserInput = this.getStylesheets().add(getClass().getResource(myStyle + ".css").toExternalForm());
@@ -236,7 +247,8 @@ public class ScreenVisuals extends BorderPane {
         myOtherOptions= new HashMap<>();
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
-        initialOptionLabels = Arrays.asList("Shape", "Style");
+        initialOptionLabels = Arrays.asList(titlesBundle.getString("ShapeTranslation"), titlesBundle.getString("StyleTranslation"));
+       // initialOptionLabels = Arrays.asList("Shape", "Style");
 
         addDifferentDropDowns(initialOptionLabels, newPane, myOtherOptions, titlesBundle);
         Stage otherOptionStage = new Stage();
@@ -258,8 +270,8 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private void setUpOtherOptions() {
-        myShapeType = myOtherOptions.get("Shape").getSelectionModel().getSelectedItem().toString();
-        myStyle = myOtherOptions.get("Style").getSelectionModel().getSelectedItem().toString();
+        myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
+        myStyle = myOtherOptions.get(titlesBundle.getString("StyleTranslation")).getSelectionModel().getSelectedItem().toString();
     }
 
 
