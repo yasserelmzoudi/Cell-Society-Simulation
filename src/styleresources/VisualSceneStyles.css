@@ -39,20 +39,20 @@
 }
 .combo-box {
     -fx-pref-width: 100;
-    -fx-font-size: 9pt;
+    -fx-font-size: 7pt;
     -fx-spacing: 20;
     -fx-alignment: center;
     -fx-padding: 0,0,0,0;
 }
 .label {
     -fx-alignment: center-right;
-    -fx-font-size: 12pt;
-    -fx-padding: 0,0,0,0;
+    -fx-font-size: 9pt;
+    -fx-padding: 0,20,0,0;
     -fx-font-family: "Times New Roman";
 }
 .combo-box-popup > .list-view {
     -fx-pref-width: 100;
-    -fx-font-size: 9pt;
+    -fx-font-size: 7pt;
 }
 
 #bottomPanel {
