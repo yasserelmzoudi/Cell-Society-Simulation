@@ -1,23 +1,23 @@
 package view;
 
-import controller.SimulationInitializer;
-import java.io.InputStream;
+        import controller.SimulationInitializer;
+        import java.io.InputStream;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.scene.Scene;
+        import javafx.animation.KeyFrame;
+        import javafx.animation.Timeline;
+        import javafx.application.Platform;
+        import javafx.scene.Scene;
 
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import model.exceptions.InvalidCSVFileException;
-import model.exceptions.InvalidSimulationSettingsFileException;
-import model.exceptions.InvalidSimulationTypeException;
-import model.grid.GameOfLifeGrid;
-import model.grid.Grid;
+        import javafx.stage.FileChooser;
+        import javafx.stage.Stage;
+        import javafx.util.Duration;
+        import model.exceptions.InvalidCSVFileException;
+        import model.exceptions.InvalidSimulationSettingsFileException;
+        import model.exceptions.InvalidSimulationTypeException;
+        import model.grid.GameOfLifeGrid;
+        import model.grid.Grid;
 
-import java.io.File;
+        import java.io.File;
 
 public class StartSimulation  {
     private static final String RESOURCES = "resources/";
@@ -53,16 +53,18 @@ public class StartSimulation  {
     private SimulationGraph simulationGraph;
 
     private Class<?> gridParameters;
+    private String currentPath = INITIAL_PATH;
 
     public StartSimulation(Stage stage, int winWidth, int winHeight)
-        throws ReflectiveOperationException {
+            throws ReflectiveOperationException {
         windowWidth = winWidth;
         windowHeight = winHeight;
-        start(stage);
+        primaryStage = stage;
+        start();
 
     }
 
-    public void start(Stage stage) throws ReflectiveOperationException {
+    public void start() throws ReflectiveOperationException {
         /*errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
         simulationSettingsReader = new SimulationSettingsReader(PATH);
         simulationData = Grid.class.getClassLoader()
@@ -93,10 +95,10 @@ public class StartSimulation  {
         grid = simulationController.getGrid();
         primaryStage =stage;
         setUpVisualScene(grid);*/
-        simulationController = initializeSimulation(INITIAL_PATH);
+        simulationController = initializeSimulation(currentPath);
         grid = simulationController.getGrid();
-        primaryStage = stage;
         setUpVisualScene(grid);
+        frameCount = 0;
     }
 
     private SimulationInitializer initializeSimulation(String path) throws ReflectiveOperationException {
@@ -110,19 +112,19 @@ public class StartSimulation  {
 
     private void setUpKeyFrames() {
         primaryStage.show();
-            KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
-                try {
-                    step();
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                }
-            });
-            animation = new Timeline();
-            animation.setCycleCount(Timeline.INDEFINITE);
-            animation.getKeyFrames().add(frame);
-            animation.play();
-        }
-    
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
+            try {
+                step();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        });
+        animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
+    }
+
 
 
     private void newSimulationWindow(Grid newGrid) {
@@ -152,17 +154,17 @@ public class StartSimulation  {
         });
         simulationGraph = new SimulationGraph(grid, simulationController.getSimulationTitle());
         setUpKeyFrames();
-}
-    
+    }
+
 
     private void assignStyleSheet(Scene scene, String styleSheetPath) {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
     public void step() throws ReflectiveOperationException {
-            checkNewFile();
-            root.checkUserOptionsChosen();
-            startSimulation();
+        checkNewFile();
+        root.checkUserOptionsChosen();
+        startSimulation();
 
     }
 
@@ -184,12 +186,8 @@ public class StartSimulation  {
             /*InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
             grid = new GameOfLifeGrid(newGridData, edgePolicy, neighborhoodPolicy);
             newSimulationWindow(grid);*/
-
-            simulationController = initializeSimulation(path);
-            grid = simulationController.getGrid();
-            newSimulationWindow(grid);
-            frameCount = 0;
-            simulationGraph.closeGraphWindow();
+            currentPath=path;
+            reload();
         }
 
     }
@@ -206,6 +204,10 @@ public class StartSimulation  {
         }
     }
 
+    public SimulationGraph getSimulationGraph() {
+        return simulationGraph;
+    }
+
     private String chooseNewFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(DATA_DIRECTORY);
@@ -216,6 +218,12 @@ public class StartSimulation  {
 
     public SimulationInitializer getSimulationController() {
         return simulationController;
+    }
+
+    public void reload() throws ReflectiveOperationException {
+        simulationGraph.closeGraphWindow();
+        start();
+        newSimulationWindow(grid);
     }
 
 }

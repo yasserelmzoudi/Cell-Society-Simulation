@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,7 +35,7 @@ public class ScreenVisuals extends BorderPane {
 
     private static final int MIN_SLIDER_SPEED = 0;
     private static final int MAX_SLIDER_SPEED = 8;
-    private static final int GRID_PADDING_TB = 220;
+    private static final int GRID_PADDING_TB = 240;
     private static final int GRID_PADDING_LR = 30;
 
     private int visualWidth;
@@ -106,7 +107,7 @@ public class ScreenVisuals extends BorderPane {
         cellChanger.setId(OBJECT_ID_BUNDLE.getString("HBox"));
         optionDisplay.setBottom(cellChanger);
         optionDisplay.setCenter(myButtonDisplay);
-        optionDisplay.setTop(makeSlider());
+        optionDisplay.setTop(makeBottomTop());
         return optionDisplay;
     }
 
@@ -140,6 +141,7 @@ public class ScreenVisuals extends BorderPane {
         HBox titleDisplay = new HBox(); //Name top Vbox center slider bottom
         titleDisplay.setAlignment(Pos.CENTER);
         Text simulationTitleText = new Text(gameTitle);
+        simulationTitleText.setId(OBJECT_ID_BUNDLE.getString("Title"));
         titleDisplay.getChildren().add(simulationTitleText);
         return titleDisplay;
     }
@@ -172,7 +174,7 @@ public class ScreenVisuals extends BorderPane {
                 return key;
             }
         }
-        return "invalid shape";
+        return "invalid word to translate";
     }
 
 
@@ -230,7 +232,7 @@ public class ScreenVisuals extends BorderPane {
 
     private void setUpLanguage() {
         myLang = myLangOption.get("Language").getSelectionModel().getSelectedItem().toString();
-        titlesBundle = ResourceBundle.getBundle("languageresources." + myLang.toLowerCase());
+        titlesBundle = ResourceBundle.getBundle("LanguageResources." + myLang.toLowerCase());
         askForOthers();
     }
 
@@ -345,6 +347,47 @@ public class ScreenVisuals extends BorderPane {
     public GamePane getMyGamePane() {
         return myGamePane;
     }
+
+    private Button makeGraphControlButton() {
+        Button graphButton = new Button(titlesBundle.getString("GraphButton"));
+        graphButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton")); //TODO change to be based on resource bundle
+        graphButton.setOnAction(e->{
+                    currentSimulation.getSimulationGraph().showGraph();
+                }
+        );
+        return graphButton;
+    }
+
+    private Button makeResetButton() {
+        Button resetButton = new Button(titlesBundle.getString("ResetButton"));
+        resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton")); //TODO change to be based on resource bundle and ask if it should go here or startsimulation
+        resetButton.setOnAction(e->{
+            try {
+                currentSimulation.reload();
+            } catch (ReflectiveOperationException reflectiveOperationException) {
+                reflectiveOperationException.printStackTrace();
+            }
+            System.out.println("reset");
+                }
+        );
+        return resetButton;
+    }
+
+    private Pane makeOtherButtonBox(){
+        Pane graphBox = new HBox();
+        graphBox.setId(OBJECT_ID_BUNDLE.getString("OtherBox"));
+        graphBox.getChildren().add(makeResetButton());
+        graphBox.getChildren().add(makeGraphControlButton());
+        return graphBox;
+    }
+
+    private Pane makeBottomTop() {
+        Pane topBox = new VBox();
+        topBox.getChildren().add(makeSlider());
+        topBox.getChildren().add(makeOtherButtonBox());
+        return topBox;
+    }
+
 
 }
 

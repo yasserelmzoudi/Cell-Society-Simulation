@@ -5,6 +5,19 @@
     -fx-padding: 5px;
 }
 
+#otherButton {
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+}
+
+#title {
+    -fx-fill: white;
+}
+
+#otherBox {
+    -fx-alignment: center;
+}
+
 #gameDisplay{
     -fx-alignment: center;
 }
@@ -58,8 +71,8 @@
 #bottomPanel {
     -fx-spacing: 70px;
     -fx-alignment: center;
-    -fx-padding: 10;
-    -fx-background-color: #1b0039;
+    -fx-padding: 20;
+    -fx-background-color: #001e39;
     -fx-background-radius: 3;
 }
 #title {

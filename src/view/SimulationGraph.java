@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -22,6 +24,7 @@ public class SimulationGraph {
 
   private static final int GRAPH_WINDOW_WIDTH = 400;
   private static final int GRAPH_WINDOW_HEIGHT = 400;
+  private static final int TRANSLATE_FACTOR = 800;
   private static final String GRAPH_RESOURCE = "resources.graphLabels";
 
   private  ResourceBundle graphLabelSource;
@@ -48,6 +51,7 @@ public class SimulationGraph {
     graphRoot = new BorderPane();
     scene = new Scene(graphRoot, GRAPH_WINDOW_WIDTH, GRAPH_WINDOW_HEIGHT);
     stage = new Stage();
+    stage.setX(TRANSLATE_FACTOR);
 
     cellTypeData = new HashMap<>();
 
@@ -56,11 +60,6 @@ public class SimulationGraph {
 
     simulationGraph = createSimulationGraph();
 
-    graphRoot.setCenter(simulationGraph);
-
-    stage.setTitle(simulationType);
-    stage.setScene(scene);
-    stage.show();
   }
 
   public LineChart createSimulationGraph() {
@@ -89,6 +88,13 @@ public class SimulationGraph {
 
   public void closeGraphWindow() {
     stage.close();
+  }
+
+  public void showGraph() {
+    graphRoot.setCenter(simulationGraph);
+    stage.setTitle(simulationType);
+    stage.setScene(scene);
+    stage.show();
   }
 
 }
