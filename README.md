@@ -57,77 +57,77 @@ Features implemented:
 
 <img src="doc/SpreadingOfFire.gif" width="500" height="500"/>
 
-Percolation
+#### Percolation
 
 <img src="doc/Percolation.gif" width="500" height="500"/>
 
-Predator Prey
+#### Predator Prey
 
 <img src="doc/PredatorPrey.gif" width="500" height="500"/>
 
-Rock, Paper, Scissors
+#### Rock, Paper, Scissors
 
 <img src="doc/RockPaperScissors.gif" width="500" height="500"/>
 
-Segregation
+#### Segregation
 
 <img src="doc/Segregation.gif" width="500" height="500"/>
 
 - Different edge policies: These include Finite, Klein Bottle, and Torodial.
 
-Klein Bottle
+#### Klein Bottle
 
 <img src="doc/KleinBottle.gif" width="500" height="500"/>
 
-Torodial
+#### Torodial
 
 <img src="doc/Torodial.gif" width="500" height="500"/>
 
 - Different neighborhood policies: These include Complete, Diagonal, and Cardinal.
 
-Diagonal
+#### Diagonal
 
 <img src="doc/Diagonal.gif" width="500" height="500"/>
 
-Cardinal
+#### Cardinal
 
 <img src="doc/Cardinal.gif" width="500" height="500"/>
 
-- Three languages: English, Spanish, and French.
+- **Three languages: English, Spanish, and French.**
 
-This is the panel you can choose a language and shape from.
+Below is the panel you can choose a language and shape from.
 
 <img src="doc/LanguageShape.gif" width="500" height="500"/>
 
-- Simulation graph: Represents the number of each type of state in the simulation across time.
+- **Simulation graph: Represents the number of each type of state in the simulation across time.**
 
 <img src="doc/Graph.gif" width="500" height="500"/>
 
-- Ability to load new files, pause, reset, change speed, and step through simulation.
+- **Ability to load new files, pause, reset, change speed, and step through simulation.**
 
 As shown in the above gifs, the user can press the buttons in order to change the simulation. To increase the speed, drag the slider to the right.
 
-- Different shapes in grid: Triangle, Hexagon, and Rectangle.
+- **Different shapes in grid: Triangle, Hexagon, and Rectangle.**
 
-Triangle
+#### Triangle
 
 <img src="doc/Spanish.gif" width="500" height="500"/>
 
-Hexagon
+#### Hexagon
 
 <img src="doc/Hexagon.gif" width="500" height="500"/>
 
-- Style of Cells: Both images and different colors can be loaded onto the cells.
+**- Style of Cells: Both images and different colors can be loaded onto the cells.**
 
 <img src="doc/TreeImage.gif" width="500" height="500"/><img src="doc/FishImage.gif" width="500" height="500"/>
 
-- Different Themes: A few different colors / themes can be loaded upon startup into the simulation.
+**- Different Themes: A few different colors / themes can be loaded upon startup into the simulation.**
 
 Different themes can be chosen. Look at the Duke and UNC below!
 
 <img src="doc/Duke.gif" width="500" height="500"/><img src="doc/UNC.gif" width="500" height="500"/>
 
-- Exception handling.
+**- Exception handling.**
 
 An error box opens up upon a user entering an invalid simulation or any other error.
 
