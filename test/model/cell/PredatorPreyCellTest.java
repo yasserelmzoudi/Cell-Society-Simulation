@@ -132,6 +132,20 @@ class PredatorPreyCellTest {
 
   }
 
+  @Test
+  public void checkIfFishReproduces() {
+
+    fish.setCellReproduction(5);
+
+    List<Cell> neighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+    List<Cell> newNeighbors = Arrays.asList(neighbor1,neighbor2,neighbor3,neighbor4);
+
+    fish.update(neighbors,newNeighbors,isUpdated);
+    assertEquals(CellType.FISH,fish.getState());
+
+  }
+
+
 
   @Test
   public void ensureCopyCellIsWorking() {
