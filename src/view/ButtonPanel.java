@@ -1,7 +1,5 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,7 +11,6 @@ import javafx.stage.Stage;
 import model.exceptions.UnableToSaveFileException;
 import model.grid.Grid;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -68,52 +65,35 @@ public class ButtonPanel extends GridPane{
         //pauseButton.getStyleClass().add("pauseButton");
 
 
-        quitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        quitButton.setOnAction(e-> {
                 System.exit(0);
-            }
-        });
+            });
 
-        resumeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        resumeButton.setOnAction(e-> {
                 simShouldResume = true;
-            }
-        });
-        pauseButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+            });
+        pauseButton.setOnAction(e->{
                 simShouldResume =false;
-            }
-        });
+            });
 
-        loadButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        loadButton.setOnAction(e->{
                 simShouldResume =false;
                 wantNewFile = true;
-            }
-        });
+            });
 
-        nextButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        nextButton.setOnAction(e->{
                 simShouldResume =false;
                 myGameGrid.performNextStep();
                 myGamePane.setUpPane(myGameGrid);
-            }
-        });
+            });
 
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        saveButton.setOnAction(e->{
                 simShouldResume =false;
                 // TODO : add code to save a new file and pop up a dialog that asks for author name
                 infoForSaving();
 
             }
-        });
+        );
 
         List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton,saveButton, quitButton);
         return  allButtons;
@@ -125,7 +105,7 @@ public class ButtonPanel extends GridPane{
 
         userData.getChildren().add(makeAuthorField(titlesBundle.getString(USER_DATA_NEEDED.get(0))+":"));
         userData.getChildren().add(makeTitleField(titlesBundle.getString(USER_DATA_NEEDED.get(1))+":"));
-        userData.getChildren().add(makeDesciptionField(titlesBundle.getString(USER_DATA_NEEDED.get(2))+":"));
+        userData.getChildren().add(makeDescriptionField(titlesBundle.getString(USER_DATA_NEEDED.get(2))+":"));
 
         Button okButton = new Button(titlesBundle.getString("OkButtonText"));
         okButton.setId(objectIdBundle.getString("OkButton"));
@@ -135,16 +115,13 @@ public class ButtonPanel extends GridPane{
         Stage newWindow = new Stage();
         newWindow.setTitle(titlesBundle.getString("SAVE_FILE"));
 
-        okButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        okButton.setOnAction(e->{
                 simShouldResume =false;
                 newWindow.close();
                 writeToFile();
                 simShouldResume = true;
 
-            }
-        });
+            });
         userData.getChildren().add(column);
         userData.setId(objectIdBundle.getString("DataPanel"));
         Scene userInput  = new Scene(userData);
@@ -167,7 +144,7 @@ public class ButtonPanel extends GridPane{
         return createdBox;
     }
 
-    private HBox makeDesciptionField(String labelString) {
+    private HBox makeDescriptionField(String labelString) {
         HBox createdBox = boxWithLabel(labelString);
         descriptionField = new TextArea();
         createdBox.getChildren().add(descriptionField);
@@ -203,10 +180,10 @@ public class ButtonPanel extends GridPane{
     }
 
 
-    public void resetGUI(Grid newgrid) { //change into interface so easier to create JWindow and GUI at same time
+    public void resetGUI(Grid newGrid) { //change into interface so easier to create JWindow and GUI at same time
         simShouldResume =true;
         wantNewFile = false;
-        myGameGrid = newgrid;
+        myGameGrid = newGrid;
     }
 
 }

@@ -13,6 +13,8 @@ public class Hexagon extends Polygon {
   private int myRow;
   private int myColumn;
   private Double[] pointArray;
+  private double hexWidth;
+  private double hexHeight;
 
 
     /**
@@ -20,38 +22,37 @@ public class Hexagon extends Polygon {
      *
      * @param row Row of hexagon.
      * @param column Column of hexagon.
-     * @param hexWidth Width of hexagon.
+     * @param  Width of hexagon.
      * @param hexLength Height of hexagon.
      */
-  public Hexagon(int row, int column, double hexWidth, double hexLength) {
+  public Hexagon(int row, int column, double hexWidth, double hexHeight) {
     myRow = row;
     myColumn = column;
-    makeInitialShape(myRow, myColumn, hexWidth, hexLength);
+    this.hexWidth = hexWidth;
+    this.hexHeight = hexHeight;
+    makeInitialShape();
   }
 
     /**
      * Makes the hexagon shape.
      *
-     * @param row Row of hexagon.
-     * @param col Column of hexagon.
-     * @param hexWidth Width of hexagon.
-     * @param hexLength Height of hexagon.
+     *
      */
-  public void makeInitialShape(double row, double col, double hexWidth, double hexLength) {
-    if (isOdd(row)) {
-      col += HALF_UNIT;
-      row += row / 2;
-    } else if (isNotFirstRow(row) && isEven(row)) {
-      row += row / 2;
+  public void makeInitialShape() {
+    if (isOdd(myRow)) {
+      myColumn += HALF_UNIT;
+      myRow += myRow / 2;
+    } else if (isNotFirstRow(myRow) && isEven(myRow)) {
+      myRow += myRow / 2;
     }
-    row += HALF_UNIT;
+    myRow += HALF_UNIT;
     pointArray = new Double[]{
-        col * hexWidth, row * hexLength,
-        (col + HALF_UNIT) * hexWidth, (row - HALF_UNIT) * hexLength,
-        (col + UNIT) * hexWidth, row * hexLength,
-        (col + UNIT) * hexWidth, (row + UNIT) * hexLength,
-        (col + HALF_UNIT) * hexWidth, (row + HALF_UNIT + UNIT) * hexLength,
-        col * hexWidth, (row + UNIT) * hexLength
+        myColumn * hexWidth, myRow * this.hexHeight,
+        (myColumn + HALF_UNIT) * hexWidth, (myRow - HALF_UNIT) * this.hexHeight,
+        (myColumn + UNIT) * hexWidth, myRow * this.hexHeight,
+        (myColumn + UNIT) * hexWidth, (myRow + UNIT) * this.hexHeight,
+        (myColumn + HALF_UNIT) * hexWidth, (myRow + HALF_UNIT + UNIT) * this.hexHeight,
+        myColumn * hexWidth, (myRow + UNIT) * this.hexHeight
     };
     this.getPoints().addAll(pointArray);
   }
@@ -68,4 +69,11 @@ public class Hexagon extends Polygon {
     return coordinate != 0;
   }
 
+  public double getHexWidth() {
+    return hexWidth;
+  }
+
+  public double getHexHeight() {
+    return hexHeight;
+  }
 }

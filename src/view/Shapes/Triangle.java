@@ -134,5 +134,12 @@ public class Triangle extends Polygon {
     return (myRow + 1) * myHeight;
   }
 
+  public double getBase() {
+    return myWidth;
+  }
+
+  public double getHeight() {
+    return myHeight;
+  }
 
 }
