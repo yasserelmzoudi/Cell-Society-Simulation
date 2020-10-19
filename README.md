@@ -83,24 +83,52 @@ Torodial
 
 <img src="doc/Torodial.gif" width="500" height="500"/>
 
-
-
-Torodial
-
-
-
-Klein Bottle
-
-
-
 - Different neighborhood policies: These include Complete, Diagonal, and Cardinal.
+
+Diagonal
+
+<img src="doc/Diagonal.gif" width="500" height="500"/>
+
+Cardinal
+
+<img src="doc/Cardinal.gif" width="500" height="500"/>
+
 - Three languages: English, Spanish, and French.
+
+This is the panel you can choose a language and shape from.
+
+<img src="doc/LanguageShape.gif" width="500" height="500"/>
+
 - Simulation graph: Represents the number of each type of state in the simulation across time.
+
+<img src="doc/Graph.gif" width="500" height="500"/>
+
 - Ability to load new files, pause, reset, change speed, and step through simulation.
+
+As shown in the above gifs, the user can press the buttons in order to change the simulation. To increase the speed, drag the slider to the right.
+
 - Different shapes in grid: Triangle, Hexagon, and Rectangle.
+
+Triangle
+
+<img src="doc/Spanish.gif" width="500" height="500"/>
+
+Hexagon
+
+<img src="doc/Hexagon.gif" width="500" height="500"/>
+
 - Style of Cells: Both images and different colors can be loaded onto the cells.
+
+<img src="doc/TreeImage.gif" width="500" height="500"/><img src="doc/FishImage.gif" width="500" height="500"/>
+
 - Different Themes: A few different colors / themes can be loaded upon startup into the simulation.
+
+Different themes can be chosen. Look at the Duke and UNC below!
+<img src="doc/Duke.gif" width="500" height="500"/><img src="doc/UNC.gif" width="500" height="500"/>
+
 - Exception handling.
+
+An error box opens up upon a user entering an invalid simulation or any other error.
 
 ### Notes/Assumptions
 
