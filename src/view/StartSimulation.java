@@ -105,8 +105,6 @@ public class StartSimulation  {
         } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
             new ErrorPanel();
         }
-        neighborhoodPolicy= "Diagonal";
-        edgePolicy= "Finite";
         return simulationController;
     }
 
@@ -161,7 +159,7 @@ public class StartSimulation  {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() {
+    public void step() throws ReflectiveOperationException {
             checkNewFile();
             root.checkUserOptionsChosen();
             startSimulation();
@@ -172,20 +170,25 @@ public class StartSimulation  {
         animation.setRate(speed);
     }
 
-    private void checkNewFile() {
+    private void checkNewFile() throws ReflectiveOperationException {
         boolean chooseNewFile =root.wantNewFile();
         if(chooseNewFile) {
             animation.pause();
-            String path = chooseNewFile();
+            String path = "/resources/" + chooseNewFile();
             System.out.println(path);
             if(path.isEmpty()) {
                 root.resetGUI(grid);
                 animation.play();
                 return;
             }
-            InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
+            /*InputStream newGridData = Grid.class.getClassLoader().getResourceAsStream(path);
             grid = new GameOfLifeGrid(newGridData, edgePolicy, neighborhoodPolicy);
+            newSimulationWindow(grid);*/
+
+            simulationController = initializeSimulation(path);
+            grid = simulationController.getGrid();
             newSimulationWindow(grid);
+            frameCount = 0;
         }
 
     }
@@ -208,6 +211,10 @@ public class StartSimulation  {
         File file = fileChooser.showOpenDialog(new Stage());
         if(file!=null) return ((file).getName());
         return "";
+    }
+
+    public SimulationInitializer getSimulationController() {
+        return simulationController;
     }
 
 }
