@@ -147,7 +147,7 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private Node makeTitleDisplay() {
-        HBox titleDisplay = new HBox(); //Name top Vbox center slider bottom
+        HBox titleDisplay = new HBox();
         titleDisplay.setAlignment(Pos.CENTER);
         Text simulationTitleText = new Text(gameTitle);
         simulationTitleText.setId(OBJECT_ID_BUNDLE.getString("Title"));
@@ -251,7 +251,7 @@ public class ScreenVisuals extends BorderPane {
         askForOthers();
     }
 
-    private void askForOthers() {
+    public void askForOthers() {
         myOtherOptions= new HashMap<>();
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
@@ -273,6 +273,8 @@ public class ScreenVisuals extends BorderPane {
         otherOptionStage.setScene(userInput);
         otherOptionStage.show();
     }
+
+
 
     private void setUpOtherOptions() {
         myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
@@ -320,6 +322,7 @@ public class ScreenVisuals extends BorderPane {
         Label cellTypeLabel = new Label(label.toLowerCase() + ": ");
         column.getChildren().add(cellTypeLabel);
         ComboBox eachCombo = makeDropDownOptions(dropDownItems);
+        eachCombo.setId(getEnglishTranslation(label));
         column.getChildren().add(eachCombo);
         column.setId("column");
         comboBoxLocation.getChildren().add(column);
@@ -374,7 +377,7 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeGraphControlButton() {
         Button graphButton = new Button(titlesBundle.getString("GraphButton"));
-        graphButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
+        graphButton.setId(OBJECT_ID_BUNDLE.getString("GraphButton"));
         graphButton.setOnAction(e->{
                     currentSimulation.getSimulationGraph().showGraph();
                 }
@@ -384,7 +387,7 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeResetButton() {
         Button resetButton = new Button(titlesBundle.getString("ResetButton"));
-        resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
+        resetButton.setId(OBJECT_ID_BUNDLE.getString("ResetButton"));
         resetButton.setOnAction(e->{
             currentSimulation.reloadInitialPane();
 
@@ -405,6 +408,20 @@ public class ScreenVisuals extends BorderPane {
         topBox.getChildren().add(makeSlider());
         topBox.getChildren().add(makeOtherButtonBox());
         return topBox;
+    }
+
+    /**
+     * Getter for the map of comboboxs
+     */
+    public Map<String, ComboBox> getMyOtherOptions() {
+        return myOtherOptions;
+    }
+
+    /**
+     * Returns whether only one step should be preformed
+     */
+    public boolean doUnitStep() {
+        return myButtonDisplay != null && myButtonDisplay.doUnitStep();
     }
 
 

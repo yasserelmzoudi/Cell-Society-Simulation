@@ -23,7 +23,7 @@ public class ButtonPanel extends GridPane{
     public static final String DATA_STYLESHEET = "DataStyles.css";
     public static final String DATA_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER+DATA_STYLESHEET;
     private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
-    private ResourceBundle objectIdBundle = ResourceBundle.getBundle("StyleResources.ObjectID");
+    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
     private List<String> USER_DATA_NEEDED = Arrays.asList("Author", "Title", "Description");
     private ResourceBundle titlesBundle;
     private ResourceBundle errorMessageSource;
@@ -35,6 +35,7 @@ public class ButtonPanel extends GridPane{
     private TextField authorField;
     private TextField titleField;
     private TextArea descriptionField;
+    private boolean unitStep;
 
     private SimulationSettingsReader previousSettings;
 
@@ -45,6 +46,7 @@ public class ButtonPanel extends GridPane{
      */
 
     public ButtonPanel(GamePane myPane, Grid grid, ResourceBundle titlesBundle, SimulationSettingsReader previousSettings) {
+        unitStep = false;
         myGamePane = myPane;
         myGameGrid = grid;
         this.titlesBundle = titlesBundle;
@@ -67,11 +69,17 @@ public class ButtonPanel extends GridPane{
     private List<Button> setUpButtons() {
 
         Button resumeButton = new Button(titlesBundle.getString("ResumeButton"));
+        setButtonID(resumeButton, "ResumeButton");
         Button loadButton = new Button(titlesBundle.getString("LoadButton"));
+        setButtonID(loadButton, "LoadButton");
         Button quitButton = new Button(titlesBundle.getString("QuitButton"));
+        setButtonID(quitButton, "QuitButton");
         Button nextButton = new Button(titlesBundle.getString("NextButton"));
+        setButtonID(nextButton, "NextButton");
         Button pauseButton = new Button(titlesBundle.getString("PauseButton"));
+        setButtonID(pauseButton, "PauseButton");
         Button saveButton = new Button (titlesBundle.getString("SaveButton"));
+        setButtonID(saveButton, "SaveButton");
         //pauseButton.getStyleClass().add("pauseButton");
 
 
@@ -94,8 +102,7 @@ public class ButtonPanel extends GridPane{
 
         nextButton.setOnAction(e->{
                 simShouldResume =false;
-                myGameGrid.performNextStep();
-                myGamePane.setUpPane(myGameGrid);
+                unitStep=true;
             });
 
         saveButton.setOnAction(e->{
@@ -118,7 +125,7 @@ public class ButtonPanel extends GridPane{
         userData.getChildren().add(makeDescriptionField(titlesBundle.getString(USER_DATA_NEEDED.get(2))+":"));
 
         Button okButton = new Button(titlesBundle.getString("OkButtonText"));
-        okButton.setId(objectIdBundle.getString("OkButton"));
+        okButton.setId(OBJECT_ID_BUNDLE.getString("OkButton"));
         HBox column = new HBox();
         column.getChildren().add(okButton);
         column.setAlignment(Pos.CENTER);
@@ -133,7 +140,7 @@ public class ButtonPanel extends GridPane{
 
             });
         userData.getChildren().add(column);
-        userData.setId(objectIdBundle.getString("DataPanel"));
+        userData.setId(OBJECT_ID_BUNDLE.getString("DataPanel"));
         Scene userInput  = new Scene(userData);
         userInput.getStylesheets().add(getClass().getResource(DATA_STYLESHEET_PATH).toExternalForm());
         newWindow.setScene(userInput);
@@ -203,6 +210,16 @@ public class ButtonPanel extends GridPane{
         simShouldResume =true;
         wantNewFile = false;
         myGameGrid = newGrid;
+    }
+
+
+    private void setButtonID(Button button, String objectIDName) {
+        button.setId(OBJECT_ID_BUNDLE.getString(objectIDName));
+
+    }
+
+    public boolean doUnitStep() {
+        return unitStep;
     }
 
 }
