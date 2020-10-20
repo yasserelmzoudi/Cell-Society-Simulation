@@ -29,9 +29,6 @@ public class ScreenVisuals extends BorderPane {
     private static final ResourceBundle INITIAL_OPTIONS = ResourceBundle.getBundle("StyleResources.InitialOptions");
     private static final ResourceBundle STYLE_OPTIONS = ResourceBundle.getBundle("StyleResources.ColorStyles");
 
-//TODO change main directory for loading file to fit with Yasser's properties file directory
-// TODO for each cell type , make sure to use these colors when saving the files, maybe have a way to override
-
     private static final int MIN_SLIDER_SPEED = 0;
     private static final int MAX_SLIDER_SPEED = 8;
     private static final int GRID_PADDING_TB = 240;
@@ -59,16 +56,32 @@ public class ScreenVisuals extends BorderPane {
     Map<String, ComboBox> myOtherOptions;
     private String chosenStylePath;
 
-
+    /**
+     * Constructor for class
+     * @param thisSimulation: the source form which it was called and the simulation it will control
+     * @param width : the window width
+     * @param height: the window height
+     * @param title: the title of the simulation
+     */
     public ScreenVisuals(Simulation thisSimulation, Grid grid, int width, int height, String title) {
         myGrid = grid;
         visualWidth = width;
         visualHeight = height;
         gameTitle = title;
         currentSimulation = thisSimulation;
+    }
+
+    /**
+     * Pops up the user dialogs so the user can choose different options
+     */
+    public void askForUserDialogs() {
         initialSetUp();
     }
 
+    /**
+     * Sets up the title, the game pane, and the bottom panel for the user options
+     * Dependent on the language chosen and the shape and styles the user chose
+     */
     public void setupUserInterface() {
         int gridHeight = Math.max(0, visualHeight - GRID_PADDING_TB);
         int gridWidth = Math.max(0, visualWidth - GRID_PADDING_LR);
@@ -88,7 +101,7 @@ public class ScreenVisuals extends BorderPane {
         this.setTop(makeTitleDisplay());
         HBox myGameBox = new HBox(myGamePane);
         myGameBox.setOnMouseClicked(e -> changeCellStatus(e.getX() - myGameBox.getBoundsInLocal().getMinX(), e.getY() - myGameBox.getBoundsInLocal().getMinY()));
-        myGameBox.setId("gameDisplayBox");
+        myGameBox.setId(OBJECT_ID_BUNDLE.getString("GameDBox"));
         this.setCenter(myGameBox);
         addGridEvent();
         currentSimulation.setUpScene(getChosenStylePath());
@@ -173,7 +186,11 @@ public class ScreenVisuals extends BorderPane {
         return "invalid word to translate";
     }
 
-
+    /**
+     * Checks if a user clicked on a cell in the game pane
+     * @param x: the x location of the users mouse
+     * @param y: the y location of the users mouse
+     */
     public void changeCellStatus(double x, double y) {
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
@@ -198,6 +215,9 @@ public class ScreenVisuals extends BorderPane {
         return y < myShape.getBoundsInLocal().getMaxY() && y > myShape.getBoundsInLocal().getMinY();
     }
 
+    /**
+     * Continously checks if the user has chosen to fill a certain cell with a new color or image
+     */
     public void checkUserOptionsChosen() {
         if (!cellChange.isEmpty()) {
             for (int i = 0; i < cellTypes.size(); i++) {
@@ -218,8 +238,7 @@ public class ScreenVisuals extends BorderPane {
         for (String setUpOption : myOptionMap.keySet()) {
             Object checkObject = myOptionMap.get(setUpOption).getSelectionModel().getSelectedItem();
             if (checkObject == null) return false;
-            else {  //can you assign to a certain variable here using reflection? ex myShape = optionChosed
-                optionChosen = myOptionMap.get(setUpOption).getSelectionModel().getSelectedItem().toString();
+            else {     optionChosen = myOptionMap.get(setUpOption).getSelectionModel().getSelectedItem().toString();
                 if (optionChosen == null || optionChosen.isEmpty()) return false;
             }
         }
@@ -248,7 +267,7 @@ public class ScreenVisuals extends BorderPane {
             }
         };
         makeOkButton(newPane, newHandler);
-        newPane.setId("initialUserDialogs");
+        newPane.setId(OBJECT_ID_BUNDLE.getString("InitialUserDialogs"));
         Scene userInput = new Scene(newPane);
         assignStyleSheet(userInput, INIT_DIALOG_STYLESHEET_PATH);
         otherOptionStage.setScene(userInput);
@@ -281,7 +300,7 @@ public class ScreenVisuals extends BorderPane {
             }
         };
         makeOkButton(initialUserOptions, newHandler); //add event handler
-        initialUserOptions.setId("initialUserDialogs");
+        initialUserOptions.setId(OBJECT_ID_BUNDLE.getString("InitialUserDialogs"));
         Scene userInput = new Scene(initialUserOptions);
         assignStyleSheet(userInput, INIT_DIALOG_STYLESHEET_PATH);
         newWindow.setScene(userInput);
@@ -318,14 +337,24 @@ public class ScreenVisuals extends BorderPane {
         buttonLocation.getChildren().add(column);
     }
 
+    /**
+     * Boolean that checks whether the user wants a new file
+     */
     public boolean wantNewFile() {
         return myButtonDisplay != null && myButtonDisplay.wantNewFile();
     }
 
+    /**
+     * Boolean that checks whether sim should continue
+     */
     public boolean shouldContinue() {
          return myButtonDisplay != null && myButtonDisplay.shouldcontinue();
     }
 
+    /**
+     * Resets the buttons so they can be used again
+     * @param newGrid the grid that the button will now control
+     */
     public void resetGUI(Grid newGrid) {
         if(myButtonDisplay != null) {
             myButtonDisplay.resetGUI(newGrid);
@@ -336,6 +365,9 @@ public class ScreenVisuals extends BorderPane {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
+    /**
+     * Getter for the current game pane
+     */
     public GamePane getMyGamePane() {
         return myGamePane;
     }
@@ -354,13 +386,9 @@ public class ScreenVisuals extends BorderPane {
         Button resetButton = new Button(titlesBundle.getString("ResetButton"));
         resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
         resetButton.setOnAction(e->{
-            try {
-                currentSimulation.reload();
-            } catch (ReflectiveOperationException reflectiveOperationException) {
-                new ErrorPanel();
-            }
-                }
-        );
+            currentSimulation.reloadInitialPane();
+
+        } );
         return resetButton;
     }
 

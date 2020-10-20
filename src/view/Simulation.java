@@ -1,23 +1,18 @@
 package view;
 
-        import controller.SimulationInitializer;
-        import java.io.InputStream;
+import controller.SimulationInitializer;
 
-        import javafx.animation.KeyFrame;
-        import javafx.animation.Timeline;
-        import javafx.application.Platform;
-        import javafx.scene.Scene;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 
-        import javafx.stage.FileChooser;
-        import javafx.stage.Stage;
-        import javafx.util.Duration;
-        import model.exceptions.InvalidCSVFileException;
-        import model.exceptions.InvalidSimulationSettingsFileException;
-        import model.exceptions.InvalidSimulationTypeException;
-        import model.grid.GameOfLifeGrid;
-        import model.grid.Grid;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import model.grid.Grid;
 
-        import java.io.File;
+import java.io.File;
 
 public class Simulation {
     private static final String RESOURCES = "resources/";
@@ -51,12 +46,16 @@ public class Simulation {
 
 
     private SimulationGraph simulationGraph;
-
-    private Class<?> gridParameters;
     private String currentPath = INITIAL_PATH;
 
-    public Simulation(Stage stage, int winWidth, int winHeight)
-            throws ReflectiveOperationException {
+    /**
+     * Constructor of class
+     * @param stage: the window where the application should start
+     * @param winWidth: the widthof the window
+     * @param winHeight: the height of the window
+     *
+     */
+    public Simulation(Stage stage, int winWidth, int winHeight){
         windowWidth = winWidth;
         windowHeight = winHeight;
         primaryStage = stage;
@@ -64,31 +63,28 @@ public class Simulation {
 
     }
 
-    public void start() throws ReflectiveOperationException {
-        simulationController = initializeSimulation(currentPath);
+    private void start() {
+        initializeSimulation();
         grid = simulationController.getGrid();
         setUpVisualScene(grid);
         frameCount = 0;
     }
 
-    private SimulationInitializer initializeSimulation(String path) throws ReflectiveOperationException {
+
+    private void initializeSimulation() {
         try {
-            simulationController = new SimulationInitializer(path);
-        } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
-            new ErrorPanel();
+            simulationController = new SimulationInitializer(currentPath);
+            grid = simulationController.getGrid();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
         }
-        return simulationController;
+
     }
+
 
     private void setUpKeyFrames() {
         primaryStage.show();
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> {
-            try {
-                step();
-            } catch (Exception exception) {
-                new ErrorPanel();
-            }
-        });
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), e -> step());
         animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
@@ -97,21 +93,25 @@ public class Simulation {
 
 
 
-    private void newSimulationWindow(Grid newGrid) {
+    private void newSimulationWindow() {
         primaryStage.close();
         //Stage newstage = new Stage();
         primaryStage = new Stage();
         primaryStage.setOnCloseRequest(e -> {
             System.exit(0);
         });
-        setUpVisualScene(newGrid);
     }
 
 
-    public void setUpVisualScene(Grid newgrid){
+    private void setUpVisualScene(Grid newgrid){
         root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationSettingsReader().getSimulationTitle());
+        root.askForUserDialogs();
     }
 
+    /**
+     * Adds the visuals to a scene and then to a window
+     * Takes in the path of the style that was chosen
+     */
     public void setUpScene(String stylePath) {
         Scene myScene = new Scene (root, windowWidth, windowHeight);
         assignStyleSheet(myScene, PANEL_STYLESHEET_PATH);
@@ -131,23 +131,30 @@ public class Simulation {
         scene.getStylesheets().add(getClass().getResource(styleSheetPath).toExternalForm());
     }
 
-    public void step() throws ReflectiveOperationException {
+    /**
+     * Steps through the simulation based on the keyframe
+     */
+    public void step() {
         checkNewFile();
         root.checkUserOptionsChosen();
         startSimulation();
 
     }
 
+    /**
+     * Sets the animation speed
+     * @param speed: the new speed of the animation
+     */
     public void setAnimationSpeed(double speed) {
         animation.setRate(speed);
     }
 
-    private void checkNewFile() throws ReflectiveOperationException {
+    private void checkNewFile()  {
         boolean chooseNewFile =root.wantNewFile();
         if(chooseNewFile) {
             animation.pause();
             String path = "/resources/" + chooseNewFile();
-            if(path.isEmpty()) {
+            if(path.equals("/resources/")){
                 root.resetGUI(grid);
                 animation.play();
                 return;
@@ -156,12 +163,12 @@ public class Simulation {
             grid = new GameOfLifeGrid(newGridData, edgePolicy, neighborhoodPolicy);
             newSimulationWindow(grid);*/
             currentPath=path;
-            reload();
+            loadNewSimulation();
         }
 
     }
 
-    public void startSimulation() {
+    private void startSimulation() {
         boolean shouldresume = root.shouldContinue();
         if (shouldresume) {
             primaryStage.show();
@@ -173,6 +180,10 @@ public class Simulation {
         }
     }
 
+    /**
+     * Getter method for simulation graph
+     * Returns the current simulation graph
+     */
     public SimulationGraph getSimulationGraph() {
         return simulationGraph;
     }
@@ -187,14 +198,35 @@ public class Simulation {
         return "";
     }
 
+    /**
+     * Getter method for the simulation controller
+     * Returns the current simulation Controller
+     */
     public SimulationInitializer getSimulationController() {
         return simulationController;
     }
 
-    public void reload() throws ReflectiveOperationException {
+
+    private void loadNewSimulation() {
         simulationGraph.closeGraphWindow();
+        newSimulationWindow();
         start();
-        newSimulationWindow(grid);
     }
+
+    /**
+     * Reloads the current path so that it restarts from step one without the need to choose a new language or shape
+     */
+    public void reloadInitialPane() {
+        boolean continueShowingGraph = simulationGraph.graphIsShowing();
+        simulationGraph.closeGraphWindow();
+        initializeSimulation();
+        frameCount = 0;
+        simulationGraph = new SimulationGraph(grid,simulationController.getSimulationSettingsReader().getSimulationTitle());
+        if(continueShowingGraph) simulationGraph.showGraph();
+        setUpKeyFrames();
+        root.getMyGamePane().setUpPane(grid);
+    }
+
+
 
 }

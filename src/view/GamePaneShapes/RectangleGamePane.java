@@ -41,6 +41,11 @@ public class RectangleGamePane extends GamePane {
     }
   }
 
+  /**
+   * Returns the initialShape Array that was created
+   *
+   *
+   */
   @Override
   public Shape[][] getInitialArray() {
     return allShapes;

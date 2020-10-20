@@ -33,23 +33,27 @@ public class TriangleGamePane extends GamePane {
     allShapes = new Triangle[myGrid.gridRows()][myGrid.gridColumns()];
     for (int r = 0; r < myGrid.gridRows(); r++) {
       for (int c = 0; c < myGrid.gridColumns(); c++) {
-        Triangle mynewPixel = new Triangle(r, c, triangleBase(), triangleHeight());
+        Triangle mynewPixel = new Triangle(r, c, triangleBase(), cellHeight());
         allShapes[r][c] = mynewPixel;
       }
     }
   }
 
+  /**
+   * Returns the initial Triangle Shape Array that was created
+   */
   @Override
   public Shape[][] getInitialArray() {
     return allShapes;
   }
 
+  /**
+   * Returns the calculated Triangle base based on grid size
+   */
+
   private double triangleBase() {
     return cellWidth() / BASE_WIDTH;
   }
 
-  private double triangleHeight() {
-    return cellHeight();
-  }
 
 }

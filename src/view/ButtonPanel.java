@@ -38,6 +38,12 @@ public class ButtonPanel extends GridPane{
 
     private SimulationSettingsReader previousSettings;
 
+    /**
+     * Constructor of Class
+     * Sets up the button panel for the user options
+     * Includes a pause,resume, next,load simulation, save simulation, and quit button
+     */
+
     public ButtonPanel(GamePane myPane, Grid grid, ResourceBundle titlesBundle, SimulationSettingsReader previousSettings) {
         myGamePane = myPane;
         myGameGrid = grid;
@@ -75,6 +81,7 @@ public class ButtonPanel extends GridPane{
 
         resumeButton.setOnAction(e-> {
                 simShouldResume = true;
+                resetGUI(myGameGrid);
             });
         pauseButton.setOnAction(e->{
                 simShouldResume =false;
@@ -93,7 +100,6 @@ public class ButtonPanel extends GridPane{
 
         saveButton.setOnAction(e->{
                 simShouldResume =false;
-                // TODO : add code to save a new file and pop up a dialog that asks for author name
                 infoForSaving();
 
             }
@@ -176,9 +182,18 @@ public class ButtonPanel extends GridPane{
         }
     }
 
+    /**
+     * boolean that states whether the simulation should continue
+     * Dependent on if a button was pressed
+     */
     public boolean shouldcontinue(){
         return simShouldResume;
     }
+
+    /**
+     * resets the Gui so that buttons can be pressed multiple times after a new simulation is loaded
+     */
+
     public boolean wantNewFile(){
         return wantNewFile;
     }
