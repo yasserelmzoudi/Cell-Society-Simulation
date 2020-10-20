@@ -19,7 +19,7 @@ package view;
 
         import java.io.File;
 
-public class StartSimulation  {
+public class Simulation {
     private static final String RESOURCES = "resources/";
     private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
@@ -55,7 +55,7 @@ public class StartSimulation  {
     private Class<?> gridParameters;
     private String currentPath = INITIAL_PATH;
 
-    public StartSimulation(Stage stage, int winWidth, int winHeight)
+    public Simulation(Stage stage, int winWidth, int winHeight)
             throws ReflectiveOperationException {
         windowWidth = winWidth;
         windowHeight = winHeight;
@@ -177,7 +177,6 @@ public class StartSimulation  {
         if(chooseNewFile) {
             animation.pause();
             String path = "/resources/" + chooseNewFile();
-            System.out.println(path);
             if(path.isEmpty()) {
                 root.resetGUI(grid);
                 animation.play();

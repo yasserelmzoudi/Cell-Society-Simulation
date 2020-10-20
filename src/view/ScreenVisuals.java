@@ -11,7 +11,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -43,7 +42,7 @@ public class ScreenVisuals extends BorderPane {
     private Grid myGrid;
     private GamePane myGamePane;
     private String myShapeType;
-    private StartSimulation currentSimulation;
+    private Simulation currentSimulation;
     private ButtonPanel myButtonDisplay;
     private HBox mySliderDisplay;
     private String gameTitle;
@@ -61,7 +60,7 @@ public class ScreenVisuals extends BorderPane {
     private String chosenStylePath;
 
 
-    public ScreenVisuals(StartSimulation thisSimulation, Grid grid, int width, int height, String title) {
+    public ScreenVisuals(Simulation thisSimulation, Grid grid, int width, int height, String title) {
         myGrid = grid;
         visualWidth = width;
         visualHeight = height;
@@ -92,7 +91,6 @@ public class ScreenVisuals extends BorderPane {
         myGameBox.setId("gameDisplayBox");
         this.setCenter(myGameBox);
         addGridEvent();
-        System.out.println(getChosenStylePath());
         currentSimulation.setUpScene(getChosenStylePath());
     }
 
@@ -115,9 +113,7 @@ public class ScreenVisuals extends BorderPane {
         List<String> oldTypes = oldTypeList;
         List<String> newTypeList = new ArrayList<>();
         for(String cellType : oldTypes) {
-            System.out.println(cellType);
             String newCellType = cellType.replaceAll("_", " ");
-            System.out.println(newCellType);
             newTypeList.add(newCellType);
         }
         return newTypeList;
@@ -250,7 +246,6 @@ public class ScreenVisuals extends BorderPane {
                 setUpOtherOptions();
                 setupUserInterface();
             }
-            else System.out.println("Please choose a value for each");
         };
         makeOkButton(newPane, newHandler);
         newPane.setId("initialUserDialogs");
@@ -263,9 +258,7 @@ public class ScreenVisuals extends BorderPane {
     private void setUpOtherOptions() {
         myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
         myStyle = myOtherOptions.get(titlesBundle.getString("StyleTranslation")).getSelectionModel().getSelectedItem().toString();
-        System.out.println(myStyle);
         myStyleEnglish = getEnglishTranslation(myStyle);
-        System.out.println(myStyleEnglish);
     }
 
     private String getChosenStylePath() {
@@ -286,7 +279,6 @@ public class ScreenVisuals extends BorderPane {
                 newWindow.close();
                 setUpLanguage();
             }
-            else System.out.println("Please choose a value for each");
         };
         makeOkButton(initialUserOptions, newHandler); //add event handler
         initialUserOptions.setId("initialUserDialogs");
@@ -350,7 +342,7 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeGraphControlButton() {
         Button graphButton = new Button(titlesBundle.getString("GraphButton"));
-        graphButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton")); //TODO change to be based on resource bundle
+        graphButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
         graphButton.setOnAction(e->{
                     currentSimulation.getSimulationGraph().showGraph();
                 }
@@ -360,14 +352,13 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeResetButton() {
         Button resetButton = new Button(titlesBundle.getString("ResetButton"));
-        resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton")); //TODO change to be based on resource bundle and ask if it should go here or startsimulation
+        resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
         resetButton.setOnAction(e->{
             try {
                 currentSimulation.reload();
             } catch (ReflectiveOperationException reflectiveOperationException) {
                 reflectiveOperationException.printStackTrace();
             }
-            System.out.println("reset");
                 }
         );
         return resetButton;

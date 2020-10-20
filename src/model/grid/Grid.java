@@ -64,7 +64,7 @@ public abstract class Grid {
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
-    checkCSVFile(readLines);
+    //checkCSVFile(readLines);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
     gridSetUp(readLines);
