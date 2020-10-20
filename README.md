@@ -140,16 +140,12 @@ An error box opens up upon a user entering an invalid simulation or any other er
 
 ### Notes/Assumptions
 
-Assumptions or Simplifications:
-
-
 Interesting data files:
 
 In particular, the Predator Prey simulation is interesting when the sharks (originally dark blue) are set to "Shark Image" and the fish (originally turquoise) are set to "Fish Image" while the water is set to "Water Image."
 
 The Spreading of Fire simulation is also interesting. One tree starts off burning and you can see the fire growing outwards.
 
-Known Bugs:
 
 Extra credit:
 
@@ -169,7 +165,7 @@ Different Shapes
 
 ### Impressions
 
-Umika Paul: Working on the simulations was definitely a lot of work, but it was enjoyable to see the end product each of the simulations functioned properly. Helping out with each portion of the project gave me exposure to both frontend and backend work for this project and I learned a lot from applying the principles taught in class such as abstraction and reflection. I also had a great time working with my team, who were collaborative and dedicated.
+Umika Paul: Working on the simulations was definitely a lot of work, but it was enjoyable to see the end product each of the simulations functioned properly. Helping out with each portion of the project gave me exposure to both frontend and backend work for this project and I learned a lot from applying the principles taught in class such as abstraction and reflection. 
 
 Yasser Elmzoudi: This project greatly opened my eyes to the benefits and applications of creating a SOLID design. With so many different moving parts for this project, such as the various types of simulations, grids, and cells that were at play, ensuring that a sound design was established proved vital to moving from week to week for this project. Overall, the completion of this project was extremely satisfying as it truly was a manifestation of the material and concepts that we have learned thus far in the course. 
 
