@@ -26,9 +26,8 @@ public class PercolationGrid extends Grid {
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "PERCOLATION";
+  public String getGridType() {
+    return "Percolation";
   }
 
   /**
@@ -49,11 +48,9 @@ public class PercolationGrid extends Grid {
         int cellValue = Integer.parseInt(cellsInRow[column]);
         if (cellValue == 0) {
           state = CellType.EMPTY_OPEN;
-        }
-        else if (cellValue == 1) {
+        } else if (cellValue == 1) {
           state = CellType.FULL_OPEN;
-        }
-        else {
+        } else {
           state = CellType.BLOCKED;
         }
         gridOfCells[row][column] = new PercolationCell(row, column, state.ordinal());

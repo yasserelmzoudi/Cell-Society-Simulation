@@ -357,7 +357,7 @@ public class ScreenVisuals extends BorderPane {
             try {
                 currentSimulation.reload();
             } catch (ReflectiveOperationException reflectiveOperationException) {
-                reflectiveOperationException.printStackTrace();
+                new ErrorPanel();
             }
                 }
         );

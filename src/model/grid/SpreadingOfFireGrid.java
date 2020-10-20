@@ -25,9 +25,8 @@ public class SpreadingOfFireGrid extends Grid {
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "SPREADING_OF_FIRE";
+  public String getGridType() {
+    return "SpreadingOfFire";
   }
 
 

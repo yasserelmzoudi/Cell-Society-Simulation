@@ -26,9 +26,8 @@ public class GameOfLifeGrid extends Grid {
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "GAME_OF_LIFE";
+  public String getGridType() {
+    return "GameOfLife";
   }
 
   /**

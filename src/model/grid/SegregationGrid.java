@@ -26,9 +26,8 @@ public class SegregationGrid extends Grid{
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "SEGREGATION";
+  public String getGridType() {
+    return "Segregation";
   }
 
   /**

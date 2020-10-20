@@ -26,9 +26,8 @@ public class RockPaperScissorsGrid extends Grid{
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "ROCK_PAPER_SCISSORS";
+  public String getGridType() {
+    return "RockPaperScissors";
   }
 
   /**

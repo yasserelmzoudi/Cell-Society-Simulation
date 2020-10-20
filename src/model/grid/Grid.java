@@ -20,6 +20,7 @@ import model.cell.RockPaperScissorsCell;
 import model.cell.SegregationCell;
 import model.cell.SpreadingOfFireCell;
 import model.exceptions.InvalidCSVFileException;
+import model.exceptions.InvalidSimulationTypeException;
 
 
 /**
@@ -64,7 +65,7 @@ public abstract class Grid {
     List<String[]> readLines = readAll();
     gridWidth = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_COLUMNS_INDEX]);
     gridHeight = Integer.parseInt(readLines.get(HEADER_ROW)[NUM_ROWS_INDEX]);
-    //checkCSVFile(readLines);
+    checkCSVFile(readLines);
     readLines.remove(0);
     gridOfCells = new Cell[gridHeight][gridWidth];
     gridSetUp(readLines);
@@ -86,6 +87,12 @@ public abstract class Grid {
    * @return List of types.
    */
   public abstract List<String> getAllTypes();
+
+  /**
+   * Returns the type of Grid to be used in reflection
+   * @return String representing the type of Grid
+   */
+  public abstract String getGridType();
 
   /**
    * Code adopted from Professor Duvall to read CSV files
@@ -115,25 +122,17 @@ public abstract class Grid {
    */
   public Cell[][] copyGrid() {
     Cell[][] copyOfGrid = new Cell[gridHeight][gridWidth];
+    Cell cell;
     for (int row = 0; row < gridHeight; row++) {
       for (int column = 0; column < gridWidth; column++) {
-        if (setGridType().equals("GAME_OF_LIFE")) {
-          copyOfGrid[row][column] = new GameOfLifeCell(this.gridOfCells[row][column]);
-        }
-        if (setGridType().equals("PERCOLATION")) {
-          copyOfGrid[row][column] = new PercolationCell(this.gridOfCells[row][column]);
-        }
-        if (setGridType().equals("ROCK_PAPER_SCISSORS")) {
-          copyOfGrid[row][column] = new RockPaperScissorsCell(this.gridOfCells[row][column]);
-        }
-        if (setGridType().equals("SEGREGATION")) {
-          copyOfGrid[row][column] = new SegregationCell(this.gridOfCells[row][column]);
-        }
-        if (setGridType().equals("SPREADING_OF_FIRE")) {
-          copyOfGrid[row][column] = new SpreadingOfFireCell(this.gridOfCells[row][column]);
-        }
-        if (setGridType().equals("PREDATOR_PREY")) {
-          copyOfGrid[row][column] = new PredatorPreyCell(this.gridOfCells[row][column]);
+        try {
+          Class<?> cellType = Class.forName("model.cell." + getGridType()+ "Cell");
+          Object cellInstance = cellType.getDeclaredConstructor(
+              new Class[]{Cell.class}).newInstance(this.gridOfCells[row][column]);
+          cell = (Cell) cellInstance;
+          copyOfGrid[row][column] = cell;
+        } catch (Exception e){
+          throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
         }
       }
     }
@@ -159,7 +158,7 @@ public abstract class Grid {
           newNeighbors = (List<Cell>) neighborType.invoke(this, this.gridOfCells, row, column);
           edgeType.invoke(this, neighbors, newNeighbors, row, column);
         } catch (Exception e) {
-          e.printStackTrace();
+          throw new InvalidCSVFileException(errorMessageSource.getString("InvalidCSVFile"));
         }
         if (!isUpdated[row][column]) {
           this.gridOfCells[row][column].update(neighbors, newNeighbors, isUpdated);
