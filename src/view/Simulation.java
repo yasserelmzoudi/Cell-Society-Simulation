@@ -178,7 +178,7 @@ public class Simulation {
     }
 
     private String chooseNewFile() {
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Simulation files (*.sim)", "*.sim");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Simulation files (*.properties)", "*.properties");
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(filter);
         fileChooser.setInitialDirectory(DATA_DIRECTORY);
