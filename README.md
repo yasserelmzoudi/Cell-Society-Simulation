@@ -3,7 +3,7 @@ Simulation
 
 This project implements a cellular automata simulator.
 
-Names: Umika Paul, Yasser Elmzoudi, Fernanda Rizo
+Names: Umika Paul, Yasser Elmzoudi, Fernanda Corona
 
 ### Timeline
 
@@ -19,7 +19,7 @@ All: Each member helped and worked with other members to implement their portion
 
 Umika Paul: Responsible for the backend of the project. She made the abstract classes, enum, and concrete classes for the Cell and Grid to allow for proper functioning of the six simulations. She was also responsible for implementing the different edge and neighborhood policies. She wrote all the tests for these classes. 
 
-Fernanda Rizo: Responsible for the frontend of the project. She was responsible for the classes including the GamePane, ScreenVisuals, and ButtonPanel. She worked to make the simulation more user interactive through implementing colors, styles, and languages. She wrote the tests for these classes.
+Fernanda Corona: Responsible for the frontend of the project. She was responsible for the classes including the GamePane, ScreenVisuals, and ButtonPanel, as well as the different shapes. She worked to make the simulation more user interactive by implementing colors, styles, and languages. She wrote the tests for these classes.
 
 Yasser Elmzoudi: Responsible for Controller, configuration, and exceptions. He wrote the classes encapsulating the exceptions and ErrorPanel, and was responsible for proper functioning of the graph. He also separated the controller from the view and helped structure the code. 
 
