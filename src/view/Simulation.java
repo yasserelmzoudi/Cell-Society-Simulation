@@ -19,7 +19,7 @@ package view;
 
         import java.io.File;
 
-public class StartSimulation  {
+public class Simulation {
     private static final String RESOURCES = "resources/";
     private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES;
@@ -55,7 +55,7 @@ public class StartSimulation  {
     private Class<?> gridParameters;
     private String currentPath = INITIAL_PATH;
 
-    public StartSimulation(Stage stage, int winWidth, int winHeight)
+    public Simulation(Stage stage, int winWidth, int winHeight)
             throws ReflectiveOperationException {
         windowWidth = winWidth;
         windowHeight = winHeight;
@@ -65,36 +65,6 @@ public class StartSimulation  {
     }
 
     public void start() throws ReflectiveOperationException {
-        /*errorMessageSource = ResourceBundle.getBundle(EXCEPTION_RESOURCE);
-        simulationSettingsReader = new SimulationSettingsReader(PATH);
-        simulationData = Grid.class.getClassLoader()
-                .getResourceAsStream(simulationSettingsReader.getSimulationDataSourceCSV());
-        edgePolicy = simulationSettingsReader.getSimulationEdgePolicy();
-        neighborhoodPolicy = simulationSettingsReader.getSimulationNeighborhoodPolicy();
-
-        try {
-            gridType = Class.forName("model.grid." + simulationSettingsReader.getSimulationType() + "Grid");
-            Object gridInstance = gridType.getDeclaredConstructor(
-                new Class[]{InputStream.class, String.class, String.class}).newInstance(simulationData, edgePolicy, neighborhoodPolicy);
-            grid = (Grid) gridInstance;
-        } catch (Exception e) {
-            throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
-        }
-
-        try {
-            Method randomizeType = Grid.class.getMethod(simulationSettingsReader.getSimulationRandomization());
-            randomizeType.invoke(grid);
-        } catch(Exception e) {
-            throw new InvalidSimulationTypeException(errorMessageSource.getString("InvalidSimulation"));
-        }*/
-       /* try {
-            simulationController = new CellSocietyController();
-        } catch (InvalidSimulationTypeException | InvalidCSVFileException | InvalidSimulationSettingsFileException e){
-            new ErrorPanel();
-        }
-        grid = simulationController.getGrid();
-        primaryStage =stage;
-        setUpVisualScene(grid);*/
         simulationController = initializeSimulation(currentPath);
         grid = simulationController.getGrid();
         setUpVisualScene(grid);
@@ -116,7 +86,7 @@ public class StartSimulation  {
             try {
                 step();
             } catch (Exception exception) {
-                exception.printStackTrace();
+                new ErrorPanel();
             }
         });
         animation = new Timeline();
@@ -139,7 +109,7 @@ public class StartSimulation  {
 
 
     public void setUpVisualScene(Grid newgrid){
-        root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationTitle());
+        root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationSettingsReader().getSimulationTitle());
     }
 
     public void setUpScene(String stylePath) {
@@ -152,7 +122,7 @@ public class StartSimulation  {
             Platform.exit();
             System.exit(0);
         });
-        simulationGraph = new SimulationGraph(grid, simulationController.getSimulationTitle());
+        simulationGraph = new SimulationGraph(grid, simulationController.getSimulationSettingsReader().getSimulationTitle());
         setUpKeyFrames();
     }
 
@@ -177,7 +147,6 @@ public class StartSimulation  {
         if(chooseNewFile) {
             animation.pause();
             String path = "/resources/" + chooseNewFile();
-            System.out.println(path);
             if(path.isEmpty()) {
                 root.resetGUI(grid);
                 animation.play();
@@ -209,7 +178,9 @@ public class StartSimulation  {
     }
 
     private String chooseNewFile() {
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Simulation files (*.sim)", "*.sim");
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(filter);
         fileChooser.setInitialDirectory(DATA_DIRECTORY);
         File file = fileChooser.showOpenDialog(new Stage());
         if(file!=null) return ((file).getName());

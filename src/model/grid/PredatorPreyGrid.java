@@ -26,9 +26,8 @@ public class PredatorPreyGrid extends Grid {
    *
    * @return Type of grid.
    */
-  @Override
-  public String setGridType() {
-    return "PREDATOR_PREY";
+  public String getGridType() {
+    return "PredatorPrey";
   }
 
   /**

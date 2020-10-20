@@ -6,7 +6,4 @@ public class InvalidSimulationTypeException extends RuntimeException{
     super(message);
   }
 
-  public InvalidSimulationTypeException(String message, Throwable cause) {
-    super(message, cause);
-  }
 }

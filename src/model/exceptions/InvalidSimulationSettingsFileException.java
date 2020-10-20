@@ -6,7 +6,4 @@ public class InvalidSimulationSettingsFileException extends RuntimeException{
     super(message);
   }
 
-  public InvalidSimulationSettingsFileException(String message, Throwable cause) {
-    super(message, cause);
-  }
 }

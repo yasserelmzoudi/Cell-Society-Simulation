@@ -17,7 +17,6 @@ public class SimulationSettingsReader {
   private InputStream initialSimulationSettings;
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
   private ResourceBundle errorMessageSource;
-  private String path;
 
   private String simType;
   private String simTitle;
