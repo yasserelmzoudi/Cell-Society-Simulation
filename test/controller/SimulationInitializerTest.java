@@ -2,12 +2,15 @@ package controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import model.exceptions.InvalidSimulationSettingsFileException;
+import model.exceptions.InvalidSimulationTypeException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class SimulationInitializerTest {
   private static SimulationInitializer simulationController;
   private static final String INITIAL_PATH = "/resources/initialSimulationSettings.properties";
+  private static final String INVALID_PATH = "/resources/invalidSimulationSettings.properties";
 
 
   @BeforeAll
@@ -28,6 +31,11 @@ class SimulationInitializerTest {
     String expectedSimulationSettingsReader = "Spreading of Fire";
     String actualSimulationSettingsReader = simulationController.getSimulationSettingsReader().getSimulationTitle();
     assertEquals(expectedSimulationSettingsReader, actualSimulationSettingsReader);
+  }
+
+  @Test
+  void testInvalidSimulationType() {
+    assertThrows(InvalidSimulationTypeException.class, () -> new SimulationInitializer(INVALID_PATH));
   }
 
 }
