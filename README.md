@@ -21,7 +21,7 @@ Umika Paul: Responsible for the backend of the project. She made the abstract cl
 
 Fernanda Rizo: Responsible for the frontend of the project. She was responsible for the classes including the GamePane, ScreenVisuals, and ButtonPanel. She worked to make the simulation more user interactive through implementing colors, styles, and languages. She wrote the tests for these classes.
 
-Yasser Elmzoudi: Responsible for configuration and exceptions. He wrote the classes encapsulating the exceptions and ErrorPanel, and was responsible for proper functioning of the graph. He also separated the controller from the view and helped structure the code. 
+Yasser Elmzoudi: Responsible for Controller, configuration, and exceptions. He wrote the classes encapsulating the exceptions and ErrorPanel, and was responsible for proper functioning of the graph. He also separated the controller from the view and helped structure the code. 
 
 ### Resources Used
 
@@ -171,6 +171,6 @@ Different Shapes
 
 Umika Paul: Working on the simulations was definitely a lot of work, but it was enjoyable to see the end product each of the simulations functioned properly. Helping out with each portion of the project gave me exposure to both frontend and backend work for this project and I learned a lot from applying the principles taught in class such as abstraction and reflection. I also had a great time working with my team, who were collaborative and dedicated.
 
-Yasser Elmzoudi:
+Yasser Elmzoudi: This project greatly opened my eyes to the benefits and applications of creating a SOLID design. With so many different moving parts for this project, such as the various types of simulations, grids, and cells that were at play, ensuring that a sound design was established proved vital to moving from week to week for this project. Overall, the completion of this project was extremely satisfying as it truly was a manifestation of the material and concepts that we have learned thus far in the course. 
 
 Fernanda Rizo:
