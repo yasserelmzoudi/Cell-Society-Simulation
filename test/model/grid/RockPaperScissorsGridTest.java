@@ -45,9 +45,9 @@ class RockPaperScissorsGridTest {
   }
 
   @Test
-  public void checkSetGridType() {
-    String actualGridType = grid.setGridType();
-    assertEquals("ROCK_PAPER_SCISSORS", actualGridType);
+  public void checkGetGridType() {
+    String actualGridType = grid.getGridType();
+    assertEquals("RockPaperScissors", actualGridType);
   }
 
   @Test

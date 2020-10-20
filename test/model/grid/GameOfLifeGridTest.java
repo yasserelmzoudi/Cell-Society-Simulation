@@ -53,9 +53,9 @@ class GameOfLifeGridTest {
   }
 
   @Test
-  public void checkSetGridType() {
-    String actualGridType = grid.setGridType();
-    assertEquals("GAME_OF_LIFE", actualGridType);
+  public void checkGetGridType() {
+    String actualGridType = grid.getGridType();
+    assertEquals("GameOfLife", actualGridType);
   }
 
   @Test

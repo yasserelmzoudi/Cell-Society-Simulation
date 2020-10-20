@@ -44,9 +44,9 @@ class PercolationGridTest {
   }
 
   @Test
-  public void checkSetGridType() {
-    String actualGridType = grid.setGridType();
-    assertEquals("PERCOLATION", actualGridType);
+  public void checkGetGridType() {
+    String actualGridType = grid.getGridType();
+    assertEquals("Percolation", actualGridType);
   }
 
   @Test

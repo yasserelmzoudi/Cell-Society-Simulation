@@ -43,9 +43,9 @@ class PredatorPreyGridTest {
   }
 
   @Test
-  public void checkSetGridType() {
-    String actualGridType = grid.setGridType();
-    assertEquals("PREDATOR_PREY", actualGridType);
+  public void checkGetGridType() {
+    String actualGridType = grid.getGridType();
+    assertEquals("PredatorPrey", actualGridType);
   }
 
   @Test
