@@ -168,5 +168,3 @@ Different Shapes
 Umika Paul: Working on the simulations was definitely a lot of work, but it was enjoyable to see the end product each of the simulations functioned properly. Helping out with each portion of the project gave me exposure to both frontend and backend work for this project and I learned a lot from applying the principles taught in class such as abstraction and reflection. 
 
 Yasser Elmzoudi: This project greatly opened my eyes to the benefits and applications of creating a SOLID design. With so many different moving parts for this project, such as the various types of simulations, grids, and cells that were at play, ensuring that a sound design was established proved vital to moving from week to week for this project. Overall, the completion of this project was extremely satisfying as it truly was a manifestation of the material and concepts that we have learned thus far in the course. 
-
-Fernanda Rizo:
