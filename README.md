@@ -90,9 +90,13 @@ Notice how the enclosed block on the right and left side of the screen are full 
 
 #### Diagonal
 
+Only the northeast, southeast, northwest, and southwest neighbors count. The cells blocked above and below remain blocked.
+
 <img src="doc/Diagonal.gif" width="500" height="500"/>
 
 #### Cardinal
+
+Only the north, east, south, and west count as neighbors. The cells that are blocked diagonally remain blocked.
 
 <img src="doc/Cardinal.gif" width="500" height="500"/>
 
@@ -100,7 +104,7 @@ Notice how the enclosed block on the right and left side of the screen are full 
 
 Below is the panel you can choose a language and shape from.
 
-<img src="doc/LanguageShape.gif" width="500" height="500"/>
+<img src="doc/LanguageShape.gif" width="400" height="300"/>
 
 - **Simulation graph: Represents the number of each type of state in the simulation across time.**
 
