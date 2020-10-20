@@ -15,15 +15,8 @@ class SimulationSettingsReaderTest {
   private static final String ERROR_READING_PATH = "/errorSimulationReading.properties";
   private static final String INVALID_READING_PATH = "invalid_path";
 
-  private static final int VALID_READING = 0;
-  private static final int ERROR_READING = 1;
-  private static final int INVALID_READING = 2;
-
-
   private static SimulationSettingsReader simulationReaderValid;
   private static SimulationSettingsReader simulationReaderError;
-
-  private List<String> simulationReaderPaths;
 
 
   @BeforeAll
@@ -84,7 +77,7 @@ class SimulationSettingsReaderTest {
 
   @Test
   void getSimulationTypePresent() {
-    String expectedSimulationType = "a";
+    String expectedSimulationType = "Percolation";
     String actualSimulationType = simulationReaderValid.getSimulationType();
     assertEquals(expectedSimulationType, actualSimulationType);
   }

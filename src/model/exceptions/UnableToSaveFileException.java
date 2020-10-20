@@ -6,7 +6,4 @@ public class UnableToSaveFileException extends RuntimeException {
     super(message);
   }
 
-  public UnableToSaveFileException(String message, Throwable cause) {
-    super(message, cause);
-  }
 }

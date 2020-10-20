@@ -56,10 +56,6 @@ public class SimulationInitializer {
     return grid;
   }
 
-  public String getSimulationTitle(){
-    return simulationSettingsReader.getSimulationTitle();
-  }
-
   public SimulationSettingsReader getSimulationSettingsReader() {
     return simulationSettingsReader;
   }

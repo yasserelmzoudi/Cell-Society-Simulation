@@ -35,6 +35,9 @@ public class GridCSVWriter {
   private static final String EXCEPTION_RESOURCE = "resources.exceptionMessages";
   private static final char FILE_DELIMITER = ',';
 
+  private String csvPath;
+  private String propertyFilePath;
+
 
   /**
    * Constructor for this class.
@@ -60,6 +63,9 @@ public class GridCSVWriter {
 
     simulationCellStates = grid.getAllTypes();
 
+    csvPath = "data/" + title + ".csv";
+    propertyFilePath = "src/resources/" + title + ".properties";
+
     checkIfMandatoryFieldsProvided();
 
     setUpSaveFile();
@@ -68,7 +74,7 @@ public class GridCSVWriter {
   /**
    * Throws error if the no title is given.
    */
-  private void checkIfMandatoryFieldsProvided() {
+  public void checkIfMandatoryFieldsProvided() {
     if (title.length() == 0 || author.length() == 0 || description.length() == 0) {
       throw new UnableToSaveFileException(errorMessageSource.getString("UnableToSave"));
     }
@@ -77,8 +83,8 @@ public class GridCSVWriter {
   /**
    * Set up for saving a properties file.
    */
-  private void setUpSaveFile() {
-    try (OutputStream saveFile = new FileOutputStream("src/resources/" + title + ".properties")) {
+  public void setUpSaveFile() {
+    try (OutputStream saveFile = new FileOutputStream(propertyFilePath)) {
       Properties prop = new Properties();
       prop.setProperty("SimulationType", simulationType);
       prop.setProperty("Title", title);
@@ -101,7 +107,7 @@ public class GridCSVWriter {
    */
   public void saveFile() {
     try{
-      Writer saveFile = new FileWriter("data/" + title + ".csv");
+      Writer saveFile = new FileWriter(csvPath);
       CSVWriter writer = new CSVWriter(saveFile, FILE_DELIMITER, CSVWriter.NO_QUOTE_CHARACTER,
           CSVWriter.DEFAULT_ESCAPE_CHARACTER,
           CSVWriter.DEFAULT_LINE_END);
@@ -129,8 +135,5 @@ public class GridCSVWriter {
       }
       data.add(rowData);
     }
-  }
-
-  public void writeFile(Grid cells) {
   }
 }

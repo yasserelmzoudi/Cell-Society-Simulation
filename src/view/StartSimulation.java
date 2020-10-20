@@ -139,7 +139,7 @@ public class StartSimulation  {
 
 
     public void setUpVisualScene(Grid newgrid){
-        root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationTitle());
+        root = new ScreenVisuals(this, newgrid, windowWidth, windowHeight, simulationController.getSimulationSettingsReader().getSimulationTitle());
     }
 
     public void setUpScene(String stylePath) {
@@ -152,7 +152,7 @@ public class StartSimulation  {
             Platform.exit();
             System.exit(0);
         });
-        simulationGraph = new SimulationGraph(grid, simulationController.getSimulationTitle());
+        simulationGraph = new SimulationGraph(grid, simulationController.getSimulationSettingsReader().getSimulationTitle());
         setUpKeyFrames();
     }
 

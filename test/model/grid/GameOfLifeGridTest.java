@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import model.cell.Cell;
+import model.exceptions.InvalidCSVFileException;
+import model.exceptions.InvalidSimulationSettingsFileException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,12 +18,19 @@ class GameOfLifeGridTest {
   ResourceBundle resources = ResourceBundle.getBundle("resources.data");
   InputStream data = Grid.class.getClassLoader()
       .getResourceAsStream(resources.getString("TestSource"));
+  InputStream invalidData = Grid.class.getClassLoader()
+      .getResourceAsStream(resources.getString("InvalidCSVTest"));
   private static final int row = 2;
   private static final int column = 2;
 
   @BeforeEach
   public void setup() {
     grid = new GameOfLifeGrid(data, "KleinBottle", "Diagonal");
+  }
+
+  @Test
+  public void invalidGrid() {
+    assertThrows(InvalidCSVFileException.class, () -> new GameOfLifeGrid(invalidData, "KleinBottle", "Diagonal"));
   }
 
   @Test
