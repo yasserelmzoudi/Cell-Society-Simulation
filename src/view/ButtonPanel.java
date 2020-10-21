@@ -84,32 +84,32 @@ public class ButtonPanel extends GridPane{
 
 
         quitButton.setOnAction(e-> {
-                System.exit(0);
-            });
+            System.exit(0);
+        });
 
         resumeButton.setOnAction(e-> {
-                simShouldResume = true;
-                resetGUI(myGameGrid);
-            });
+            simShouldResume = true;
+            resetGUI(myGameGrid);
+        });
         pauseButton.setOnAction(e->{
-                simShouldResume =false;
-            });
+            simShouldResume =false;
+        });
 
         loadButton.setOnAction(e->{
-                simShouldResume =false;
-                wantNewFile = true;
-            });
+            simShouldResume =false;
+            wantNewFile = true;
+        });
 
         nextButton.setOnAction(e->{
-                simShouldResume =false;
-                unitStep=true;
-            });
+            simShouldResume =false;
+            unitStep = true;
+        });
 
         saveButton.setOnAction(e->{
-                simShouldResume =false;
-                infoForSaving();
+                    simShouldResume =false;
+                    infoForSaving();
 
-            }
+                }
         );
 
         List<Button> allButtons = Arrays.asList(pauseButton, resumeButton, nextButton, loadButton,saveButton, quitButton);
@@ -210,6 +210,12 @@ public class ButtonPanel extends GridPane{
         simShouldResume =true;
         wantNewFile = false;
         myGameGrid = newGrid;
+        resetUnit(newGrid);
+    }
+
+    public void resetUnit(Grid newGrid){
+        myGameGrid = newGrid;
+        unitStep = false;
     }
 
 

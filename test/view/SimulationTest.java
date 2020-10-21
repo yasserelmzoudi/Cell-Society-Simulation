@@ -21,21 +21,21 @@ import java.util.ResourceBundle;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest extends ApplicationTest{
-/*    private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
+ private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
     private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String STYLE_STYLESHEET = "Normal.css";
     public static final String STYLE_STYLESHEET_PATH = DEFAULT_STYLE_FOLDER + STYLE_STYLESHEET;
-    private static final String INITIAL_PATH = "/resources/initialSimulationSettings.properties";
+    private static final String INITIAL_PATH = "/resources/initi" +
+            "alSimulationSettings.properties";
 
-    private Grid grid;
+    // Grid grid;
     ResourceBundle resources;
     InputStream data;
-    private RectangleGamePane testPane;
+    //private RectangleGamePane testPane;
     private ScreenVisuals myVisuals;
     private Simulation myTestSimulation;
     private int gridHeight =700;
     private int gridWidth = 700;
-    private Stage stage;
 
     private ComboBox myLangBox;
     private ComboBox myStyleBox;
@@ -49,9 +49,12 @@ class SimulationTest extends ApplicationTest{
         data = Grid.class.getClassLoader()
                 .getResourceAsStream("Percolation.csv");
         myTestSimulation =new Simulation(stage, gridWidth, gridHeight);
-        // myVisuals = new ScreenVisuals(new Simulation(stage, gridWidth, gridHeight), grid, gridWidth, gridHeight,"");
+        // myVisuals = new ScreenVisuals(new Simulation(stage, g
+        // ridWidth, gridHeight), grid, gridWidth, gridHeight,"");
 
     }
+
+
 
     @AfterEach
     public void stopSimulation(){
@@ -109,15 +112,35 @@ class SimulationTest extends ApplicationTest{
     }
 
 
+
+
     @Test
     void reloadInitialPane() {
-        *//*setUpOptions();
+        setUpOptions();
+        for(int i=0; i< 5; i++) {
+            pressOtherButton("NextButton");
+        }
         int previousFrame= myTestSimulation.getFrameCount();
+        assertTrue(previousFrame >0);
         pressOtherButton("ResetButton");
         int newFrame = myTestSimulation.getFrameCount();
         assertTrue(newFrame < previousFrame);
-        stopSimulation();*//*
+        stopSimulation();
 
+    }
+
+    @Test
+    void checkSimulationGraph() {
+        setUpOptions();
+
+        SimulationGraph myGraph = myTestSimulation.getSimulationGraph();
+        assertTrue(myGraph !=null);
+
+        assertTrue(!myGraph.graphIsShowing());
+
+        pressOtherButton("GraphButton");
+
+        assertTrue(myGraph.graphIsShowing());
     }
 
     private void chooseUserOptions() {
@@ -125,9 +148,9 @@ class SimulationTest extends ApplicationTest{
 
 
         myStyleBox = lookup("#StyleTranslation").queryComboBox();
-        *//*clickOn(myStyleBox);
+        //*clickOn(myStyleBox);
         press(KeyCode.DOWN);
-        press(KeyCode.ENTER);*//*
+        press(KeyCode.ENTER);//*
 
         while(myStyleBox.getSelectionModel().isEmpty()) {
             continue;
@@ -135,10 +158,10 @@ class SimulationTest extends ApplicationTest{
 
 
         myShapeBox = lookup("#ShapeTranslation").queryComboBox();
-       *//* clickOn(myShapeBox);
+       //* clickOn(myShapeBox);
         press(KeyCode.DOWN);
         press(KeyCode.ENTER);
-*//*
+//*
         while(myShapeBox.getSelectionModel().isEmpty()) {
             continue;
         }
@@ -168,5 +191,5 @@ class SimulationTest extends ApplicationTest{
     private void setUpOptions() {
         chooseLang();
         chooseUserOptions();
-    }*/
+    }
 }

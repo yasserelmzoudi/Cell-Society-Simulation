@@ -168,8 +168,8 @@ public class Simulation {
 
     private void startSimulation() {
         boolean shouldresume = root.shouldContinue();
-        if(!shouldresume && root.doUnitStep()) preformUnitStep();
-        else if (shouldresume) {
+        preformUnitStep();
+        if (shouldresume) {
             primaryStage.show();
             grid.performNextStep();
             updateGraph();
@@ -248,10 +248,13 @@ public class Simulation {
     }
 
     private void preformUnitStep() {
-        grid.performNextStep();
-        root.getMyGamePane().setUpPane(grid);
-        updateGraph();
-        frameCount++;
+        if(root.doUnitStep()) {
+            grid.performNextStep();
+            root.getMyGamePane().setUpPane(grid);
+            updateGraph();
+            frameCount++;
+            root.unitPreformed(grid);
+        }
     }
 
     private void updateGraph() {

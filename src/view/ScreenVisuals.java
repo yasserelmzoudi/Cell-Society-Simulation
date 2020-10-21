@@ -424,6 +424,13 @@ public class ScreenVisuals extends BorderPane {
         return myButtonDisplay != null && myButtonDisplay.doUnitStep();
     }
 
+    public void unitPreformed(Grid newGrid) {
+       if (myButtonDisplay != null) {
+           myGrid = newGrid;
+           myButtonDisplay.resetUnit(newGrid);
+       }
+    }
+
 
 }
 
