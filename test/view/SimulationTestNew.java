@@ -1,27 +1,19 @@
-/*
 package view;
 
-import controller.SimulationInitializer;
-import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import model.grid.Grid;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import org.testng.annotations.AfterTest;
-import view.GamePaneShapes.RectangleGamePane;
 
 import java.io.InputStream;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimulationTest extends ApplicationTest{
+class SimulationTestNew extends ApplicationTest{
  private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
     private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String STYLE_STYLESHEET = "Normal.css";
@@ -29,18 +21,12 @@ class SimulationTest extends ApplicationTest{
     private static final String INITIAL_PATH = "/resources/initi" +
             "alSimulationSettings.properties";
 
-    // Grid grid;
     ResourceBundle resources;
     InputStream data;
-    //private RectangleGamePane testPane;
     private ScreenVisuals myVisuals;
     private Simulation myTestSimulation;
     private int gridHeight =700;
     private int gridWidth = 700;
-
-   // private ComboBox myLangBox;
-   // private ComboBox myStyleBox;
-   // private ComboBox myShapeBox;
 
 
     @Override
@@ -50,6 +36,7 @@ class SimulationTest extends ApplicationTest{
         data = Grid.class.getClassLoader()
                 .getResourceAsStream("Percolation.csv");
         myTestSimulation =new Simulation(stage, gridWidth, gridHeight);
+        //myTestSimulation =new Simulation(stage, gridWidth, gridHeight);
         // myVisuals = new ScreenVisuals(new Simulation(stage, g
         // ridWidth, gridHeight), grid, gridWidth, gridHeight,"");
 
@@ -57,28 +44,28 @@ class SimulationTest extends ApplicationTest{
 
 
 
-
     @Test
     void setUpScene() {
-
         chooseLang();
         myVisuals = myTestSimulation.getRoot();
 
         assertTrue(myVisuals.getMyGamePane() ==null);
 
+
         chooseUserOptions();
 
         assertTrue(myVisuals.getMyGamePane() !=null);
-       for(int i = 100; i <30; i++ ) {
-           continue;
-       }
+        setAnimationSpeed();
+        stepTest();
+        checkSimulationGraph();
+        reloadInitialPane();
+
+        pressVariousButtons();
+
 
     }
 
-    @Test
     void stepTest() {
-        chooseLang();
-        chooseUserOptions();
 
         assertTrue(myTestSimulation.getAnimationSpeed() >0);
 
@@ -86,29 +73,107 @@ class SimulationTest extends ApplicationTest{
 
         assertTrue(myTestSimulation.getAnimationSpeed() ==0);
 
+        myVisuals.unitPreformed(myTestSimulation.getSimulationController().getGrid());
+
+
+    }
+
+    void setAnimationSpeed() {
+
+        assertTrue(myTestSimulation.getAnimationSpeed() >0);
+
+        myTestSimulation.setAnimationSpeed(0);
+
+        assertTrue(myTestSimulation.getAnimationSpeed() ==0);
+
+        myTestSimulation.setAnimationSpeed(4.0);
+        assertTrue(myTestSimulation.getAnimationSpeed() ==4.0);
+
+        myTestSimulation.setAnimationSpeed(1.0);
+        assertTrue(myTestSimulation.getAnimationSpeed() ==1.0);
+
+
+    }
+
+
+
+
+    void reloadInitialPane() {
+
+        for(int i=0; i< 5; i++) {
+            pressOtherButton("NextButton");
+        }
+        int previousFrame= myTestSimulation.getFrameCount();
+        assertTrue(previousFrame >0);
+        pressOtherButton("ResetButton");
+        int newFrame = myTestSimulation.getFrameCount();
+        assertTrue(newFrame < previousFrame);
+
+    }
+
+
+    void checkSimulationGraph() {
+
+        SimulationGraph myGraph = myTestSimulation.getSimulationGraph();
+        assertTrue(myGraph !=null);
+
+        assertTrue(!myGraph.graphIsShowing());
+
+        pressOtherButton("GraphButton");
+
+        assertTrue(myGraph.graphIsShowing());
+
+    }
+
+    void openNewFile() {
+        pressOtherButton("LoadButton");
+        assertTrue(myVisuals.wantNewFile());
+
+    }
+
+    void pressVariousButtons() {
+        pressOtherButton("ResetButton");
+        openNewFile();
+        pressOtherButton("SaveButton");
+        int previousFrame = myTestSimulation.getFrameCount();
+        pressOtherButton("PauseButton");
+        assertEquals(previousFrame, myTestSimulation.getFrameCount());
+        pressOtherButton("ResumeButton");
+        pressOtherButton("SaveButton");
+        produceErroroPanel();
+       pressOtherButton("QuitButton");
+    }
+
+    void produceErroroPanel() {
+        press(KeyCode.TAB);
+        press(KeyCode.TAB);
+        pressOtherButton("OkButton");
     }
 
 
     private void chooseUserOptions() {
 
 
-        ComboBox myStyleBox = lookup("#StyleTranslation").query();
-        clickOn(myStyleBox);
-        press(KeyCode.DOWN);
-        press(KeyCode.ENTER);//*
-
-        while(myStyleBox.getSelectionModel().isEmpty()) {
-            continue;
-        }
 
         ComboBox myShapeBox = lookup("#ShapeTranslation").query();
-        clickOn(myShapeBox);
+       /* clickOn(myShapeBox);
         press(KeyCode.DOWN);
         press(KeyCode.ENTER);
-//*
+
+
         while(myShapeBox.getSelectionModel().isEmpty()) {
             continue;
+        }*/
+
+        ComboBox myStyleBox = lookup("#StyleTranslation").query();
+        /*clickOn(myStyleBox);
+        press(KeyCode.DOWN);
+        press(KeyCode.ENTER);*/
+
+        while(myStyleBox.getSelectionModel().isEmpty() || myShapeBox.getSelectionModel().isEmpty()) {
+            continue;
         }
+
         Button okButton = lookup("#"+OBJECT_ID_BUNDLE.getString("OkButton")).queryButton();
         clickOn(okButton);
     }
@@ -137,4 +202,4 @@ class SimulationTest extends ApplicationTest{
         chooseLang();
         chooseUserOptions();
     }
-}*/
+}

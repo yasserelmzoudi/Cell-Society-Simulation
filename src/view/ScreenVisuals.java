@@ -191,7 +191,7 @@ public class ScreenVisuals extends BorderPane {
      * @param x: the x location of the users mouse
      * @param y: the y location of the users mouse
      */
-    public void changeCellStatus(double x, double y) {
+    private void changeCellStatus(double x, double y) {
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -313,7 +313,9 @@ public class ScreenVisuals extends BorderPane {
         List<String> dropDownItems;
         for (String label : allLabels) {
             dropDownItems = Arrays.asList(resourceFile.getString(label).split(","));
-            initialComboMap.putIfAbsent(label, addToLocation(label, dropDownItems, comboBoxLocation));
+            ComboBox eachCombo  = addToLocation(label, dropDownItems, comboBoxLocation);
+            eachCombo.setId(getEnglishTranslation(label));
+            initialComboMap.putIfAbsent(label, eachCombo);
         }
     }
 
@@ -322,7 +324,6 @@ public class ScreenVisuals extends BorderPane {
         Label cellTypeLabel = new Label(label.toLowerCase() + ": ");
         column.getChildren().add(cellTypeLabel);
         ComboBox eachCombo = makeDropDownOptions(dropDownItems);
-        eachCombo.setId(getEnglishTranslation(label));
         column.getChildren().add(eachCombo);
         column.setId("column");
         comboBoxLocation.getChildren().add(column);

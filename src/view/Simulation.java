@@ -116,8 +116,7 @@ public class Simulation {
         assignStyleSheet(myScene, CONTROL_STYLESHEET_PATH);
         primaryStage.setScene(myScene);
         primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
+            primaryStage.close();
         });
         simulationGraph = new SimulationGraph(grid, simulationController.getSimulationSettingsReader().getSimulationTitle());
         setUpKeyFrames();
@@ -238,7 +237,7 @@ public class Simulation {
      * @param path: the new path that should be loaded
      *
      */
-    public void loadNewPath(String path) {
+    private void loadNewPath(String path) {
         currentPath = path;
         start();
     }
