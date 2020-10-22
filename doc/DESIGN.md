@@ -154,11 +154,10 @@ An error box opens up upon a user entering an invalid simulation or any other er
 
 Unless a shape already exists within the <code>javafx.scene.shape.Shape</code> library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
 
-To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called </code>allShapes</code>. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
+To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called </code>allShapes</code>. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. As an example, the <code>HexagonGamePane</code> class is provided below. 
 
 ```java
 package view.GamePaneShapes;
-
 import javafx.scene.shape.Shape;
 import model.grid.Grid;
 import view.Shapes.Hexagon;
