@@ -147,7 +147,7 @@ public class ScreenVisuals extends BorderPane {
     }
 
     private Node makeTitleDisplay() {
-        HBox titleDisplay = new HBox(); //Name top Vbox center slider bottom
+        HBox titleDisplay = new HBox();
         titleDisplay.setAlignment(Pos.CENTER);
         Text simulationTitleText = new Text(gameTitle);
         simulationTitleText.setId(OBJECT_ID_BUNDLE.getString("Title"));
@@ -191,7 +191,7 @@ public class ScreenVisuals extends BorderPane {
      * @param x: the x location of the users mouse
      * @param y: the y location of the users mouse
      */
-    public void changeCellStatus(double x, double y) {
+    private void changeCellStatus(double x, double y) {
         Shape[][] myShapeGrid = myGamePane.getInitialArray();
         for (int i = 0; i < myGrid.gridRows(); i++) {
             for (int j = 0; j < myGrid.gridColumns(); j++) {
@@ -251,7 +251,7 @@ public class ScreenVisuals extends BorderPane {
         askForOthers();
     }
 
-    private void askForOthers() {
+    public void askForOthers() {
         myOtherOptions= new HashMap<>();
         Pane newPane = new VBox();
         List<String> initialOptionLabels = new ArrayList<>();
@@ -273,6 +273,8 @@ public class ScreenVisuals extends BorderPane {
         otherOptionStage.setScene(userInput);
         otherOptionStage.show();
     }
+
+
 
     private void setUpOtherOptions() {
         myShapeType = myOtherOptions.get(titlesBundle.getString("ShapeTranslation")).getSelectionModel().getSelectedItem().toString();
@@ -311,7 +313,9 @@ public class ScreenVisuals extends BorderPane {
         List<String> dropDownItems;
         for (String label : allLabels) {
             dropDownItems = Arrays.asList(resourceFile.getString(label).split(","));
-            initialComboMap.putIfAbsent(label, addToLocation(label, dropDownItems, comboBoxLocation));
+            ComboBox eachCombo  = addToLocation(label, dropDownItems, comboBoxLocation);
+            eachCombo.setId(getEnglishTranslation(label));
+            initialComboMap.putIfAbsent(label, eachCombo);
         }
     }
 
@@ -374,7 +378,7 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeGraphControlButton() {
         Button graphButton = new Button(titlesBundle.getString("GraphButton"));
-        graphButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
+        graphButton.setId(OBJECT_ID_BUNDLE.getString("GraphButton"));
         graphButton.setOnAction(e->{
                     currentSimulation.getSimulationGraph().showGraph();
                 }
@@ -384,7 +388,7 @@ public class ScreenVisuals extends BorderPane {
 
     private Button makeResetButton() {
         Button resetButton = new Button(titlesBundle.getString("ResetButton"));
-        resetButton.setId(OBJECT_ID_BUNDLE.getString("OtherButton"));
+        resetButton.setId(OBJECT_ID_BUNDLE.getString("ResetButton"));
         resetButton.setOnAction(e->{
             currentSimulation.reloadInitialPane();
 
@@ -405,6 +409,27 @@ public class ScreenVisuals extends BorderPane {
         topBox.getChildren().add(makeSlider());
         topBox.getChildren().add(makeOtherButtonBox());
         return topBox;
+    }
+
+    /**
+     * Getter for the map of comboboxs
+     */
+    public Map<String, ComboBox> getMyOtherOptions() {
+        return myOtherOptions;
+    }
+
+    /**
+     * Returns whether only one step should be preformed
+     */
+    public boolean doUnitStep() {
+        return myButtonDisplay != null && myButtonDisplay.doUnitStep();
+    }
+
+    public void unitPreformed(Grid newGrid) {
+       if (myButtonDisplay != null) {
+           myGrid = newGrid;
+           myButtonDisplay.resetUnit(newGrid);
+       }
     }
 
 

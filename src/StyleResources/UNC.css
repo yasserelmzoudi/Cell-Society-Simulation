@@ -5,7 +5,12 @@
     -fx-padding: 5px;
 }
 
-#otherButton {
+#graphButton {
+    -fx-alignment: center;
+    -fx-pref-width: 150;
+}
+
+#resetButton {
     -fx-alignment: center;
     -fx-pref-width: 150;
 }

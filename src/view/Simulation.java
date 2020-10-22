@@ -34,9 +34,6 @@ public class Simulation {
     private Timeline animation;
     private ScreenVisuals root;
 
-    private String edgePolicy;
-    private String neighborhoodPolicy;
-
     private int windowWidth;
     private int windowHeight;
 
@@ -119,8 +116,7 @@ public class Simulation {
         assignStyleSheet(myScene, CONTROL_STYLESHEET_PATH);
         primaryStage.setScene(myScene);
         primaryStage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
+            primaryStage.close();
         });
         simulationGraph = new SimulationGraph(grid, simulationController.getSimulationSettingsReader().getSimulationTitle());
         setUpKeyFrames();
@@ -168,15 +164,16 @@ public class Simulation {
 
     }
 
+
     private void startSimulation() {
         boolean shouldresume = root.shouldContinue();
+        preformUnitStep();
         if (shouldresume) {
             primaryStage.show();
             grid.performNextStep();
-            simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
-            grid.resetCellTypeCounts();
-            frameCount++;
+            updateGraph();
             root.getMyGamePane().setUpPane(grid);
+            frameCount++;
         }
     }
 
@@ -225,6 +222,43 @@ public class Simulation {
         if(continueShowingGraph) simulationGraph.showGraph();
         setUpKeyFrames();
         root.getMyGamePane().setUpPane(grid);
+    }
+
+    public ScreenVisuals getRoot() {
+        return root;
+    }
+
+    public double getAnimationSpeed() {
+        if(!root.shouldContinue()) return 0;
+        return animation.getRate();
+    }
+    /**
+     * Allows new path to  be set from outside class
+     * @param path: the new path that should be loaded
+     *
+     */
+    private void loadNewPath(String path) {
+        currentPath = path;
+        start();
+    }
+
+    public int getFrameCount() {
+        return frameCount;
+    }
+
+    private void preformUnitStep() {
+        if(root.doUnitStep()) {
+            grid.performNextStep();
+            root.getMyGamePane().setUpPane(grid);
+            updateGraph();
+            frameCount++;
+            root.unitPreformed(grid);
+        }
+    }
+
+    private void updateGraph() {
+        simulationGraph.updateSimulationGraph(frameCount, grid.getTotalCellTypeCounts());
+        grid.resetCellTypeCounts();
     }
 
 

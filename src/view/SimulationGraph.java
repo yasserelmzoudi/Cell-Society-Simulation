@@ -102,6 +102,7 @@ public class SimulationGraph {
    *
    */
   public void closeGraphWindow() {
+    graphShowing = false;
     stage.close();
   }
 

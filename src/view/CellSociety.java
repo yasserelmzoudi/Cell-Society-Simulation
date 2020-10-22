@@ -7,10 +7,11 @@ public class CellSociety extends Application {
     /**
      * Starts a new Simulation Window
      */
-    public void start(Stage stage) throws ReflectiveOperationException {
+    private Simulation recentSimulation;
+    public void start(Stage stage) {
         new Simulation(stage, 600,600);
-    }
 
+    }
 
     /**
      * Starts the program
