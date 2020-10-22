@@ -19,14 +19,18 @@ Umika Paul, Fernanda Corona, Yasser Elmzoudi
 
 New simulations
 
-- Adding a new simulation simply entails adding another subclass of Cell and Grid 
-- Cell would contain an overridden method “update” that contains the rules for updating cells in each cycle
+- Adding a new simulation simply entails adding another subclass of <code>Cell</code> and <code>Grid</code> 
+- Cell would contain an overridden method <code>update</code> that contains the rules for updating cells in each cycle
 
 New shapes
-- Our “Game Panel” allows for the addition of new shapes, simply by adding another subclass with the new shape that needs to be added
-- Unless a shape already exists within the javafx.scene.shape.Shape library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
+
+- Our <code>GamePanel</code> allows for the addition of new shapes, simply by adding another subclass with the new shape that needs to be added
+- Unless a shape already exists within the <code>javafx.scene.shape.Shape</code> library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
 
 New Buttons / Displays on the grid
+
+- Adding a new button can be done easily by adding the button to the <code>ButtonPanel</code> class. To have control over the button’s styles, the button name should be added as a key to the <code>ObjectId.properties</code> file found in the StyleResources package. The string value of this key should then be added to the <code>UserButtonStyles.css</code> file by adding a hashtag before the string value and then placing curly brackets containing the button’s styles after the value. An example of this can be seen below. 
+
 
 
 ## High-level Design
@@ -148,23 +152,21 @@ An error box opens up upon a user entering an invalid simulation or any other er
 
 #### Easy to Add Features
 
-To add more edge policies or neighborhood policies it is possible to create a new “getNeighbors” interface that can have classes with information about how to get the neighbors. We implemented different edge policies and neighborhood policies for the rectangle shape but to do so in the same capacity for the hexagon and the triangle it would be easier to make use of an interface, if we were given more time. 
+Unless a shape already exists within the <code>javafx.scene.shape.Shape</code> library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
 
-Unless a shape already exists within the javafx.scene.shape.Shape library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
+To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called allShapes. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
 
-To add new Grid Shapes, the abstract class GamePane must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called allShapes. The abstract method makeArray should be copied and altered according to the new shape that will be displayed in the grid. Within the makeArray method, every shape should be added to the instance variable described above. The method getInitialArray should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
+To add an additional <code>Grid<c/ode> Shape that the user can choose from, a <code>GamePane</code> with that shape should be added to the package <code>GamePane</code> Shapes found in the View package. This class should be named “<English Translation Of Shape>GamePane '' to allow our use of reflection to work correctly. Once the file is made, the shape should be added to each language file by having the key be the english translation of the shape and having the value be the corresponding language’s translation of the shape. The translated version of the shape should also be added to the existing key <code>Shape</code> to have the option available as a drop down item.
 
-To add an additional Grid Shape that the user can choose from, a GamePane with that shape should be added to the directory Game Pane Shapes found in the View package. This class should be named “<English Translation Of Shape>GamePane '' to allow our use of reflection to work correctly. Once the file is made, the shape should be added to each language file by having the key be the english translation of the shape and having the value be the corresponding language’s translation of the shape. The translated version of the shape should also be added to the existing key “Shape” to have the option available as a drop down item.
-
-In order to add an additional language, a corresponding “.properties” file must be made in the Language Resources directory. Once the file is made, all the keys found in the english.properties must be copied and have their values changed accordingly. An example of how a language properties file should be created can be seen below. 
+In order to add an additional language, a corresponding “.properties” file must be made in the Language Resources package. Once the file is made, all the keys found in the english.properties must be copied and have their values changed accordingly. An example of how a language properties file should be created can be seen below. 
 
 //Insert gif or image 
 
-To add additional Styles, a new “.css” file must be created and placed in the Style Resources directory. The appropriate translation for each language found in the Language Resources directory should also be added by adding a key with the english translation of the style and having this key’s value be the corresponding language’s translation. The translated version of the new style should be added to the key “Style” to have the new option displayed as an item in the drop down menu. The “ColorStyles.properties” file should then reflect the new additions by having the English translation of the word as the key and having the corresponding “.css” file name be the value. 
+To add additional Styles, a new <code>.css</code> file must be created and placed in the <code>StyleResources</code>package. The appropriate translation for each language found in the Language Resources package should also be added by adding a key with the english translation of the style and having this key’s value be the corresponding language’s translation. The translated version of the new style should be added to the key <code>Style</code> to have the new option displayed as an item in the drop down menu. The <code>ColorStyles.properties</code> file should then reflect the new additions by having the English translation of the word as the key and having the corresponding <code>.css</code> file name be the value. 
 
 #### Other Features not yet Done
 
-To add more edge policies or neighborhood policies it is possible to create a new “getNeighbors” interface that can have classes with information about how to get the neighbors. We implemented different edge policies and neighborhood policies for the rectangle shape but to do so in the same capacity for the hexagon and the triangle it would be easier to make use of an interface, if we were given more time. 
+To add more edge policies or neighborhood policies it is possible to create a new <code>getNeighbors</code> interface that can have classes with information about how to get the neighbors. We implemented different edge policies and neighborhood policies for the rectangle shape but to do so in the same capacity for the hexagon and the triangle it would be easier to make use of an interface, if we were given more time. 
 
 
 
