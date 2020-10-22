@@ -37,7 +37,7 @@ New Buttons / Displays on the grid
 
 #### Core Classes
 
-<img src="doc/DesignDiagram.JPG" width="1000" height="500"/>
+<img src="doc/DesignDiagram.JPG" width="100" height="400"/>
 
 Data files needed: 
 
@@ -156,7 +156,7 @@ Unless a shape already exists within the <code>javafx.scene.shape.Shape</code> l
 
 To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called allShapes. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
 
-To add an additional <code>Grid<c/ode> Shape that the user can choose from, a <code>GamePane</code> with that shape should be added to the package <code>GamePane</code> Shapes found in the View package. This class should be named “<English Translation Of Shape>GamePane '' to allow our use of reflection to work correctly. Once the file is made, the shape should be added to each language file by having the key be the english translation of the shape and having the value be the corresponding language’s translation of the shape. The translated version of the shape should also be added to the existing key <code>Shape</code> to have the option available as a drop down item.
+To add an additional <code>Grid</code> Shape that the user can choose from, a <code>GamePane</code> with that shape should be added to the package <code>GamePane</code> Shapes found in the View package. This class should be named “<English Translation Of Shape>GamePane '' to allow our use of reflection to work correctly. Once the file is made, the shape should be added to each language file by having the key be the english translation of the shape and having the value be the corresponding language’s translation of the shape. The translated version of the shape should also be added to the existing key <code>Shape</code> to have the option available as a drop down item.
 
 In order to add an additional language, a corresponding “.properties” file must be made in the Language Resources package. Once the file is made, all the keys found in the english.properties must be copied and have their values changed accordingly. An example of how a language properties file should be created can be seen below. 
 
