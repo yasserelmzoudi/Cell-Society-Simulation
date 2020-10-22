@@ -33,6 +33,8 @@ New Buttons / Displays on the grid
 
 #### Core Classes
 
+<img src="/doc/DesignDiagram.jpg" width=500 height=500/>
+
 Data files needed: 
 
 All the data csv files are located in the data folder. The properties files are located in the resources directory in src, and the properties files for the languages are located in the languageresources directory. The css files are located in the styleresources directory.
