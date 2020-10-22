@@ -33,7 +33,7 @@ New Buttons / Displays on the grid
 
 #### Core Classes
 
-<img src="doc/DesignDiagram.JPG" width="500" height="500"/>
+<img src="doc/DesignDiagram.JPG" width="1000" height="500"/>
 
 Data files needed: 
 
