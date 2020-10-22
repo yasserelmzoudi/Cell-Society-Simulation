@@ -154,7 +154,72 @@ An error box opens up upon a user entering an invalid simulation or any other er
 
 Unless a shape already exists within the <code>javafx.scene.shape.Shape</code> library, a new class should be made in the Shapes package. The points corresponding to the shape should then be chosen within the class that was created. The constructor for this class should, at the very minimum, take in row and column parameters to have the shape’s points be dependent on these values. 
 
-To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called allShapes. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
+To add new Grid Shapes, the abstract class <code>GamePane</code> must be extended and an instance variable to hold a new 2D Shape Array should be created. In the example below,  this instance variable is called </code>allShapes</code>. The abstract method <code>makeArray</code> should be copied and altered according to the new shape that will be displayed in the grid. Within the <code>makeArray</code> method, every shape should be added to the instance variable described above. The method <code>getInitialArray</code> should also be overridden and should return the instance variable of the 2D Shape Array to which the shapes were added. 
+
+```java
+package view.GamePaneShapes;
+
+import javafx.scene.shape.Shape;
+import model.grid.Grid;
+import view.Shapes.Hexagon;
+
+/**
+ * Class that makes the hexagon game pane.
+ */
+
+public class HexagonGamePane extends GamePane {
+
+  private static final double HEIGHT_FACTOR = 1.60;
+  private static final double WIDTH_FACTOR = 1.3;
+  private Shape[][] allShapes;
+
+  /**
+   * Constructor for this class.
+   *
+   * @param grid   Hexagon grid.
+   * @param width  Width of grid.
+   * @param height Height of grid.
+   */
+  public HexagonGamePane(Grid grid, int width, int height) {
+    super(grid, width, height);
+  }
+
+  /**
+   * Makes the array of hexagons.
+   *
+   * @param myGrid The given grid.
+   */
+  @Override
+  public void makeArray(Grid myGrid) {
+    allShapes = new Hexagon[myGrid.gridRows()][myGrid.gridColumns()];
+    for (int r = 0; r < myGrid.gridRows(); r++) {
+      for (int c = 0; c < myGrid.gridColumns(); c++) {
+        Hexagon mynewPixel = new Hexagon(r, c, polyWidth(), polyHeight());
+        allShapes[r][c] = mynewPixel;
+      }
+    }
+  }
+
+  @Override
+  public Shape[][] getInitialArray() {
+    return allShapes;
+  }
+
+  private double polyHeight() {
+    return cellHeight() / HEIGHT_FACTOR;
+  }
+
+  private double polyWidth() {
+    return cellWidth() / WIDTH_FACTOR;
+  }
+
+}
+
+```
+
+
+
+
 
 To add an additional <code>Grid</code> Shape that the user can choose from, a <code>GamePane</code> with that shape should be added to the package <code>GamePane</code> Shapes found in the View package. This class should be named “<English Translation Of Shape>GamePane '' to allow our use of reflection to work correctly. Once the file is made, the shape should be added to each language file by having the key be the english translation of the shape and having the value be the corresponding language’s translation of the shape. The translated version of the shape should also be added to the existing key <code>Shape</code> to have the option available as a drop down item.
 
