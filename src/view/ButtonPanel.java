@@ -14,8 +14,8 @@ import model.grid.Grid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import model.grid.GridCSVWriter;
-import model.grid.SimulationSettingsReader;
+import controller.GridCSVWriter;
+import controller.SimulationSettingsReader;
 import view.GamePaneShapes.GamePane;
 
 public class ButtonPanel extends GridPane{

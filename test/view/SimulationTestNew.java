@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimulationTestNew extends ApplicationTest{
+class SimulationTestNew extends ApplicationTest {
  private static final ResourceBundle OBJECT_ID_BUNDLE = ResourceBundle.getBundle("StyleResources.ObjectID");
     private static final String DEFAULT_STYLE_FOLDER ="/" + "StyleResources/";
     public static final String STYLE_STYLESHEET = "Normal.css";

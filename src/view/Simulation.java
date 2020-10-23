@@ -73,7 +73,7 @@ public class Simulation {
             simulationController = new SimulationInitializer(currentPath);
             grid = simulationController.getGrid();
         } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
+            new ErrorPanel();
         }
 
     }

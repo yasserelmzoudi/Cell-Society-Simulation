@@ -1,4 +1,4 @@
-package model.grid;
+package controller;
 
 import com.opencsv.CSVWriter;
 import java.io.FileOutputStream;
@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Set;
 import model.exceptions.UnableToSaveFileException;
+import model.grid.Grid;
 
 /**
  * Class encapsulating logic that writes to the CSV.

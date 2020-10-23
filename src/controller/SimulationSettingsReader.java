@@ -1,11 +1,9 @@
-package model.grid;
+package controller;
 
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import model.exceptions.InvalidSimulationSettingsFileException;
-import model.exceptions.UnableToSaveFileException;
 
 /**
  * Class that reads the simulation settings.

@@ -3,9 +3,10 @@ package model.grid;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import controller.GridCSVWriter;
+import controller.SimulationSettingsReader;
 import java.io.InputStream;
 import java.util.ResourceBundle;
-import model.exceptions.InvalidSimulationSettingsFileException;
 import model.exceptions.UnableToSaveFileException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

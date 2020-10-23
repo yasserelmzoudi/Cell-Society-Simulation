@@ -2,12 +2,9 @@ package controller;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import model.exceptions.InvalidSimulationTypeException;
 import model.grid.Grid;
-import model.grid.SimulationSettingsReader;
-
 
 
 public class SimulationInitializer {

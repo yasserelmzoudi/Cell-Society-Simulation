@@ -2,10 +2,7 @@ package model.grid;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import model.exceptions.InvalidCSVFileException;
+import controller.SimulationSettingsReader;
 import model.exceptions.InvalidSimulationSettingsFileException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
