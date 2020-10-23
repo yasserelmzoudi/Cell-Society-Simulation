@@ -5,7 +5,7 @@ import model.grid.Grid;
 import view.Shapes.Hexagon;
 
 /**
- * Class that makes the triangle game pane.
+ * Class that makes the hexangle game pane.
  */
 
 public class HexagonGamePane extends GamePane {
